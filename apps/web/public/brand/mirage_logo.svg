@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 80" width="340" height="80" fill="none">
+  <defs>
+    <linearGradient id="humanGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#2878BC"/>
+      <stop offset="50%" stop-color="#308995"/>
+      <stop offset="100%" stop-color="#35AB38"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <!-- Stylized Figure Stretching Upwards with vitality leaf/arc wings -->
+  <g transform="translate(10, 8)">
+    <!-- Head / Sun -->
+    <circle cx="28" cy="14" r="7" fill="#35AB38" />
+    <!-- Dynamic torso stretching upward with open arms / vitality wings -->
+    <path d="M 28 25 C 26 36 22 48 16 60 C 22 58 34 58 40 60 C 34 48 30 36 28 25 Z" fill="url(#humanGrad)" />
+    <!-- Left Arcing Arm / Ribbon -->
+    <path d="M 26 27 C 14 25 5 16 2 6 C 10 14 20 22 26 25 Z" fill="#35AB38" opacity="0.9"/>
+    <!-- Right Arcing Arm / Ascending Ribbon -->
+    <path d="M 30 27 C 42 22 51 12 54 2 C 48 12 38 22 30 25 Z" fill="#2878BC" opacity="0.95"/>
+    <!-- Vitality Sparkle Accent -->
+    <circle cx="53" cy="5" r="2.5" fill="#35AB38" filter="url(#glow)"/>
+  </g>
+  <!-- Typography MIRAGE PHARMA -->
+  <text x="78" y="38" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="24" font-weight="800" fill="#023368" letter-spacing="1.5">MIRAGE</text>
+  <text x="186" y="38" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="24" font-weight="400" fill="#2878BC" letter-spacing="2">PHARMA</text>
+  <!-- Slogan -->
+  <text x="80" y="56" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#35AB38" letter-spacing="3.2">HEALTHY LIFE</text>
+  <line x1="165" y1="52" x2="280" y2="52" stroke="#e0e8f0" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

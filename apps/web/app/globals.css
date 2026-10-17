@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Brand Color Channels (Tier 2.1) */
+    --brand-primary: #2878BC;
+    --brand-primary-rgb: 40, 120, 188;
+    --brand-navy: #023368;
+    --brand-navy-rgb: 2, 51, 104;
+    --brand-green: #35AB38;
+    --brand-green-rgb: 53, 171, 56;
+    --brand-cyan: #308995;
+    --brand-cyan-rgb: 48, 137, 149;
+    --brand-cyan-light: #61C0E4;
+    --brand-cyan-light-rgb: 97, 192, 228;
+    --brand-obsidian: #020F24;
+    --brand-obsidian-rgb: 2, 15, 36;
+
+    /* Light Theme Substrates */
+    --brand-surface: #F8FAFC;
+    --brand-surface-pure: #FFFFFF;
+    --brand-surface-muted: #F1F5F9;
+    --brand-surface-elevated: rgba(255, 255, 255, 0.85);
+    --brand-border-subtle: #E2E8F0;
+    --brand-border-glass: rgba(255, 255, 255, 0.75);
+    --brand-text: #023368;
+    --brand-text-muted: #475569;
+  }
+
+  [data-theme='dark'],
+  .dark {
+    /* Obsidian Dark Theme Substrates */
+    --brand-surface: #020F24;
+    --brand-surface-pure: #041B3B;
+    --brand-surface-muted: #06234D;
+    --brand-surface-elevated: rgba(2, 15, 36, 0.82);
+    --brand-border-subtle: #1E293B;
+    --brand-border-glass: rgba(255, 255, 255, 0.12);
+    --brand-text: #F8FAFC;
+    --brand-text-muted: #94A3B8;
+  }
+}
+
+/* Glassmorphism, Specular Highlights & Elevation System (Tier 2.3) */
+.hud-glass {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.6), 0 8px 32px 0 rgba(40, 120, 188, 0.08);
+  transform: translateZ(0); /* Force GPU composite layer promotion */
+  will-change: transform;
+}
+
+.hud-glass-dark {
+  background: rgba(2, 15, 36, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.15), 0 12px 40px 0 rgba(0, 0, 0, 0.45);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.hud-glass-interactive {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.hud-glass-interactive:hover {
+  transform: translateY(-2px) translateZ(0);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8), 0 16px 40px 0 rgba(40, 120, 188, 0.14);
+  border-color: rgba(40, 120, 188, 0.35);
+}
+
+.specular-border {
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.7);
+}
+
+.telemetry-grid {
+  background-size: 24px 24px;
+  background-image: 
+    linear-gradient(to right, rgba(40, 120, 188, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(40, 120, 188, 0.06) 1px, transparent 1px);
+}
+
+.telemetry-grid-dark {
+  background-size: 24px 24px;
+  background-image: 
+    linear-gradient(to right, rgba(48, 137, 149, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(48, 137, 149, 0.08) 1px, transparent 1px);
+}
+
+.tabular-numbers {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* Accessibility: Reduced Transparency Fallback (Tier 2.3) */
+@media (prefers-reduced-transparency: reduce) {
+  .hud-glass {
+    background: #FFFFFF !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-color: #E2E8F0 !important;
+    box-shadow: 0 4px 16px 0 rgba(2, 51, 104, 0.08) !important;
+  }
+  .hud-glass-dark {
+    background: #020F24 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-color: #1E293B !important;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.5) !important;
+  }
+  .hud-glass-interactive:hover {
+    transform: none !important;
+  }
+}
+
+/* Accessibility: Reduced Motion (Web Interface Guidelines) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
