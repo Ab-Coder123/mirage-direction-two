@@ -257,9 +257,18 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Copyright & Sub-Credits strip */}
+        {/* Copyright, Privacy Policy & Sub-Credits strip */}
         <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 text-center sm:text-left">
-          <p>© 2026 Mirage Pharma / Hetero Cure Pharma. All Rights Reserved.</p>
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
+            <p>© 2026 Mirage Pharma / Hetero Cure Pharma. All Rights Reserved.</p>
+            <span className="hidden sm:inline text-white/20">|</span>
+            <Link
+              href="/privacy-policy"
+              className="text-slate-300 hover:text-white underline underline-offset-4 font-semibold transition-colors"
+            >
+              Privacy Policy
+            </Link>
+          </div>
           <p className="text-[11px] font-mono text-slate-400">
             Powered By <span className="text-white font-medium">Active4Web</span> & <span className="text-brand-cyan-light font-medium">Mirage Clinical Engine</span>
           </p>
