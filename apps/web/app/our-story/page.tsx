@@ -6,7 +6,7 @@ export default function OurStoryPage() {
   return (
     <main className="min-h-screen bg-slate-50/50 pb-20">
       {/* Top Banner */}
-      <section className="relative bg-gradient-to-r from-[#023368] via-[#054b98] to-[#0a66c2] text-white py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-brand-primary/30 telemetry-grid">
+      <section className="relative bg-gradient-to-r from-[#023368] via-[#054b98] to-[#0a66c2] text-white py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-brand-primary/30">
         <div className="max-w-4xl mx-auto text-center space-y-4">
           <Badge variant="cyan" size="md">
             Our Heritage & Scientific Mission

@@ -6,11 +6,13 @@ import { cn } from '@mirage/utils';
 export interface ClinicalEvidenceCardProps {
   evidence: ClinicalEvidence;
   className?: string;
+  isArabic?: boolean;
 }
 
 export const ClinicalEvidenceCard: React.FC<ClinicalEvidenceCardProps> = ({
   evidence,
   className,
+  isArabic = false,
 }) => {
   return (
     <div
@@ -55,7 +57,9 @@ export const ClinicalEvidenceCard: React.FC<ClinicalEvidenceCardProps> = ({
 
       {/* External Citation Link */}
       <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-        <span className="text-slate-400 font-mono text-[11px]">Peer-Reviewed Study</span>
+        <span className="text-slate-400 font-mono text-[11px]">
+          {isArabic ? 'دراسة سريرية محكمة' : 'Peer-Reviewed Study'}
+        </span>
         {evidence.doiUrl ? (
           <a
             href={evidence.doiUrl}
@@ -63,11 +67,11 @@ export const ClinicalEvidenceCard: React.FC<ClinicalEvidenceCardProps> = ({
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 font-semibold text-brand-primary hover:text-brand-navy transition-colors"
           >
-            <span>View Source</span>
+            <span>{isArabic ? 'عرض المصدر' : 'View Source'}</span>
             <ExternalLink className="w-3 h-3" />
           </a>
         ) : (
-          <span className="text-slate-400">Indexed Publication</span>
+          <span className="text-slate-400">{isArabic ? 'منشور مفهرس' : 'Indexed Publication'}</span>
         )}
       </div>
     </div>

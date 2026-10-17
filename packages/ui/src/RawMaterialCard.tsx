@@ -6,9 +6,10 @@ import { cn } from '@mirage/utils';
 export interface RawMaterialCardProps {
   material: RawMaterial;
   className?: string;
+  isArabic?: boolean;
 }
 
-export const RawMaterialCard: React.FC<RawMaterialCardProps> = ({ material, className }) => {
+export const RawMaterialCard: React.FC<RawMaterialCardProps> = ({ material, className, isArabic = false }) => {
   return (
     <div
       className={cn(
@@ -28,7 +29,7 @@ export const RawMaterialCard: React.FC<RawMaterialCardProps> = ({ material, clas
               {material.name}
             </h4>
             {material.botanicalName && (
-              <span className="text-xs italic text-brand-primary font-mono">
+              <span className="text-xs italic text-brand-primary font-mono" dir="ltr">
                 ({material.botanicalName})
               </span>
             )}
@@ -49,7 +50,7 @@ export const RawMaterialCard: React.FC<RawMaterialCardProps> = ({ material, clas
             <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2 text-xs text-brand-navy/80 bg-brand-surface p-2.5 rounded-lg border border-slate-200/60 font-sans">
               <FlaskConical className="w-4 h-4 text-brand-cyan shrink-0" />
               <span className="font-medium">
-                <strong className="text-brand-navy">Biochemical Action:</strong> {material.mechanism}
+                <strong className="text-brand-navy">{isArabic ? 'الآلية البيوكيميائية للعمل:' : 'Biochemical Action:'}</strong> {material.mechanism}
               </span>
             </div>
           )}
