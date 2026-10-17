@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   Menu,
@@ -32,19 +33,16 @@ export const Navbar: React.FC = () => {
   return (
     <nav className="sticky top-0 z-50 w-full bg-white/85 backdrop-blur-md border-b border-brand-border-subtle shadow-sm transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-6">
-        {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-3 shrink-0 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-primary to-brand-navy flex items-center justify-center text-white font-heading font-black text-lg shadow-sm group-hover:scale-105 transition-transform">
-            M
-          </div>
-          <div className="flex flex-col">
-            <span className="font-heading font-extrabold text-xl tracking-tight text-brand-navy leading-none">
-              MIRAGE <span className="text-brand-primary font-bold">PHARMA</span>
-            </span>
-            <span className="text-[10px] font-mono tracking-widest text-brand-cyan uppercase mt-1">
-              HEALTHY LIFE SCIENCES
-            </span>
-          </div>
+        {/* Official Mirage Brand Logo */}
+        <Link href="/" className="flex items-center shrink-0 group py-1" aria-label="Mirage Pharma Home">
+          <Image
+            src="/brand/mirage_pharma_logo.png"
+            alt="Mirage Pharma — Healthy Life"
+            width={160}
+            height={48}
+            priority
+            className="h-10 sm:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
+          />
         </Link>
 
         {/* Desktop Nav Links */}

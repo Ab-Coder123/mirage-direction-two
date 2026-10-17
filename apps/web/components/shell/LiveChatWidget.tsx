@@ -98,11 +98,11 @@ export const LiveChatWidget: React.FC = () => {
         </div>
       )}
 
-      {/* Floating Trigger Bubble (matches the orange bubble in Hetero Cure screenshots!) */}
+      {/* Floating Trigger Bubble in Mirage Brand Colors */}
       <button
         onClick={() => setOpen(!open)}
         aria-label="Open Medical Live Chat"
-        className="w-14 h-14 rounded-full bg-gradient-to-r from-[#ea580c] to-[#f97316] text-white shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center transition-all duration-200 cursor-pointer border-2 border-white/80"
+        className="w-14 h-14 rounded-full bg-gradient-to-r from-brand-primary to-brand-cyan hover:from-brand-navy hover:to-brand-primary text-white shadow-hud-glow hover:scale-105 active:scale-95 flex items-center justify-center transition-all duration-200 cursor-pointer border-2 border-white/80"
       >
         {open ? <X className="w-6 h-6" /> : <MessageSquare className="w-6 h-6" />}
       </button>

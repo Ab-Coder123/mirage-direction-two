@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { MapPin, Phone, Mail, Search, Check } from 'lucide-react';
 
 export const Footer: React.FC = () => {
@@ -29,19 +30,15 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
           {/* Column 1: Company Info & Contact (4 cols) */}
           <div className="lg:col-span-4 space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-primary to-brand-cyan flex items-center justify-center text-white font-heading font-black text-lg shadow-sm">
-                M
-              </div>
-              <div>
-                <span className="font-heading font-extrabold text-xl tracking-tight block leading-none">
-                  MIRAGE <span className="text-brand-cyan-light font-bold">PHARMA</span>
-                </span>
-                <span className="text-[10px] font-mono tracking-widest text-slate-300 uppercase block mt-1">
-                  HEALTHY LIFE SCIENCES
-                </span>
-              </div>
-            </div>
+            <Link href="/" className="inline-block p-1 bg-white/10 rounded-xl backdrop-blur-md border border-white/20 transition-transform hover:scale-105">
+              <Image
+                src="/brand/mirage_pharma_logo.png"
+                alt="Mirage Pharma"
+                width={170}
+                height={50}
+                className="h-11 w-auto object-contain"
+              />
+            </Link>
 
             <p className="text-sm text-slate-300 leading-relaxed">
               Developing advanced, science-based nutritional formulations and clinical phytotherapy, going beyond traditional healthcare standards.
@@ -106,7 +103,7 @@ export const Footer: React.FC = () => {
               </form>
             </div>
 
-            {/* Newsletter Subscription Box (matching Hetero Cure's orange / glowing box) */}
+            {/* Newsletter Subscription Box */}
             <div className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 shadow-xl max-w-md">
               <h4 className="font-heading font-extrabold text-base uppercase tracking-wider text-center text-white mb-3">
                 Join Our Newsletter
@@ -132,7 +129,7 @@ export const Footer: React.FC = () => {
                   />
                   <button
                     type="submit"
-                    className="w-full py-3 rounded-xl bg-gradient-to-r from-[#ea580c] to-[#f97316] hover:from-[#c2410c] hover:to-[#ea580c] text-white font-heading font-bold text-sm tracking-wide shadow-md transition-all active:scale-[0.98] cursor-pointer"
+                    className="w-full py-3 rounded-xl bg-gradient-to-r from-brand-primary to-brand-primary-light hover:from-brand-navy hover:to-brand-primary text-white font-heading font-bold text-sm tracking-wide shadow-hud-glow transition-all active:scale-[0.98] cursor-pointer"
                   >
                     Subscribe Now
                   </button>
