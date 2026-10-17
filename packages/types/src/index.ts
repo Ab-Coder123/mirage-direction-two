@@ -1,7 +1,10 @@
+export * from './catalog';
+export * from './mock-data';
+
 export interface ClinicalTrial {
   id: string;
-  code: string; // e.g. "MRG-701"
-  moleculeName: string; // e.g. "Mirage-Targeted Polypeptide Alpha"
+  code: string;
+  moleculeName: string;
   therapeuticArea: 'Oncology' | 'Cardiology' | 'Neurology' | 'Immunology' | 'Rare Diseases';
   indication: string;
   phase: 'Discovery' | 'Pre-clinical' | 'Phase I' | 'Phase II' | 'Phase III' | 'FDA / EMA Review';
@@ -46,7 +49,7 @@ export interface PipelineMolecule {
   mechanism: string;
   indication: string;
   currentPhase: 'Phase I' | 'Phase II' | 'Phase III' | 'Commercial';
-  progress: number; // 25, 50, 75, 100
+  progress: number;
   regulatory: string;
   leadInvestigator: string;
   cohortSize: string;

@@ -1,95 +1,136 @@
-import { Button, Badge, Card, StatusPip } from '@mirage/ui';
+import Link from 'next/link';
+import { Sparkles, ArrowRight, ShieldCheck, Microscope, HeartHandshake, Award } from 'lucide-react';
+import { MOCK_PRODUCTS, MOCK_REVIEWS } from '@mirage/types';
+import { Button, Badge, ProductCard, ReviewCard } from '@mirage/ui';
 
-export default function WebHomePage() {
+export default function HomePage() {
+  const featuredProducts = MOCK_PRODUCTS.slice(0, 4);
+
   return (
-    <main className="min-h-screen telemetry-grid flex flex-col justify-between p-6 md:p-12">
-      {/* Top Navigation Bar / HUD Shell */}
-      <header className="hud-glass rounded-2xl px-6 py-4 flex items-center justify-between border border-white/80 shadow-hud-glass">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center text-white font-bold text-sm">
-            M
+    <main className="min-h-screen">
+      {/* Hero Banner Section */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/60 via-brand-surface to-white py-16 md:py-24 border-b border-brand-border-subtle telemetry-grid">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-xs font-semibold">
+            <Sparkles className="w-4 h-4" />
+            <span>Naturals 4be — Phytotherapeutic Formulations</span>
           </div>
-          <span className="font-heading font-bold text-lg text-brand-navy tracking-tight">
-            MIRAGE <span className="text-brand-primary font-normal text-xs uppercase tracking-widest ml-1">Direction Two</span>
-          </span>
-        </div>
-        <div className="flex items-center gap-4">
-          <StatusPip status="optimal" label="GxP Protocol Active" />
-          <Button variant="outline" size="sm" asChild>
-            <a href="http://localhost:3001" target="_blank" rel="noreferrer">
-              Admin Console →
-            </a>
-          </Button>
-        </div>
-      </header>
 
-      {/* Hero Skeleton / Structural Container */}
-      <section className="my-16 max-w-4xl mx-auto w-full text-center space-y-6">
-        <div className="flex justify-center">
-          <Badge variant="cyan" size="md">
-            Next.js 15 • Frontend Architecture
-          </Badge>
+          <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-brand-navy tracking-tight leading-tight max-w-4xl mx-auto">
+            Values-Led, Science-Backed <br />
+            <span className="text-brand-primary">Dietary & Clinical Formulations</span>
+          </h1>
+
+          <p className="text-brand-text-muted text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
+            Developing advanced, science-based formulations going beyond traditional nutritional supplements. Naturals 4be offers a range of functional health solutions using pure botanical ingredients and modern pharmaceutical delivery.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+            <Button variant="primary" size="lg" asChild>
+              <Link href="/products" className="flex items-center gap-2">
+                <span>Explore Products</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </Button>
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/documents">
+                Clinical Evidence & Dossiers
+              </Link>
+            </Button>
+          </div>
+
+          {/* Trust Metrics Pill Strip */}
+          <div className="pt-10 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            <div className="hud-glass p-4 rounded-xl text-center border border-white/80">
+              <Microscope className="w-5 h-5 text-brand-primary mx-auto mb-1" />
+              <span className="font-heading font-bold text-lg text-brand-navy block">100%</span>
+              <span className="text-xs text-brand-text-muted">Standardized Extracts</span>
+            </div>
+            <div className="hud-glass p-4 rounded-xl text-center border border-white/80">
+              <ShieldCheck className="w-5 h-5 text-brand-green mx-auto mb-1" />
+              <span className="font-heading font-bold text-lg text-brand-navy block">GxP Certified</span>
+              <span className="text-xs text-brand-text-muted">Quality Assurance</span>
+            </div>
+            <div className="hud-glass p-4 rounded-xl text-center border border-white/80">
+              <Award className="w-5 h-5 text-brand-cyan mx-auto mb-1" />
+              <span className="font-heading font-bold text-lg text-brand-navy block">Peer-Reviewed</span>
+              <span className="text-xs text-brand-text-muted">Clinical Literature</span>
+            </div>
+            <div className="hud-glass p-4 rounded-xl text-center border border-white/80">
+              <HeartHandshake className="w-5 h-5 text-amber-500 mx-auto mb-1" />
+              <span className="font-heading font-bold text-lg text-brand-navy block">99.4%</span>
+              <span className="text-xs text-brand-text-muted">Patient Satisfaction</span>
+            </div>
+          </div>
         </div>
-        <h1 className="font-heading text-4xl md:text-6xl font-extrabold text-brand-navy tracking-tight leading-tight">
-          Values-Led, Performance-Driven <br />
-          <span className="text-brand-primary">Clinical Life Sciences</span>
-        </h1>
-        <p className="text-brand-text-muted text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-          Clean decoupled frontend architecture for Web & Admin modules with unified design system tokens, HUD glassmorphism, and telemetry metrics.
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-3 pt-4">
-          <Button variant="primary" size="lg">
-            Explore Web Pipeline
-          </Button>
-          <Button variant="glass" size="lg">
-            Documentation
+      </section>
+
+      {/* Intro Editorial Statement (matching Hetero Cure Image 3) */}
+      <section className="py-12 bg-slate-50 border-b border-brand-border-subtle">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <p className="font-heading text-sm md:text-base text-slate-700 leading-relaxed font-medium">
+            <strong>Naturals 4be:</strong> Innovative Formulation and Form Developing advanced, science-based formulations, going beyond traditional nutritional supplements. Naturals 4be offers a range of nutritional supplements and functional foods that provide health benefits beyond basic nutrition. High-Quality Ingredients: Using the latest technology in extraction and micronization to ensure maximum cellular bioavailability.
+          </p>
+        </div>
+      </section>
+
+      {/* OUR PRODUCTS Section (matching Hetero Cure Image 3) */}
+      <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center space-y-3 mb-12">
+          <Badge variant="primary" size="md">
+            Product Portfolio
+          </Badge>
+          <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-brand-navy tracking-tight">
+            OUR PRODUCTS
+          </h2>
+          <p className="text-sm md:text-base text-brand-text-muted max-w-2xl mx-auto">
+            Targeted health solutions engineered with pharmaceutical precision and clean active compounds.
+          </p>
+        </div>
+
+        {/* 4-Column Responsive Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {featuredProducts.map((product) => (
+            <ProductCard key={product.id} product={product} variant="grid" />
+          ))}
+        </div>
+
+        {/* Show More Button (matching Hetero Cure Image 3) */}
+        <div className="mt-12 text-center">
+          <Button variant="secondary" size="lg" asChild className="px-8 shadow-md">
+            <Link href="/products" className="flex items-center gap-2">
+              <span>Show More Products</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </Button>
         </div>
       </section>
 
-      {/* Architecture Cards Grid */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto w-full">
-        <Card variant="interactive" className="p-6">
-          <Badge variant="primary" size="sm" className="mb-3">
-            Web Application
-          </Badge>
-          <h2 className="font-heading font-semibold text-lg text-brand-navy mb-2">
-            apps/web
-          </h2>
-          <p className="text-sm text-brand-text-muted leading-relaxed">
-            Public-facing portal with clinical trials, pipeline molecules, scientific research, and HCP discovery.
-          </p>
-        </Card>
+      {/* CUSTOMER REVIEWS Section (matching Hetero Cure Image 3) */}
+      <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-blue-50/40 border-t border-brand-border-subtle relative overflow-hidden">
+        {/* Background Capsule Atmosphere */}
+        <div className="absolute inset-0 opacity-5 pointer-events-none telemetry-grid" />
 
-        <Card variant="interactive" className="p-6">
-          <Badge variant="secondary" size="sm" className="mb-3">
-            Admin Console
-          </Badge>
-          <h2 className="font-heading font-semibold text-lg text-brand-navy mb-2">
-            apps/admin
-          </h2>
-          <p className="text-sm text-brand-text-muted leading-relaxed">
-            Secure administrative console for cold-chain telemetry monitoring, batch inventory, and audit logs.
-          </p>
-        </Card>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center space-y-3 mb-12">
+            <Badge variant="cyan" size="md">
+              Clinical Feedback
+            </Badge>
+            <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-brand-navy tracking-tight">
+              CUSTOMER REVIEWS
+            </h2>
+            <p className="text-sm md:text-base text-brand-text-muted max-w-2xl mx-auto">
+              Testimonials from consulting physicians, healthcare specialists, and verified patients across Egypt.
+            </p>
+          </div>
 
-        <Card variant="interactive" className="p-6">
-          <Badge variant="vitality" size="sm" className="mb-3">
-            Shared Design System
-          </Badge>
-          <h2 className="font-heading font-semibold text-lg text-brand-navy mb-2">
-            packages/ui & config
-          </h2>
-          <p className="text-sm text-brand-text-muted leading-relaxed">
-            Cross-app design tokens, typography scales, glassmorphism utilities, and reusable component primitives.
-          </p>
-        </Card>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {MOCK_REVIEWS.slice(0, 3).map((review) => (
+              <ReviewCard key={review.id} review={review} />
+            ))}
+          </div>
+        </div>
       </section>
-
-      {/* Footer Strip */}
-      <footer className="mt-16 text-center text-xs text-brand-text-muted font-mono">
-        MIRAGE DIRECTION TWO • FRONTEND SKELETON
-      </footer>
     </main>
   );
 }
