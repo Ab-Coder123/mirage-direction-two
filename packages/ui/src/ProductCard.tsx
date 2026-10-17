@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { Pill, Droplets, Sparkles, ArrowRight, ArrowLeft, Star } from 'lucide-react';
+import { Pill, Droplets, Sparkles, ArrowRight, ArrowLeft, Star, ShieldCheck } from 'lucide-react';
 import { Product } from '@mirage/types';
 import { cn } from '@mirage/utils';
-import { Badge } from './Badge';
-import { Button } from './Button';
 
 export interface ProductCardProps {
   product: Product;
@@ -24,22 +22,50 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const defaultHref = isArabic ? `/ar/products/${product.slug}` : `/products/${product.slug}`;
   const targetHref = readMoreHref ?? defaultHref;
 
+  // Localized category name
+  const categoryName = React.useMemo(() => {
+    if (!isArabic) return product.category;
+    switch (product.category) {
+      case 'Men Health':
+        return 'صحة الرجل';
+      case 'Women Health':
+        return 'صحة المرأة';
+      case 'Vitamins & Minerals':
+        return 'فيتامينات ومعادن';
+      case 'Maternal Care':
+        return 'رعاية الأمومة';
+      case 'Pediatrics & Immunity':
+        return 'الأطفال والمناعة';
+      default:
+        return product.category;
+    }
+  }, [isArabic, product.category]);
+
+  // Clean regulatory status
+  const regulatoryText = isArabic ? 'مكمل غذائي معتمد' : 'Dietary Supplement';
+
+  // ---------------------------------------------------------------------------
+  // Variant: ROW (Catalog List View)
+  // ---------------------------------------------------------------------------
   if (variant === 'row') {
     return (
       <div
         className={cn(
-          'group relative flex flex-col md:flex-row items-stretch overflow-hidden rounded-2xl bg-white border border-brand-border-subtle shadow-sm transition-all duration-300 hover:shadow-hud-glow hover:border-brand-primary/40',
+          'group relative flex flex-col md:flex-row items-stretch overflow-hidden rounded-2xl bg-white border border-slate-200/80 shadow-2xs transition-all duration-300 hover:shadow-xl hover:shadow-brand-navy/5 hover:border-brand-primary/40',
           className
         )}
       >
-        {/* Left Product Image & Brand Anchor */}
-        <div className="relative flex items-center justify-center p-4 md:w-64 bg-gradient-to-br from-slate-50 to-blue-50/40 border-b md:border-b-0 md:border-r border-brand-border-subtle shrink-0">
-          <div className="relative w-40 h-40 flex items-center justify-center rounded-2xl bg-white p-2.5 shadow-sm border border-slate-100 overflow-hidden group-hover:shadow-md transition-shadow">
+        {/* Left Product Pedestal Showcase */}
+        <div className="relative flex items-center justify-center p-6 md:w-64 bg-gradient-to-b from-slate-50/90 via-blue-50/20 to-slate-50/90 border-b md:border-b-0 md:border-r border-slate-100 shrink-0 overflow-hidden">
+          {/* Ambient Radial Spotlight */}
+          <div className="absolute w-36 h-36 rounded-full bg-brand-primary/5 blur-2xl pointer-events-none group-hover:bg-brand-primary/10 transition-all duration-500" />
+
+          <div className="relative w-44 h-44 flex items-center justify-center rounded-2xl bg-white p-3 shadow-sm border border-slate-100/80 overflow-hidden group-hover:shadow-md transition-all duration-300">
             {product.heroImage ? (
               <img
                 src={product.heroImage}
                 alt={product.name}
-                className="max-h-full max-w-full object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300"
+                className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(2,15,36,0.1)] group-hover:scale-108 transition-transform duration-500 ease-out"
                 loading="lazy"
               />
             ) : (
@@ -57,30 +83,37 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             )}
           </div>
 
-          <div className="absolute top-3 left-3">
-            <Badge variant="outline" size="sm" className="bg-white/90 text-[10px]">
-              {product.category}
-            </Badge>
+          {/* Floating Category Tag */}
+          <div className="absolute top-3.5 left-3.5">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-heading font-bold bg-white/95 text-brand-primary border border-brand-primary/20 shadow-2xs backdrop-blur-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0" />
+              <span>{categoryName}</span>
+            </span>
           </div>
         </div>
 
         {/* Center Content Body */}
         <div className="flex-1 p-6 flex flex-col justify-between">
           <div>
+            {/* Top Bar: Formulation Kicker & Clean Status Pill */}
             <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
               <div>
-                <h3 className="font-heading text-2xl font-bold text-brand-navy group-hover:text-brand-primary transition-colors">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-brand-cyan block mb-1">
+                  {product.brandLine} Formulation
+                </span>
+                <h3 className="font-heading text-2xl font-extrabold text-brand-navy group-hover:text-brand-primary transition-colors tracking-tight">
                   {product.name}
                 </h3>
-                <p className="text-sm font-semibold text-brand-primary tracking-wide">
+                <p className="text-xs font-semibold text-slate-500 mt-0.5">
                   {product.subtitle}
                 </p>
               </div>
 
-              {/* Arabic Dietary Supplement Label */}
+              {/* Clean Regulatory Status Tag */}
               <div className="text-right">
-                <span className="inline-block text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded-md border border-slate-200">
-                  {product.arabicSubtitle}
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100/90 px-3 py-1.5 rounded-lg border border-slate-200/80">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>{regulatoryText}</span>
                 </span>
               </div>
             </div>
@@ -94,28 +127,29 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <div className="flex flex-wrap items-center justify-between gap-4 mt-6 pt-4 border-t border-slate-100">
             {/* Pack Size Pills */}
             <div className="flex items-center gap-2">
-              <span className="text-xs text-brand-text-muted font-medium">
-                {isArabic ? 'العبوات المتاحة:' : 'Pack Sizes:'}
+              <span className="text-xs text-brand-text-muted font-medium flex items-center gap-1">
+                <Pill className="w-3.5 h-3.5 text-brand-primary shrink-0" />
+                <span>{isArabic ? 'العبوات المتاحة:' : 'Pack Sizes:'}</span>
               </span>
               <div className="flex items-center gap-1.5">
                 {product.packSizes.map((pack, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-mono font-semibold bg-brand-surface text-brand-navy border border-brand-border-subtle"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-slate-50 text-brand-navy border border-slate-200/80 group-hover:border-brand-primary/30 transition-colors shadow-2xs whitespace-nowrap"
                   >
                     {pack.unit === 'ml' ? (
                       <Droplets className="w-3 h-3 text-brand-cyan" />
                     ) : (
                       <Pill className="w-3 h-3 text-brand-primary" />
                     )}
-                    {pack.quantity}
+                    <span>{String(pack.quantity).replace(/\s*ml/i, '')} {pack.unit === 'ml' ? 'ml' : isArabic ? 'كبسولة' : 'caps'}</span>
                   </span>
                 ))}
               </div>
             </div>
 
             {/* Rating */}
-            <div className="flex items-center gap-1.5 text-xs text-slate-600">
+            <div className="flex items-center gap-1.5 text-xs text-slate-600 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-100">
               <div className="flex items-center text-amber-500">
                 <Star className="w-3.5 h-3.5 fill-current" />
               </div>
@@ -128,104 +162,129 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
 
         {/* Right CTA Tab Strip */}
-        <div className="md:w-32 bg-slate-50/80 border-t md:border-t-0 md:border-l border-brand-border-subtle p-4 flex md:flex-col items-center justify-center shrink-0">
-          <Button variant="primary" size="sm" asChild className="w-full shadow-none group/btn">
-            <a href={targetHref} className="flex items-center justify-center gap-1.5 text-xs font-bold">
-              <span>{isArabic ? 'تفاصيل المستحضر' : 'Read More'}</span>
-              {isArabic ? (
-                <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover/btn:-translate-x-1" />
-              ) : (
-                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-1" />
-              )}
-            </a>
-          </Button>
+        <div className="md:w-36 bg-slate-50/70 border-t md:border-t-0 md:border-l border-slate-100 p-4 flex md:flex-col items-center justify-center shrink-0">
+          <a
+            href={targetHref}
+            className="w-full py-2.5 px-3 rounded-xl text-xs font-bold font-heading flex items-center justify-center gap-2 bg-white text-brand-navy border border-slate-200/90 shadow-2xs transition-all duration-200 group-hover:bg-brand-primary group-hover:text-white group-hover:border-brand-primary group-hover:shadow-md cursor-pointer"
+          >
+            <span>{isArabic ? 'عرض التفاصيل' : 'View Product'}</span>
+            {isArabic ? (
+              <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
+            ) : (
+              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+            )}
+          </a>
         </div>
       </div>
     );
   }
 
-  // Grid Card Layout (for Homepage / Bento Showcase)
+  // ---------------------------------------------------------------------------
+  // Variant: GRID (Bento / Product Showcase Cards)
+  // ---------------------------------------------------------------------------
   return (
     <div
       className={cn(
-        'group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white border border-brand-border-subtle p-6 transition-all duration-300 hover:shadow-hud-glow hover:border-brand-primary/40 hover:-translate-y-1',
+        'group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white border border-slate-200/80 p-5 transition-all duration-300 hover:shadow-xl hover:shadow-brand-navy/5 hover:border-brand-primary/40 hover:-translate-y-1.5',
         className
       )}
     >
       <div>
-        {/* Category & Badge */}
-        <div className="flex items-center justify-between mb-4">
-          <Badge variant="primary" size="sm">
-            {product.category}
-          </Badge>
-          <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
-            {product.arabicSubtitle}
+        {/* Top Header Row: Category Badge + Star Rating (never clips/wraps) */}
+        <div className="flex items-center justify-between gap-1.5 mb-3.5">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10.5px] font-heading font-bold bg-blue-50/80 text-brand-primary border border-brand-primary/20 tracking-wide shrink">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0" />
+            <span className="whitespace-nowrap">{categoryName}</span>
           </span>
+
+          <div className="flex items-center gap-1 text-[11px] font-bold text-slate-700 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200/70 shrink-0 shadow-2xs">
+            <Star className="w-3 h-3 fill-amber-400 text-amber-400 shrink-0" />
+            <span>{product.rating.toFixed(1)}</span>
+          </div>
         </div>
 
-        {/* Visual Product Box */}
-        <div className="h-48 w-full rounded-2xl bg-gradient-to-b from-slate-50 to-blue-50/40 flex flex-col items-center justify-center p-3 border border-slate-100 mb-5 relative overflow-hidden">
+        {/* Visual Product Pedestal Showcase */}
+        <div className="relative w-full h-48 rounded-2xl bg-gradient-to-b from-slate-50/90 via-blue-50/20 to-slate-50/90 border border-slate-100/90 p-3 flex flex-col items-center justify-center mb-4 overflow-hidden transition-all duration-500 group-hover:border-brand-primary/25 group-hover:bg-gradient-to-b group-hover:from-blue-50/30 group-hover:to-slate-50">
+          {/* Subtle Ambient Radial Glow */}
+          <div className="absolute w-32 h-32 rounded-full bg-brand-primary/5 blur-2xl pointer-events-none group-hover:bg-brand-primary/10 transition-all duration-500" />
+
           {product.heroImage ? (
             <img
               src={product.heroImage}
               alt={product.name}
-              className="max-h-40 max-w-full object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300"
+              className="max-h-40 max-w-full object-contain drop-shadow-[0_8px_16px_rgba(2,15,36,0.12)] group-hover:scale-108 group-hover:-translate-y-1 transition-all duration-500 ease-out"
               loading="lazy"
             />
           ) : (
-            <>
-              <div className="w-16 h-16 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center text-brand-primary mb-2 group-hover:scale-105 transition-transform duration-300">
-                <Sparkles className="w-8 h-8" />
+            <div className="text-center">
+              <div className="w-14 h-14 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center text-brand-primary mb-2 mx-auto group-hover:scale-105 transition-transform duration-300">
+                <Sparkles className="w-7 h-7" />
               </div>
-              <span className="text-xs font-mono font-bold text-slate-400 uppercase tracking-widest">
+              <span className="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-widest">
                 {product.brandLine}
               </span>
-            </>
+            </div>
           )}
         </div>
 
-        {/* Title & Subtitle */}
-        <h3 className="font-heading text-xl font-bold text-brand-navy group-hover:text-brand-primary transition-colors">
+        {/* Clinical Kicker: Brand Line & Regulatory Status */}
+        <div className="flex items-center justify-between gap-1 mb-1">
+          <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-brand-cyan">
+            {product.brandLine}
+          </span>
+          <span className="text-[10px] font-mono font-medium text-slate-400">
+            {regulatoryText}
+          </span>
+        </div>
+
+        {/* Product Title & Subtitle */}
+        <h3 className="font-heading text-lg font-extrabold text-brand-navy group-hover:text-brand-primary transition-colors tracking-tight line-clamp-1">
           {product.name}
         </h3>
-        <p className="text-xs font-semibold text-brand-primary tracking-wide mb-2">
+        <p className="text-xs font-semibold text-slate-500 mt-0.5 mb-2 line-clamp-1">
           {product.subtitle}
         </p>
-        <p className="text-xs text-brand-text-muted leading-relaxed line-clamp-3 mb-4">
+        <p className="text-xs text-slate-600 leading-relaxed line-clamp-2 mb-4 font-normal min-h-[2.25rem]">
           {product.description}
         </p>
       </div>
 
-      {/* Footer Area */}
-      <div className="pt-4 border-t border-slate-100 space-y-4">
+      {/* Footer Area: Pack Sizes & Single-Line CTA Button */}
+      <div className="pt-3.5 border-t border-slate-100 space-y-3">
         {/* Pack Sizes */}
-        <div className="flex items-center justify-between text-xs">
-          <span className="text-brand-text-muted">
-            {isArabic ? 'العبوات:' : 'Available:'}
+        <div className="flex items-center justify-between text-xs py-0.5">
+          <span className="text-[11px] font-medium text-slate-500 flex items-center gap-1 shrink-0">
+            <Pill className="w-3.5 h-3.5 text-brand-primary shrink-0" />
+            <span>{isArabic ? 'العبوات:' : 'Available:'}</span>
           </span>
           <div className="flex items-center gap-1">
             {product.packSizes.map((pack, idx) => (
               <span
                 key={idx}
-                className="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-slate-100 text-slate-700"
+                className="px-2 py-0.5 rounded-md text-[11px] font-mono font-bold bg-slate-50 text-brand-navy border border-slate-200/80 group-hover:border-brand-primary/30 transition-colors shadow-2xs whitespace-nowrap"
               >
-                {pack.quantity}
+                {String(pack.quantity).replace(/\s*ml/i, '')}{pack.unit === 'ml' ? (isArabic ? ' مل' : ' ml') : ''}
               </span>
             ))}
           </div>
         </div>
 
-        {/* Action Button */}
-        <Button variant="outline" size="sm" asChild className="w-full justify-between hover:bg-brand-primary hover:text-white transition-all">
-          <a href={targetHref}>
-            <span>{isArabic ? 'تفاصيل المستحضر' : 'Read More'}</span>
+        {/* Single-line Action CTA Button */}
+        <a
+          href={targetHref}
+          className="w-full py-2.5 px-3.5 rounded-xl text-xs font-bold font-heading flex items-center justify-between bg-slate-50 text-brand-navy border border-slate-200/90 shadow-2xs transition-all duration-200 group-hover:bg-brand-primary group-hover:text-white group-hover:border-brand-primary group-hover:shadow-md cursor-pointer"
+        >
+          <span className="tracking-wide">
+            {isArabic ? 'عرض التفاصيل' : 'View Product'}
+          </span>
+          <div className="w-5 h-5 rounded-md bg-white/90 group-hover:bg-white/20 flex items-center justify-center transition-colors shrink-0">
             {isArabic ? (
-              <ArrowLeft className="w-3.5 h-3.5" />
+              <ArrowLeft className="w-3 h-3 text-brand-primary group-hover:text-white transition-transform group-hover:-translate-x-0.5" />
             ) : (
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-3 h-3 text-brand-primary group-hover:text-white transition-transform group-hover:translate-x-0.5" />
             )}
-          </a>
-        </Button>
+          </div>
+        </a>
       </div>
     </div>
   );

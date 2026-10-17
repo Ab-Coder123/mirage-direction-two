@@ -8,7 +8,7 @@ export const MOCK_PRODUCTS_AR: Product[] = [
     brandLine: 'Naturals 4be',
     category: 'Men Health',
     subtitle: 'ارتقِ بأدائك وحيويتك للقمة',
-    arabicSubtitle: 'مكمل غذائي / Dietary Supplement',
+    arabicSubtitle: 'مكمل غذائي معتمد',
     tagline: 'حكمة الأعشاب القديمة مع الدقة الإكلينيكية الحديثة للأداء الأمثل.',
     description:
       'يجمع مان إيدج (Man Edge) بين خلاصة الأعشاب النادرة وأحدث العلوم الإكلينيكية لدعم حيوية ونشاط الرجال، وتعزيز القدرة على التحمل والتوازن الهرموني اليومي.',
@@ -88,7 +88,7 @@ export const MOCK_PRODUCTS_AR: Product[] = [
     brandLine: 'Naturals 4be',
     category: 'Women Health',
     subtitle: 'استعادة التوازن الهرموني واسترجاع الثقة',
-    arabicSubtitle: 'مكمل غذائي / Dietary Supplement',
+    arabicSubtitle: 'مكمل غذائي معتمد',
     tagline: 'التركيبة الفسيولوجية 40:1 من المايو والدي-كايرو إينوزيتول مع الفولات النشط وCoQ10.',
     description:
       'إينوزيتول 40:1 مزيج متقدم مدروس لدعم التوازن الهرموني الأنثوي، وتحسين حساسية الخلايا للأنسولين، وتعزيز التبويض والخصوبة وفق النسبة الفسيولوجية المثبتة طبياً 40:1.',
@@ -154,7 +154,7 @@ export const MOCK_PRODUCTS_AR: Product[] = [
     brandLine: 'Naturals 4be',
     category: 'Vitamins & Minerals',
     subtitle: 'امتصاص فائق وأقصى تأثير حيوي',
-    arabicSubtitle: 'مكمل غذائي / Dietary Supplement',
+    arabicSubtitle: 'مكمل غذائي معتمد',
     tagline: 'فيتامينات B الحيوية المتطابقة بيولوجياً لدعم الجهاز العصبي وخلايا الدم.',
     description:
       'مكمل الفولات وفيتامين B12 المتطور بصورته الميثيلية النشطة مباشرة لخلايا الجسم، لدعم طاقة الخلايا، وتكوين كرات الدم الحمراء، وضبط مستويات الهوموسيستين وحماية الأعصاب.',
@@ -201,7 +201,7 @@ export const MOCK_PRODUCTS_AR: Product[] = [
     brandLine: 'Naturals 4be',
     category: 'Maternal Care',
     subtitle: 'نقاء طبيعي لإدرار حليب الأم والرضاعة',
-    arabicSubtitle: 'مكمل غذائي / Dietary Supplement',
+    arabicSubtitle: 'مكمل غذائي معتمد',
     tagline: 'مستخلصات نباتية معيارية مدروسة سريرياً لتعزيز إدرار الحليب الطبيعي للأمهات.',
     description:
       'جالاكتو بيور حل طبيعي وآمن صُمم لدعم الأمهات خلال فترة الرضاعة، من خلال تحفيز إفراز هرمون البرولاكتين بشكل متوازن، مع تعزيز الهدوء العاطفي والراحة للأم والرضيع.',
@@ -248,7 +248,7 @@ export const MOCK_PRODUCTS_AR: Product[] = [
     brandLine: 'Naturals 4be',
     category: 'Pediatrics & Immunity',
     subtitle: 'نمو صحي ومناعة فولاذية لصغارنا',
-    arabicSubtitle: 'مكمل غذائي / Dietary Supplement',
+    arabicSubtitle: 'مكمل غذائي معتمد',
     tagline: 'شراب غني بعكبر النحل المنقى، 13 فيتاميناً أساسياً و4 معادن مخلبية.',
     description:
       'فيتا كيدز شراب متكامل بنكهة محببة للأطفال، معزز بعكبر النحل (البروبوليس) و13 فيتاميناً و4 معادن حيوية تدعم المناعة والنمو الذهني والبدني في السنوات التكوينية للطفل.',

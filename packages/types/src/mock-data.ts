@@ -8,7 +8,7 @@ export const MOCK_PRODUCTS: Product[] = [
     brandLine: 'Naturals 4be',
     category: 'Men Health',
     subtitle: 'Elevate Your Edge',
-    arabicSubtitle: 'مكمل غذائي / Dietary Supplement',
+    arabicSubtitle: 'Dietary Supplement',
     tagline: 'Ancient botanical wisdom combined with clinical precision for peak performance.',
     description:
       'Man Edge uniquely combines a powerful blend of ancient herbs and modern clinical science to help men achieve their best every day, promoting vitality, stamina, and endocrine balance.',
@@ -157,7 +157,7 @@ export const MOCK_PRODUCTS: Product[] = [
     brandLine: 'Naturals 4be',
     category: 'Women Health',
     subtitle: 'Restoring Balance, Regaining Confidence',
-    arabicSubtitle: 'مكمل غذائي / Dietary Supplement',
+    arabicSubtitle: 'Dietary Supplement',
     tagline: 'Natural 40:1 Myo to D-Chiro Inositol formula with Methyl Folate, Vitamin D3 & CoQ10.',
     description:
       'Inositol is an advanced blend of nutrients engineered for complete endocrine harmony, cellular insulin sensitivity, and ovarian reproductive wellness, precisely calibrated to the human physiological 40:1 ratio.',
@@ -231,7 +231,7 @@ export const MOCK_PRODUCTS: Product[] = [
     brandLine: 'Naturals 4be',
     category: 'Vitamins & Minerals',
     subtitle: 'Faster Absorption, Maximum Effect',
-    arabicSubtitle: 'مكمل غذائي / Dietary Supplement',
+    arabicSubtitle: 'Dietary Supplement',
     tagline: 'Bio-identical bioactive B-complex designed for optimal neurological and hematological vitality.',
     description:
       'Folate & Vitamin B12 supplement is formulated with methylated cofactors to support cellular energy production, red blood cell synthesis, homocysteine regulation, and deep nervous system health.',
@@ -278,7 +278,7 @@ export const MOCK_PRODUCTS: Product[] = [
     brandLine: 'Naturals 4be',
     category: 'Maternal Care',
     subtitle: 'Stay Pure, Produce More',
-    arabicSubtitle: 'مكمل غذائي / Dietary Supplement',
+    arabicSubtitle: 'Dietary Supplement',
     tagline: 'Gentle, scientifically validated galactagogue botanicals for postpartum lactation nourishment.',
     description:
       'Galacto Pure is a natural, clinically safe solution formulated to support mothers facing breastfeeding challenges, promoting optimal prolactin response and maternal emotional calm.',
@@ -325,7 +325,7 @@ export const MOCK_PRODUCTS: Product[] = [
     brandLine: 'Naturals 4be',
     category: 'Pediatrics & Immunity',
     subtitle: 'Nourishing Growth, Boosting Immunity',
-    arabicSubtitle: 'مكمل غذائي / Dietary Supplement',
+    arabicSubtitle: 'Dietary Supplement',
     tagline: 'Syrup enriched with bio-standardized propolis, 13 essential vitamins, and 4 chelated minerals.',
     description:
       'VitaKids is enriched with purified propolis, 13 essential vitamins, and 4 trace minerals in a delicious natural syrup that helps children in their critical cognitive and immunological development years.',
