@@ -68,19 +68,34 @@ export default async function ProductDetailPage({ params }: Props) {
         <div className="rounded-3xl bg-white border border-brand-border-subtle p-6 sm:p-10 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           {/* Left Column: Visual Showcase */}
           <div className="lg:col-span-5 flex flex-col items-center">
-            <div className="w-full h-80 sm:h-96 rounded-2xl bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100 border border-slate-200/60 flex flex-col items-center justify-center p-8 relative overflow-hidden shadow-inner">
-              <div className="w-28 h-28 rounded-3xl bg-white shadow-xl border border-white flex items-center justify-center text-brand-primary mb-4">
-                <Sparkles className="w-14 h-14" />
-              </div>
-              <h2 className="font-heading font-black text-2xl text-brand-navy">
-                {product.name}
-              </h2>
-              <span className="text-xs font-mono uppercase tracking-widest text-slate-400 mt-1">
-                {product.brandLine}
-              </span>
-              <div className="mt-4 px-3 py-1 rounded-full text-xs font-semibold bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
-                {product.category}
-              </div>
+            <div className="w-full h-80 sm:h-96 rounded-2xl bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100 border border-slate-200/60 flex flex-col items-center justify-center p-6 relative overflow-hidden shadow-inner">
+              {product.heroImage ? (
+                <div className="relative w-full h-full flex flex-col items-center justify-center">
+                  <img
+                    src={product.heroImage}
+                    alt={product.name}
+                    className="max-h-64 sm:max-h-72 max-w-full object-contain drop-shadow-xl"
+                  />
+                  <div className="mt-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
+                    {product.category}
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="w-28 h-28 rounded-3xl bg-white shadow-xl border border-white flex items-center justify-center text-brand-primary mb-4">
+                    <Sparkles className="w-14 h-14" />
+                  </div>
+                  <h2 className="font-heading font-black text-2xl text-brand-navy">
+                    {product.name}
+                  </h2>
+                  <span className="text-xs font-mono uppercase tracking-widest text-slate-400 mt-1">
+                    {product.brandLine}
+                  </span>
+                  <div className="mt-4 px-3 py-1 rounded-full text-xs font-semibold bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
+                    {product.category}
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Quality Seals */}

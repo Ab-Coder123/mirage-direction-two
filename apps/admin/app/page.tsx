@@ -148,12 +148,21 @@ export default function AdminDashboardPage() {
                 {MOCK_PRODUCTS.map((prod) => (
                   <tr key={prod.id} className="hover:bg-slate-50/70 transition-colors">
                     <td className="p-3">
-                      <span className="font-heading font-bold text-brand-navy block">
-                        {prod.name}
-                      </span>
-                      <span className="text-[11px] text-brand-primary">
-                        {prod.subtitle}
-                      </span>
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center shrink-0 p-0.5">
+                          {prod.heroImage ? (
+                            <img src={prod.heroImage} alt={prod.name} className="w-full h-full object-contain" />
+                          ) : null}
+                        </div>
+                        <div>
+                          <span className="font-heading font-bold text-brand-navy block">
+                            {prod.name}
+                          </span>
+                          <span className="text-[11px] text-brand-primary">
+                            {prod.subtitle}
+                          </span>
+                        </div>
+                      </div>
                     </td>
                     <td className="p-3 text-slate-600 font-medium">{prod.category}</td>
                     <td className="p-3 font-mono text-slate-500">{prod.arabicSubtitle}</td>

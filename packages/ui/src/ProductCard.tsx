@@ -30,19 +30,28 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         )}
       >
         {/* Left Product Image & Brand Anchor */}
-        <div className="relative flex items-center justify-center p-6 md:w-64 bg-gradient-to-br from-slate-50 to-blue-50/40 border-b md:border-b-0 md:border-r border-brand-border-subtle shrink-0">
-          <div className="relative w-36 h-36 flex items-center justify-center rounded-xl bg-white/80 p-2 shadow-inner border border-white">
-            <div className="text-center">
-              <div className="mx-auto w-12 h-12 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-2">
-                <Sparkles className="w-6 h-6" />
+        <div className="relative flex items-center justify-center p-4 md:w-64 bg-gradient-to-br from-slate-50 to-blue-50/40 border-b md:border-b-0 md:border-r border-brand-border-subtle shrink-0">
+          <div className="relative w-40 h-40 flex items-center justify-center rounded-2xl bg-white p-2.5 shadow-sm border border-slate-100 overflow-hidden group-hover:shadow-md transition-shadow">
+            {product.heroImage ? (
+              <img
+                src={product.heroImage}
+                alt={product.name}
+                className="max-h-full max-w-full object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            ) : (
+              <div className="text-center">
+                <div className="mx-auto w-12 h-12 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-2">
+                  <Sparkles className="w-6 h-6" />
+                </div>
+                <span className="font-heading font-extrabold text-sm text-brand-navy block tracking-tight">
+                  {product.name}
+                </span>
+                <span className="text-[10px] text-brand-text-muted font-mono uppercase tracking-wider block">
+                  {product.brandLine}
+                </span>
               </div>
-              <span className="font-heading font-extrabold text-sm text-brand-navy block tracking-tight">
-                {product.name}
-              </span>
-              <span className="text-[10px] text-brand-text-muted font-mono uppercase tracking-wider block">
-                {product.brandLine}
-              </span>
-            </div>
+            )}
           </div>
 
           <div className="absolute top-3 left-3">
@@ -143,14 +152,25 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </span>
         </div>
 
-        {/* Visual Box Placeholder */}
-        <div className="h-44 w-full rounded-xl bg-gradient-to-b from-slate-50 to-blue-50/50 flex flex-col items-center justify-center p-4 border border-slate-100 mb-5 relative overflow-hidden">
-          <div className="w-16 h-16 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center text-brand-primary mb-2 group-hover:scale-105 transition-transform duration-300">
-            <Sparkles className="w-8 h-8" />
-          </div>
-          <span className="text-xs font-mono font-bold text-slate-400 uppercase tracking-widest">
-            {product.brandLine}
-          </span>
+        {/* Visual Product Box */}
+        <div className="h-48 w-full rounded-2xl bg-gradient-to-b from-slate-50 to-blue-50/40 flex flex-col items-center justify-center p-3 border border-slate-100 mb-5 relative overflow-hidden">
+          {product.heroImage ? (
+            <img
+              src={product.heroImage}
+              alt={product.name}
+              className="max-h-40 max-w-full object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+            />
+          ) : (
+            <>
+              <div className="w-16 h-16 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center text-brand-primary mb-2 group-hover:scale-105 transition-transform duration-300">
+                <Sparkles className="w-8 h-8" />
+              </div>
+              <span className="text-xs font-mono font-bold text-slate-400 uppercase tracking-widest">
+                {product.brandLine}
+              </span>
+            </>
+          )}
         </div>
 
         {/* Title & Subtitle */}

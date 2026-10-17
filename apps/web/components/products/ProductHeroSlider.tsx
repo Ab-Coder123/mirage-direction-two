@@ -84,22 +84,42 @@ export const ProductHeroSlider: React.FC<ProductHeroSliderProps> = ({ products }
 
         {/* Right 3D Visual Box / Bottle Presentation */}
         <div className="lg:col-span-5 flex justify-center">
-          <div className="relative w-64 h-64 sm:w-80 sm:h-80 rounded-3xl bg-white/10 backdrop-blur-md p-6 border border-white/30 shadow-2xl flex flex-col items-center justify-center text-center group">
-            {/* Visual Medicine Bottle Glow */}
-            <div className="w-28 h-28 rounded-2xl bg-gradient-to-tr from-brand-primary/40 to-brand-cyan/40 flex items-center justify-center text-white mb-4 border border-white/40 shadow-inner group-hover:scale-110 transition-transform duration-500">
-              <Sparkles className="w-14 h-14 text-white" />
-            </div>
+          <div className="relative w-64 h-72 sm:w-80 sm:h-80 rounded-3xl bg-white/10 backdrop-blur-md p-6 border border-white/30 shadow-2xl flex flex-col items-center justify-center text-center group overflow-hidden">
+            {current.heroImage ? (
+              <div className="relative w-full h-full flex flex-col items-center justify-center">
+                <img
+                  src={current.heroImage}
+                  alt={current.name}
+                  className="max-h-52 sm:max-h-60 max-w-full object-contain drop-shadow-2xl group-hover:scale-105 transition-transform duration-500 rounded-xl"
+                />
+                <div className="mt-3 flex items-center justify-center gap-2">
+                  <span className="font-heading font-black text-lg tracking-tight text-white block">
+                    {current.name}
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/20 text-brand-cyan-light border border-white/30">
+                    {current.category}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* Visual Medicine Bottle Glow */}
+                <div className="w-28 h-28 rounded-2xl bg-gradient-to-tr from-brand-primary/40 to-brand-cyan/40 flex items-center justify-center text-white mb-4 border border-white/40 shadow-inner group-hover:scale-110 transition-transform duration-500">
+                  <Sparkles className="w-14 h-14 text-white" />
+                </div>
 
-            <span className="font-heading font-black text-2xl tracking-tight text-white block">
-              {current.name}
-            </span>
-            <span className="text-xs font-mono text-brand-cyan-light tracking-widest uppercase block mt-1">
-              {current.arabicSubtitle}
-            </span>
+                <span className="font-heading font-black text-2xl tracking-tight text-white block">
+                  {current.name}
+                </span>
+                <span className="text-xs font-mono text-brand-cyan-light tracking-widest uppercase block mt-1">
+                  {current.arabicSubtitle}
+                </span>
 
-            <span className="mt-4 px-3 py-1 rounded-full text-[11px] font-bold bg-white/20 text-white border border-white/30">
-              Pure Active Formulations
-            </span>
+                <span className="mt-4 px-3 py-1 rounded-full text-[11px] font-bold bg-white/20 text-white border border-white/30">
+                  Pure Active Formulations
+                </span>
+              </>
+            )}
           </div>
         </div>
       </div>

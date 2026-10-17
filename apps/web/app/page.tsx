@@ -4,7 +4,7 @@ import { MOCK_PRODUCTS, MOCK_REVIEWS } from '@mirage/types';
 import { Button, Badge, ProductCard, ReviewCard } from '@mirage/ui';
 
 export default function HomePage() {
-  const featuredProducts = MOCK_PRODUCTS.slice(0, 4);
+  const featuredProducts = MOCK_PRODUCTS;
 
   return (
     <main className="min-h-screen">
@@ -80,8 +80,8 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* 4-Column Responsive Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Responsive Grid showcasing all 5 formulations */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6">
           {featuredProducts.map((product) => (
             <ProductCard key={product.id} product={product} variant="grid" />
           ))}

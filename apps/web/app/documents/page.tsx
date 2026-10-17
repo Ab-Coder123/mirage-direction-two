@@ -84,8 +84,16 @@ export default function DocumentsPage() {
         {/* Selected Product Banner Card (matching Image 4 Header) */}
         <div className="rounded-3xl bg-white border border-brand-border-subtle p-6 sm:p-8 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-5">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-brand-primary/10 to-blue-100 flex items-center justify-center text-brand-primary shrink-0 shadow-inner">
-              <Sparkles className="w-8 h-8 sm:w-10 sm:h-10" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-brand-primary/10 to-blue-100 flex items-center justify-center text-brand-primary shrink-0 shadow-inner overflow-hidden p-1.5">
+              {activeProduct.heroImage ? (
+                <img
+                  src={activeProduct.heroImage}
+                  alt={activeProduct.name}
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <Sparkles className="w-8 h-8 sm:w-10 sm:h-10" />
+              )}
             </div>
             <div>
               <div className="flex items-center gap-2">
