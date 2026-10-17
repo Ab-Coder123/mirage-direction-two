@@ -11,7 +11,6 @@ import {
   ShoppingBag,
 } from 'lucide-react';
 import { cn } from '@mirage/utils';
-import { Button } from '@mirage/ui';
 
 interface NavItem {
   label: string;
@@ -91,14 +90,6 @@ export const Navbar: React.FC = () => {
             </span>
           </Link>
 
-          {/* Admin Console Shortcut */}
-          <div className="hidden sm:block">
-            <Button variant="outline" size="sm" asChild className="text-xs">
-              <a href="http://localhost:3001" target="_blank" rel="noreferrer">
-                Admin Console
-              </a>
-            </Button>
-          </div>
 
           {/* Mobile Menu Hamburger */}
           <button
