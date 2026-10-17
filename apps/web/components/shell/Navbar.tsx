@@ -8,7 +8,6 @@ import {
   X,
   User,
   ShoppingBag,
-  ChevronDown,
 } from 'lucide-react';
 import { cn } from '@mirage/utils';
 import { Button } from '@mirage/ui';
@@ -16,7 +15,6 @@ import { Button } from '@mirage/ui';
 interface NavItem {
   label: string;
   href: string;
-  children?: { label: string; href: string; description?: string }[];
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -25,21 +23,11 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Documents', href: '/documents' },
   { label: 'Our Story', href: '/our-story' },
   { label: 'Contact', href: '/contact' },
-  {
-    label: 'More',
-    href: '#',
-    children: [
-      { label: 'Quality & Compliance', href: '/quality', description: 'GxP validation and clinical standards' },
-      { label: 'Frequently Asked Questions', href: '/faq', description: 'Dosage, storage, and healthcare FAQs' },
-      { label: 'Privacy Policy', href: '/privacy-policy', description: 'Patient and customer data protection' },
-    ],
-  },
 ];
 
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [moreDropdownOpen, setMoreDropdownOpen] = React.useState(false);
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-white/85 backdrop-blur-md border-b border-brand-border-subtle shadow-sm transition-all">
@@ -63,51 +51,6 @@ export const Navbar: React.FC = () => {
         <div className="hidden lg:flex items-center gap-1 font-heading text-sm font-semibold text-brand-navy">
           {NAV_ITEMS.map((item) => {
             const isActive = pathname === item.href;
-
-            if (item.children) {
-              return (
-                <div
-                  key={item.label}
-                  className="relative"
-                  onMouseEnter={() => setMoreDropdownOpen(true)}
-                  onMouseLeave={() => setMoreDropdownOpen(false)}
-                >
-                  <button
-                    className={cn(
-                      'flex items-center gap-1 px-4 py-2 rounded-lg transition-colors hover:text-brand-primary hover:bg-slate-50',
-                      moreDropdownOpen && 'text-brand-primary bg-slate-50'
-                    )}
-                  >
-                    <span>{item.label}</span>
-                    <ChevronDown className="w-4 h-4 transition-transform duration-200" />
-                  </button>
-
-                  {/* Dropdown Menu */}
-                  {moreDropdownOpen && (
-                    <div className="absolute top-full right-0 w-64 pt-2 z-50">
-                      <div className="rounded-xl bg-white border border-brand-border-subtle p-2 shadow-xl ring-1 ring-black/5 animate-in fade-in-50 slide-in-from-top-2">
-                        {item.children.map((child) => (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            className="block p-2.5 rounded-lg hover:bg-brand-surface transition-colors"
-                          >
-                            <span className="block font-medium text-xs text-brand-navy">
-                              {child.label}
-                            </span>
-                            {child.description && (
-                              <span className="block text-[11px] text-brand-text-muted mt-0.5">
-                                {child.description}
-                              </span>
-                            )}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            }
 
             return (
               <Link
@@ -174,26 +117,6 @@ export const Navbar: React.FC = () => {
       {mobileOpen && (
         <div className="lg:hidden border-t border-brand-border-subtle bg-white px-4 pt-3 pb-6 space-y-2 animate-in slide-in-from-top duration-200">
           {NAV_ITEMS.map((item) => {
-            if (item.children) {
-              return (
-                <div key={item.label} className="pt-2 border-t border-slate-100">
-                  <span className="block px-3 py-1 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                    {item.label}
-                  </span>
-                  {item.children.map((child) => (
-                    <Link
-                      key={child.href}
-                      href={child.href}
-                      onClick={() => setMobileOpen(false)}
-                      className="block px-3 py-2 rounded-lg text-sm text-brand-navy hover:bg-slate-50 font-medium"
-                    >
-                      {child.label}
-                    </Link>
-                  ))}
-                </div>
-              );
-            }
-
             const isActive = pathname === item.href;
             return (
               <Link
