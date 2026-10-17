@@ -9,7 +9,7 @@ export interface ReviewCardProps {
   isArabic?: boolean;
 }
 
-export const ReviewCard: React.FC<ReviewCardProps> = ({ review, className, isArabic = false }) => {
+export const ReviewCard: React.FC<ReviewCardProps> = React.memo(({ review, className, isArabic = false }) => {
   return (
     <div
       className={cn(
@@ -60,4 +60,6 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review, className, isAra
       </div>
     </div>
   );
-};
+});
+
+ReviewCard.displayName = 'ReviewCard';

@@ -9,7 +9,7 @@ export interface ClinicalEvidenceCardProps {
   isArabic?: boolean;
 }
 
-export const ClinicalEvidenceCard: React.FC<ClinicalEvidenceCardProps> = ({
+export const ClinicalEvidenceCard: React.FC<ClinicalEvidenceCardProps> = React.memo(({
   evidence,
   className,
   isArabic = false,
@@ -76,4 +76,6 @@ export const ClinicalEvidenceCard: React.FC<ClinicalEvidenceCardProps> = ({
       </div>
     </div>
   );
-};
+});
+
+ClinicalEvidenceCard.displayName = 'ClinicalEvidenceCard';

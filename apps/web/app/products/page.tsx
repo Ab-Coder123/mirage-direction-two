@@ -18,17 +18,21 @@ const CATEGORIES = [
 export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = React.useState<string>('All Formulations');
   const [searchFilter, setSearchFilter] = React.useState<string>('');
+  const deferredSearch = React.useDeferredValue(searchFilter);
 
-  const filteredProducts = MOCK_PRODUCTS.filter((product) => {
-    const matchesCategory =
-      selectedCategory === 'All Formulations' || product.category === selectedCategory;
-    const matchesSearch =
-      searchFilter === '' ||
-      product.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchFilter.toLowerCase()) ||
-      product.subtitle.toLowerCase().includes(searchFilter.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const filteredProducts = React.useMemo(() => {
+    return MOCK_PRODUCTS.filter((product) => {
+      const matchesCategory =
+        selectedCategory === 'All Formulations' || product.category === selectedCategory;
+      const query = deferredSearch.toLowerCase().trim();
+      const matchesSearch =
+        query === '' ||
+        product.name.toLowerCase().includes(query) ||
+        product.description.toLowerCase().includes(query) ||
+        product.subtitle.toLowerCase().includes(query);
+      return matchesCategory && matchesSearch;
+    });
+  }, [selectedCategory, deferredSearch]);
 
   return (
     <main className="min-h-screen bg-slate-50/50 pb-20">

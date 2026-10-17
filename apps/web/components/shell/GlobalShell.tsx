@@ -1,10 +1,15 @@
 'use client';
 
 import * as React from 'react';
+import dynamic from 'next/dynamic';
 import { TopUtilityBar } from './TopUtilityBar';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
-import { LiveChatWidget } from './LiveChatWidget';
+
+const LiveChatWidget = dynamic(
+  () => import('./LiveChatWidget').then((mod) => mod.LiveChatWidget),
+  { ssr: false }
+);
 
 export interface GlobalShellProps {
   children: React.ReactNode;

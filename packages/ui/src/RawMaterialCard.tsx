@@ -9,7 +9,7 @@ export interface RawMaterialCardProps {
   isArabic?: boolean;
 }
 
-export const RawMaterialCard: React.FC<RawMaterialCardProps> = ({ material, className, isArabic = false }) => {
+export const RawMaterialCard: React.FC<RawMaterialCardProps> = React.memo(({ material, className, isArabic = false }) => {
   return (
     <div
       className={cn(
@@ -58,4 +58,6 @@ export const RawMaterialCard: React.FC<RawMaterialCardProps> = ({ material, clas
       </div>
     </div>
   );
-};
+});
+
+RawMaterialCard.displayName = 'RawMaterialCard';

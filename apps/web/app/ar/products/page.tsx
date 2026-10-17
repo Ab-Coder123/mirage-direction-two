@@ -18,18 +18,22 @@ const CATEGORIES_AR = [
 export default function ArabicProductsPage() {
   const [selectedCategory, setSelectedCategory] = React.useState<string>('all');
   const [searchFilter, setSearchFilter] = React.useState<string>('');
+  const deferredSearch = React.useDeferredValue(searchFilter);
 
-  const filteredProducts = MOCK_PRODUCTS_AR.filter((product) => {
-    const matchesCategory =
-      selectedCategory === 'all' || product.category === selectedCategory;
-    const matchesSearch =
-      searchFilter === '' ||
-      product.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchFilter.toLowerCase()) ||
-      product.subtitle.toLowerCase().includes(searchFilter.toLowerCase()) ||
-      (product.tagline && product.tagline.toLowerCase().includes(searchFilter.toLowerCase()));
-    return matchesCategory && matchesSearch;
-  });
+  const filteredProducts = React.useMemo(() => {
+    return MOCK_PRODUCTS_AR.filter((product) => {
+      const matchesCategory =
+        selectedCategory === 'all' || product.category === selectedCategory;
+      const query = deferredSearch.toLowerCase().trim();
+      const matchesSearch =
+        query === '' ||
+        product.name.toLowerCase().includes(query) ||
+        product.description.toLowerCase().includes(query) ||
+        product.subtitle.toLowerCase().includes(query) ||
+        (product.tagline && product.tagline.toLowerCase().includes(query));
+      return matchesCategory && matchesSearch;
+    });
+  }, [selectedCategory, deferredSearch]);
 
   return (
     <main className="min-h-screen bg-slate-50/50 pb-20">
