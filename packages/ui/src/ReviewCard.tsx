@@ -6,9 +6,10 @@ import { cn } from '@mirage/utils';
 export interface ReviewCardProps {
   review: CustomerReview;
   className?: string;
+  isArabic?: boolean;
 }
 
-export const ReviewCard: React.FC<ReviewCardProps> = ({ review, className }) => {
+export const ReviewCard: React.FC<ReviewCardProps> = ({ review, className, isArabic = false }) => {
   return (
     <div
       className={cn(
@@ -53,7 +54,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review, className }) => 
         {review.verified && (
           <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-brand-green bg-brand-green/10 px-2 py-0.5 rounded-full border border-brand-green/20">
             <CheckCircle className="w-3 h-3" />
-            Verified
+            {isArabic ? 'تقييم معتمد' : 'Verified'}
           </span>
         )}
       </div>

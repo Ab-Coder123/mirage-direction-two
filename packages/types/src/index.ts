@@ -1,5 +1,6 @@
 export * from './catalog';
 export * from './mock-data';
+export * from './mock-data-ar';
 
 export interface ClinicalTrial {
   id: string;

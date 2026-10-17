@@ -3,9 +3,13 @@
 import * as React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { MapPin, Phone, Mail, Search, Check } from 'lucide-react';
 
 export const Footer: React.FC = () => {
+  const pathname = usePathname();
+  const isAr = pathname?.startsWith('/ar');
+
   const [email, setEmail] = React.useState('');
   const [subscribed, setSubscribed] = React.useState(false);
   const [footerSearch, setFooterSearch] = React.useState('');
@@ -30,7 +34,10 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
           {/* Column 1: Company Info & Contact (4 cols) */}
           <div className="lg:col-span-4 space-y-6">
-            <Link href="/" className="inline-block p-1 bg-white/10 rounded-xl backdrop-blur-md border border-white/20 transition-transform hover:scale-105">
+            <Link
+              href={isAr ? '/ar' : '/'}
+              className="inline-block p-1 bg-white/10 rounded-xl backdrop-blur-md border border-white/20 transition-transform hover:scale-105"
+            >
               <Image
                 src="/brand/mirage_pharma_logo.png"
                 alt="Mirage Pharma"
@@ -41,13 +48,19 @@ export const Footer: React.FC = () => {
             </Link>
 
             <p className="text-sm text-slate-300 leading-relaxed">
-              Developing advanced, science-based nutritional formulations and clinical phytotherapy, going beyond traditional healthcare standards.
+              {isAr
+                ? 'تطوير تركيبات غذائية ومستحضرات دوائية متقدمة قائمة على الأبحاث الإكلينيكية وعلوم النباتات الطبية، لتتجاوز معايير الرعاية الصحية التقليدية.'
+                : 'Developing advanced, science-based nutritional formulations and clinical phytotherapy, going beyond traditional healthcare standards.'}
             </p>
 
             <ul className="space-y-3 text-xs text-slate-200 font-sans">
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-brand-cyan-light shrink-0 mt-0.5" />
-                <span>Villa 270 AL Andalus, Fifth Settlement, Cairo, Egypt</span>
+                <span>
+                  {isAr
+                    ? 'فيلا 270 الأندلس، التجمع الخامس، القاهرة، مصر'
+                    : 'Villa 270 AL Andalus, Fifth Settlement, Cairo, Egypt'}
+                </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-brand-cyan-light shrink-0" />
@@ -73,7 +86,7 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Column 2: Newsletter & Search (4 cols) */}
+          {/* Column 2: Newsletter & Search (5 cols) */}
           <div className="lg:col-span-5 space-y-6 flex flex-col justify-start">
             {/* Quick Search */}
             <div>
@@ -81,7 +94,10 @@ export const Footer: React.FC = () => {
                 onSubmit={(e) => {
                   e.preventDefault();
                   if (footerSearch.trim()) {
-                    window.location.href = `/products?search=${encodeURIComponent(footerSearch)}`;
+                    const target = isAr
+                      ? `/ar/products?search=${encodeURIComponent(footerSearch)}`
+                      : `/products?search=${encodeURIComponent(footerSearch)}`;
+                    window.location.href = target;
                   }
                 }}
                 className="relative max-w-md"
@@ -90,7 +106,9 @@ export const Footer: React.FC = () => {
                   type="text"
                   value={footerSearch}
                   onChange={(e) => setFooterSearch(e.target.value)}
-                  placeholder="Search catalog, medical papers..."
+                  placeholder={
+                    isAr ? 'ابحث في الدليل والأوراق العلمية...' : 'Search catalog, medical papers...'
+                  }
                   className="w-full pl-4 pr-10 py-2.5 rounded-full text-xs bg-white/10 text-white placeholder:text-slate-400 border border-white/20 outline-none focus:border-brand-cyan-light focus:bg-white/15 transition-all"
                 />
                 <button
@@ -106,16 +124,22 @@ export const Footer: React.FC = () => {
             {/* Newsletter Subscription Box */}
             <div className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 shadow-xl max-w-md">
               <h4 className="font-heading font-extrabold text-base uppercase tracking-wider text-center text-white mb-3">
-                Join Our Newsletter
+                {isAr ? 'النشرة الطبية والإكلينيكية' : 'Join Our Newsletter'}
               </h4>
               <p className="text-xs text-center text-slate-300 mb-4">
-                Receive peer-reviewed medical updates, newly formulated batch releases, and clinical insights.
+                {isAr
+                  ? 'اشترك لتصلك أحدث المستجدات حول الدراسات السريرية والمستحضرات الدوائية الجديدة.'
+                  : 'Receive peer-reviewed medical updates, newly formulated batch releases, and clinical insights.'}
               </p>
 
               {subscribed ? (
                 <div className="p-3 rounded-xl bg-brand-green/20 border border-brand-green/40 text-center text-xs font-semibold text-emerald-300 flex items-center justify-center gap-2">
                   <Check className="w-4 h-4" />
-                  <span>Thank you! You are now subscribed to our clinical dispatches.</span>
+                  <span>
+                    {isAr
+                      ? 'شكراً لك! تم تسجيل بريدك الإلكتروني بنجاح في نشرة ميراج الإكلينيكية.'
+                      : 'Thank you! You are now subscribed to our clinical dispatches.'}
+                  </span>
                 </div>
               ) : (
                 <form onSubmit={handleSubscribe} className="space-y-3">
@@ -124,14 +148,14 @@ export const Footer: React.FC = () => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter Your Email Here.."
+                    placeholder={isAr ? 'أدخل بريدك الإلكتروني هنا...' : 'Enter Your Email Here..'}
                     className="w-full px-4 py-3 rounded-xl text-sm bg-white text-slate-900 placeholder:text-slate-400 border border-white/40 outline-none focus:ring-2 focus:ring-brand-primary"
                   />
                   <button
                     type="submit"
                     className="w-full py-3 rounded-xl bg-gradient-to-r from-brand-primary to-brand-primary-light hover:from-brand-navy hover:to-brand-primary text-white font-heading font-bold text-sm tracking-wide shadow-hud-glow transition-all active:scale-[0.98] cursor-pointer"
                   >
-                    Subscribe Now
+                    {isAr ? 'اشترك الآن' : 'Subscribe Now'}
                   </button>
                 </form>
               )}
@@ -142,7 +166,7 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-3 space-y-6">
             <div>
               <h4 className="font-heading font-bold text-lg text-white mb-3 tracking-tight">
-                Follow Us
+                {isAr ? 'تابعنا على' : 'Follow Us'}
               </h4>
               {/* Social Icons row */}
               <div className="flex items-center gap-3 text-white">
@@ -208,45 +232,66 @@ export const Footer: React.FC = () => {
               </div>
             </div>
 
-            {/* Quick Links List (matching Hetero Cure links) */}
+            {/* Quick Links List */}
             <div className="space-y-2 text-xs">
               <span className="text-slate-400 font-mono uppercase tracking-wider block mb-2">
-                Quick Links
+                {isAr ? 'روابط سريعة' : 'Quick Links'}
               </span>
               <ul className="space-y-2">
                 <li>
-                  <Link href="/" className="text-slate-300 hover:text-white transition-colors">
-                    Home
+                  <Link
+                    href={isAr ? '/ar' : '/'}
+                    className="text-slate-300 hover:text-white transition-colors"
+                  >
+                    {isAr ? 'الرئيسية' : 'Home'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/products" className="text-slate-300 hover:text-white transition-colors">
-                    Products
+                  <Link
+                    href={isAr ? '/ar/products' : '/products'}
+                    className="text-slate-300 hover:text-white transition-colors"
+                  >
+                    {isAr ? 'المستحضرات الدوائية' : 'Products'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/our-story" className="text-slate-300 hover:text-white transition-colors">
-                    Our Story
+                  <Link
+                    href={isAr ? '/ar/our-story' : '/our-story'}
+                    className="text-slate-300 hover:text-white transition-colors"
+                  >
+                    {isAr ? 'قصتنا ومعاييرنا' : 'Our Story'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/documents" className="text-slate-300 hover:text-white transition-colors">
-                    Documents
+                  <Link
+                    href={isAr ? '/ar/documents' : '/documents'}
+                    className="text-slate-300 hover:text-white transition-colors"
+                  >
+                    {isAr ? 'الملفات والأبحاث' : 'Documents'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contact" className="text-slate-300 hover:text-white transition-colors">
-                    Contact
+                  <Link
+                    href={isAr ? '/ar/contact' : '/contact'}
+                    className="text-slate-300 hover:text-white transition-colors"
+                  >
+                    {isAr ? 'اتصل بنا' : 'Contact'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/faq" className="text-slate-300 hover:text-white transition-colors">
-                    FAQ
+                  <Link
+                    href={isAr ? '/ar/faq' : '/faq'}
+                    className="text-slate-300 hover:text-white transition-colors"
+                  >
+                    {isAr ? 'الأسئلة الشائعة' : 'FAQ'}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/privacy-policy" className="text-slate-300 hover:text-white transition-colors">
-                    Privacy Policy
+                  <Link
+                    href={isAr ? '/ar/privacy-policy' : '/privacy-policy'}
+                    className="text-slate-300 hover:text-white transition-colors"
+                  >
+                    {isAr ? 'سياسة الخصوصية' : 'Privacy Policy'}
                   </Link>
                 </li>
               </ul>
@@ -257,17 +302,22 @@ export const Footer: React.FC = () => {
         {/* Copyright, Privacy Policy & Sub-Credits strip */}
         <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 text-center sm:text-left">
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
-            <p>© 2026 Mirage Pharma / Hetero Cure Pharma. All Rights Reserved.</p>
+            <p>
+              {isAr
+                ? '© 2026 ميراج فارما (Mirage Pharma) / ناتشورالز 4be. جميع الحقوق محفوظة.'
+                : '© 2026 Mirage Pharma / Hetero Cure Pharma. All Rights Reserved.'}
+            </p>
             <span className="hidden sm:inline text-white/20">|</span>
             <Link
-              href="/privacy-policy"
+              href={isAr ? '/ar/privacy-policy' : '/privacy-policy'}
               className="text-slate-300 hover:text-white underline underline-offset-4 font-semibold transition-colors"
             >
-              Privacy Policy
+              {isAr ? 'سياسة الخصوصية والاستخدام' : 'Privacy Policy'}
             </Link>
           </div>
           <p className="text-[11px] font-mono text-slate-400">
-            Powered By <span className="text-white font-medium">Active4Web</span> & <span className="text-brand-cyan-light font-medium">Mirage Clinical Engine</span>
+            Powered By <span className="text-white font-medium">Active4Web</span> &{' '}
+            <span className="text-brand-cyan-light font-medium">Mirage Clinical Engine</span>
           </p>
         </div>
       </div>

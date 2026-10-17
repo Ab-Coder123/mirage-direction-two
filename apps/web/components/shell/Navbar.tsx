@@ -17,7 +17,7 @@ interface NavItem {
   href: string;
 }
 
-const NAV_ITEMS: NavItem[] = [
+const NAV_ITEMS_EN: NavItem[] = [
   { label: 'Home', href: '/' },
   { label: 'Products', href: '/products' },
   { label: 'Documents', href: '/documents' },
@@ -25,15 +25,25 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Contact', href: '/contact' },
 ];
 
+const NAV_ITEMS_AR: NavItem[] = [
+  { label: 'الرئيسية', href: '/ar' },
+  { label: 'المستحضرات الدوائية', href: '/ar/products' },
+  { label: 'الملفات والأبحاث', href: '/ar/documents' },
+  { label: 'قصتنا ومعاييرنا', href: '/ar/our-story' },
+  { label: 'اتصل بنا', href: '/ar/contact' },
+];
+
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const isAr = pathname?.startsWith('/ar');
+  const navItems = isAr ? NAV_ITEMS_AR : NAV_ITEMS_EN;
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-white/85 backdrop-blur-md border-b border-brand-border-subtle shadow-sm transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-6">
         {/* Official Mirage Brand Logo */}
-        <Link href="/" className="flex items-center shrink-0 group py-1" aria-label="Mirage Pharma Home">
+        <Link href={isAr ? '/ar' : '/'} className="flex items-center shrink-0 group py-1" aria-label="Mirage Pharma Home">
           <Image
             src="/brand/mirage_pharma_logo.png"
             alt="Mirage Pharma — Healthy Life"
@@ -46,7 +56,7 @@ export const Navbar: React.FC = () => {
 
         {/* Desktop Nav Links */}
         <div className="hidden lg:flex items-center gap-1 font-heading text-sm font-semibold text-brand-navy">
-          {NAV_ITEMS.map((item) => {
+          {navItems.map((item) => {
             const isActive = pathname === item.href;
 
             return (
@@ -71,7 +81,7 @@ export const Navbar: React.FC = () => {
         <div className="flex items-center gap-3">
           {/* User Account Button */}
           <Link
-            href="/contact"
+            href={isAr ? '/ar/contact' : '/contact'}
             aria-label="User Account"
             className="w-9 h-9 rounded-full bg-slate-100 hover:bg-brand-primary/10 hover:text-brand-primary text-slate-700 flex items-center justify-center transition-colors"
           >
@@ -80,7 +90,7 @@ export const Navbar: React.FC = () => {
 
           {/* Cart / Inquiry Drawer trigger */}
           <Link
-            href="/products"
+            href={isAr ? '/ar/products' : '/products'}
             aria-label="Product Inquiries"
             className="relative w-9 h-9 rounded-full bg-slate-100 hover:bg-brand-primary/10 hover:text-brand-primary text-slate-700 flex items-center justify-center transition-colors"
           >
@@ -89,7 +99,6 @@ export const Navbar: React.FC = () => {
               5
             </span>
           </Link>
-
 
           {/* Mobile Menu Hamburger */}
           <button
@@ -105,7 +114,7 @@ export const Navbar: React.FC = () => {
       {/* Mobile Menu Drawer */}
       {mobileOpen && (
         <div className="lg:hidden border-t border-brand-border-subtle bg-white px-4 pt-3 pb-6 space-y-2 animate-in slide-in-from-top duration-200">
-          {NAV_ITEMS.map((item) => {
+          {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link

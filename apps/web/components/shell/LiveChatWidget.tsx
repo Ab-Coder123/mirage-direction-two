@@ -1,17 +1,27 @@
 'use client';
 
 import * as React from 'react';
+import { usePathname } from 'next/navigation';
 import { MessageSquare, X, Send, Sparkles } from 'lucide-react';
 
 export const LiveChatWidget: React.FC = () => {
+  const pathname = usePathname();
+  const isAr = pathname?.startsWith('/ar');
+
   const [open, setOpen] = React.useState(false);
-  const [messages, setMessages] = React.useState<{ text: string; fromUser: boolean }[]>([
-    {
-      text: 'Hello! Welcome to Mirage Pharma. How can our medical specialists assist you today?',
-      fromUser: false,
-    },
-  ]);
+  const [messages, setMessages] = React.useState<{ text: string; fromUser: boolean }[]>([]);
   const [inputValue, setInputValue] = React.useState('');
+
+  React.useEffect(() => {
+    setMessages([
+      {
+        text: isAr
+          ? 'مرحباً بك في ميراج فارما! كيف يمكن لمستشارينا الطبيين والصيادلة مساعدتك اليوم؟'
+          : 'Hello! Welcome to Mirage Pharma. How can our medical specialists assist you today?',
+        fromUser: false,
+      },
+    ]);
+  }, [isAr]);
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +35,9 @@ export const LiveChatWidget: React.FC = () => {
       setMessages((prev) => [
         ...prev,
         {
-          text: 'Thank you for reaching out! A clinical pharmacist will review your question shortly. You can also call us directly at 01070786720.',
+          text: isAr
+            ? 'شكراً لتواصلك! سيقوم صيدلي إكلينيكي بالرد على استفسارك خلال دقائق. يمكنك أيضاً الاتصال بنا مباشرة على: 01070786720.'
+            : 'Thank you for reaching out! A clinical pharmacist will review your question shortly. You can also call us directly at 01070786720.',
           fromUser: false,
         },
       ]);
@@ -33,10 +45,13 @@ export const LiveChatWidget: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className={`fixed bottom-6 ${isAr ? 'left-6' : 'right-6'} z-50`}>
       {/* Expanded Chat Drawer */}
       {open && (
-        <div className="mb-4 w-80 sm:w-96 rounded-2xl bg-white border border-brand-border-subtle shadow-2xl overflow-hidden flex flex-col h-[420px] animate-in fade-in-50 slide-in-from-bottom-5">
+        <div
+          dir={isAr ? 'rtl' : 'ltr'}
+          className="mb-4 w-80 sm:w-96 rounded-2xl bg-white border border-brand-border-subtle shadow-2xl overflow-hidden flex flex-col h-[420px] animate-in fade-in-50 slide-in-from-bottom-5"
+        >
           {/* Header */}
           <div className="bg-gradient-to-r from-brand-navy to-brand-primary p-4 text-white flex items-center justify-between">
             <div className="flex items-center gap-2.5">
@@ -44,16 +59,18 @@ export const LiveChatWidget: React.FC = () => {
                 <Sparkles className="w-4 h-4 text-brand-cyan-light" />
               </div>
               <div>
-                <h4 className="font-heading font-bold text-sm">Medical Support</h4>
+                <h4 className="font-heading font-bold text-sm">
+                  {isAr ? 'الدعم والاستشارات الطبية' : 'Medical Support'}
+                </h4>
                 <div className="flex items-center gap-1.5 text-[11px] text-emerald-300 font-medium">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>Clinical Team Online</span>
+                  <span>{isAr ? 'الفريق الإكلينيكي متاح الآن' : 'Clinical Team Online'}</span>
                 </div>
               </div>
             </div>
             <button
               onClick={() => setOpen(false)}
-              className="p-1 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+              className="p-1 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -85,14 +102,14 @@ export const LiveChatWidget: React.FC = () => {
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Ask about dosage, ingredients..."
+              placeholder={isAr ? 'اسأل عن الجرعات، المكونات، الدواعي...' : 'Ask about dosage, ingredients...'}
               className="flex-1 px-3 py-2 rounded-xl text-xs bg-slate-100 border-none outline-none focus:ring-1 focus:ring-brand-primary text-slate-800"
             />
             <button
               type="submit"
-              className="p-2 rounded-xl bg-brand-primary hover:bg-brand-primary-dark text-white transition-colors"
+              className="p-2 rounded-xl bg-brand-primary hover:bg-brand-primary-dark text-white transition-colors cursor-pointer"
             >
-              <Send className="w-4 h-4" />
+              <Send className={`w-4 h-4 ${isAr ? 'rotate-180' : ''}`} />
             </button>
           </form>
         </div>

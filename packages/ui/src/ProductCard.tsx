@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Pill, Droplets, Sparkles, ArrowRight, Star } from 'lucide-react';
+import { Pill, Droplets, Sparkles, ArrowRight, ArrowLeft, Star } from 'lucide-react';
 import { Product } from '@mirage/types';
 import { cn } from '@mirage/utils';
 import { Badge } from './Badge';
@@ -11,6 +11,7 @@ export interface ProductCardProps {
   className?: string;
   onReadMore?: (slug: string) => void;
   readMoreHref?: string;
+  isArabic?: boolean;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
@@ -18,8 +19,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   variant = 'grid',
   className,
   readMoreHref,
+  isArabic = false,
 }) => {
-  const targetHref = readMoreHref ?? `/products/${product.slug}`;
+  const defaultHref = isArabic ? `/ar/products/${product.slug}` : `/products/${product.slug}`;
+  const targetHref = readMoreHref ?? defaultHref;
 
   if (variant === 'row') {
     return (
@@ -91,7 +94,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <div className="flex flex-wrap items-center justify-between gap-4 mt-6 pt-4 border-t border-slate-100">
             {/* Pack Size Pills */}
             <div className="flex items-center gap-2">
-              <span className="text-xs text-brand-text-muted font-medium">Pack Sizes:</span>
+              <span className="text-xs text-brand-text-muted font-medium">
+                {isArabic ? 'العبوات المتاحة:' : 'Pack Sizes:'}
+              </span>
               <div className="flex items-center gap-1.5">
                 {product.packSizes.map((pack, idx) => (
                   <span
@@ -115,7 +120,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 <Star className="w-3.5 h-3.5 fill-current" />
               </div>
               <span className="font-bold text-brand-navy">{product.rating.toFixed(1)}</span>
-              <span className="text-slate-400 font-mono">({product.reviewsCount} reviews)</span>
+              <span className="text-slate-400 font-mono">
+                ({product.reviewsCount} {isArabic ? 'تقييم' : 'reviews'})
+              </span>
             </div>
           </div>
         </div>
@@ -124,8 +131,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div className="md:w-32 bg-slate-50/80 border-t md:border-t-0 md:border-l border-brand-border-subtle p-4 flex md:flex-col items-center justify-center shrink-0">
           <Button variant="primary" size="sm" asChild className="w-full shadow-none group/btn">
             <a href={targetHref} className="flex items-center justify-center gap-1.5 text-xs font-bold">
-              <span>Read More</span>
-              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-1" />
+              <span>{isArabic ? 'تفاصيل المستحضر' : 'Read More'}</span>
+              {isArabic ? (
+                <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover/btn:-translate-x-1" />
+              ) : (
+                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-1" />
+              )}
             </a>
           </Button>
         </div>
@@ -189,7 +200,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <div className="pt-4 border-t border-slate-100 space-y-4">
         {/* Pack Sizes */}
         <div className="flex items-center justify-between text-xs">
-          <span className="text-brand-text-muted">Available:</span>
+          <span className="text-brand-text-muted">
+            {isArabic ? 'العبوات:' : 'Available:'}
+          </span>
           <div className="flex items-center gap-1">
             {product.packSizes.map((pack, idx) => (
               <span
@@ -205,8 +218,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {/* Action Button */}
         <Button variant="outline" size="sm" asChild className="w-full justify-between hover:bg-brand-primary hover:text-white transition-all">
           <a href={targetHref}>
-            <span>Read More</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <span>{isArabic ? 'تفاصيل المستحضر' : 'Read More'}</span>
+            {isArabic ? (
+              <ArrowLeft className="w-3.5 h-3.5" />
+            ) : (
+              <ArrowRight className="w-3.5 h-3.5" />
+            )}
           </a>
         </Button>
       </div>

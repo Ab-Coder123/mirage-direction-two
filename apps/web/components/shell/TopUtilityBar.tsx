@@ -1,14 +1,23 @@
 'use client';
 
 import * as React from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { Search, Globe } from 'lucide-react';
 
 export const TopUtilityBar: React.FC = () => {
+  const pathname = usePathname();
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = React.useState('');
-  const [lang, setLang] = React.useState<'en' | 'ar'>('en');
+  const isAr = pathname?.startsWith('/ar');
 
   const toggleLanguage = () => {
-    setLang((prev) => (prev === 'en' ? 'ar' : 'en'));
+    if (isAr) {
+      const enPath = pathname.replace(/^\/ar/, '') || '/';
+      router.push(enPath);
+    } else {
+      const arPath = pathname === '/' ? '/ar' : `/ar${pathname}`;
+      router.push(arPath);
+    }
   };
 
   return (
@@ -17,9 +26,15 @@ export const TopUtilityBar: React.FC = () => {
         {/* Left Telemetry / Welcome Tagline */}
         <div className="hidden md:flex items-center gap-3 text-slate-300 font-mono text-[11px]">
           <span className="inline-block w-2 h-2 rounded-full bg-brand-green animate-pulse" />
-          <span>Clinical Healthcare & Phytotherapeutic Excellence</span>
+          <span>
+            {isAr
+              ? 'الرعاية الصحية الإكلينيكية والتميز في العلاجات النباتية'
+              : 'Clinical Healthcare & Phytotherapeutic Excellence'}
+          </span>
           <span className="text-slate-600">|</span>
-          <span className="text-slate-400">Cairo • EMEA Operations</span>
+          <span className="text-slate-400">
+            {isAr ? 'القاهرة • عمليات الشرق الأوسط وأفريقيا' : 'Cairo • EMEA Operations'}
+          </span>
         </div>
 
         {/* Right Search, Social Icons & Language Switcher */}
@@ -29,7 +44,10 @@ export const TopUtilityBar: React.FC = () => {
             onSubmit={(e) => {
               e.preventDefault();
               if (searchQuery.trim()) {
-                window.location.href = `/products?search=${encodeURIComponent(searchQuery)}`;
+                const searchTarget = isAr
+                  ? `/ar/products?search=${encodeURIComponent(searchQuery)}`
+                  : `/products?search=${encodeURIComponent(searchQuery)}`;
+                router.push(searchTarget);
               }
             }}
             className="relative flex items-center"
@@ -38,7 +56,7 @@ export const TopUtilityBar: React.FC = () => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search products, ingredients..."
+              placeholder={isAr ? 'ابحث عن مستحضر، مركب فعال...' : 'Search products, ingredients...'}
               className="w-48 sm:w-64 pl-8 pr-3 py-1 rounded-full text-xs bg-white/10 text-white placeholder:text-slate-400 border border-white/20 outline-none focus:border-brand-primary focus:bg-white/20 transition-all"
             />
             <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 pointer-events-none" />
@@ -106,7 +124,7 @@ export const TopUtilityBar: React.FC = () => {
             className="flex items-center gap-1 px-2.5 py-1 rounded bg-brand-primary hover:bg-brand-primary-light text-white font-medium text-xs transition-colors shadow-sm"
           >
             <Globe className="w-3 h-3" />
-            <span>{lang === 'en' ? 'العربية' : 'English'}</span>
+            <span>{isAr ? 'English' : 'العربية'}</span>
           </button>
         </div>
       </div>
