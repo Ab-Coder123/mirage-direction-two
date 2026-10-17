@@ -65,14 +65,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Intro Editorial Statement (matching Hetero Cure Image 3) */}
-      <section className="py-12 bg-slate-50 border-b border-brand-border-subtle">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <p className="font-heading text-sm md:text-base text-slate-700 leading-relaxed font-medium">
-            <strong>Naturals 4be:</strong> Innovative Formulation and Form Developing advanced, science-based formulations, going beyond traditional nutritional supplements. Naturals 4be offers a range of nutritional supplements and functional foods that provide health benefits beyond basic nutrition. High-Quality Ingredients: Using the latest technology in extraction and micronization to ensure maximum cellular bioavailability.
-          </p>
-        </div>
-      </section>
 
       {/* OUR PRODUCTS Section (matching Hetero Cure Image 3) */}
       <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
