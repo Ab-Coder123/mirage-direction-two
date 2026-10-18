@@ -9,19 +9,19 @@ export default function HomePage() {
   return (
     <main className="min-h-screen">
       {/* Hero Banner Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/60 via-brand-surface to-white py-16 md:py-24 border-b border-brand-border-subtle telemetry-grid">
+      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/60 via-brand-surface to-white dark:from-[#031530] dark:via-[#020F24] dark:to-[#020F24] py-16 md:py-24 border-b border-brand-border-subtle dark:border-white/10 telemetry-grid">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-xs font-semibold">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary dark:text-brand-cyan-light text-xs font-semibold">
             <Sparkles className="w-4 h-4" />
             <span>Naturals 4be — Phytotherapeutic Formulations</span>
           </div>
 
-          <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-brand-navy tracking-tight leading-tight max-w-4xl mx-auto">
+          <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-brand-navy dark:text-white tracking-tight leading-tight max-w-4xl mx-auto">
             Values-Led, Science-Backed <br />
-            <span className="text-brand-primary">Dietary & Clinical Formulations</span>
+            <span className="text-brand-primary dark:text-brand-cyan-light">Dietary & Clinical Formulations</span>
           </h1>
 
-          <p className="text-brand-text-muted text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
+          <p className="text-brand-text-muted dark:text-slate-300 text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
             Developing advanced, science-based formulations going beyond traditional nutritional supplements. Naturals 4be offers a range of functional health solutions using pure botanical ingredients and modern pharmaceutical delivery.
           </p>
 
@@ -41,25 +41,25 @@ export default function HomePage() {
 
           {/* Trust Metrics Pill Strip */}
           <div className="pt-10 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            <div className="hud-glass p-4 rounded-xl text-center border border-white/80">
-              <Microscope className="w-5 h-5 text-brand-primary mx-auto mb-1" />
-              <span className="font-heading font-bold text-lg text-brand-navy block">100%</span>
-              <span className="text-xs text-brand-text-muted">Standardized Extracts</span>
+            <div className="hud-glass p-4 rounded-xl text-center border border-white/80 dark:border-white/10">
+              <Microscope className="w-5 h-5 text-brand-primary dark:text-brand-cyan-light mx-auto mb-1" />
+              <span className="font-heading font-bold text-lg text-brand-navy dark:text-white block">100%</span>
+              <span className="text-xs text-brand-text-muted dark:text-slate-400">Standardized Extracts</span>
             </div>
-            <div className="hud-glass p-4 rounded-xl text-center border border-white/80">
+            <div className="hud-glass p-4 rounded-xl text-center border border-white/80 dark:border-white/10">
               <ShieldCheck className="w-5 h-5 text-brand-green mx-auto mb-1" />
-              <span className="font-heading font-bold text-lg text-brand-navy block">GxP Certified</span>
-              <span className="text-xs text-brand-text-muted">Quality Assurance</span>
+              <span className="font-heading font-bold text-lg text-brand-navy dark:text-white block">GxP Certified</span>
+              <span className="text-xs text-brand-text-muted dark:text-slate-400">Quality Assurance</span>
             </div>
-            <div className="hud-glass p-4 rounded-xl text-center border border-white/80">
-              <Award className="w-5 h-5 text-brand-cyan mx-auto mb-1" />
-              <span className="font-heading font-bold text-lg text-brand-navy block">Peer-Reviewed</span>
-              <span className="text-xs text-brand-text-muted">Clinical Literature</span>
+            <div className="hud-glass p-4 rounded-xl text-center border border-white/80 dark:border-white/10">
+              <Award className="w-5 h-5 text-brand-cyan dark:text-brand-cyan-light mx-auto mb-1" />
+              <span className="font-heading font-bold text-lg text-brand-navy dark:text-white block">Peer-Reviewed</span>
+              <span className="text-xs text-brand-text-muted dark:text-slate-400">Clinical Literature</span>
             </div>
-            <div className="hud-glass p-4 rounded-xl text-center border border-white/80">
+            <div className="hud-glass p-4 rounded-xl text-center border border-white/80 dark:border-white/10">
               <HeartHandshake className="w-5 h-5 text-amber-500 mx-auto mb-1" />
-              <span className="font-heading font-bold text-lg text-brand-navy block">99.4%</span>
-              <span className="text-xs text-brand-text-muted">Patient Satisfaction</span>
+              <span className="font-heading font-bold text-lg text-brand-navy dark:text-white block">99.4%</span>
+              <span className="text-xs text-brand-text-muted dark:text-slate-400">Patient Satisfaction</span>
             </div>
           </div>
         </div>
@@ -72,10 +72,10 @@ export default function HomePage() {
           <Badge variant="primary" size="md">
             Product Portfolio
           </Badge>
-          <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-brand-navy tracking-tight">
+          <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-brand-navy dark:text-white tracking-tight">
             OUR PRODUCTS
           </h2>
-          <p className="text-sm md:text-base text-brand-text-muted max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-brand-text-muted dark:text-slate-300 max-w-2xl mx-auto">
             Targeted health solutions engineered with pharmaceutical precision and clean active compounds.
           </p>
         </div>
@@ -99,7 +99,7 @@ export default function HomePage() {
       </section>
 
       {/* CUSTOMER REVIEWS Section (matching Hetero Cure Image 3) */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-blue-50/40 border-t border-brand-border-subtle relative overflow-hidden">
+      <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-blue-50/40 dark:from-[#031530] dark:to-[#020F24] border-t border-brand-border-subtle dark:border-white/10 relative overflow-hidden">
         {/* Background Capsule Atmosphere */}
         <div className="absolute inset-0 opacity-5 pointer-events-none telemetry-grid" />
 
@@ -108,10 +108,10 @@ export default function HomePage() {
             <Badge variant="cyan" size="md">
               Clinical Feedback
             </Badge>
-            <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-brand-navy tracking-tight">
+            <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-brand-navy dark:text-white tracking-tight">
               CUSTOMER REVIEWS
             </h2>
-            <p className="text-sm md:text-base text-brand-text-muted max-w-2xl mx-auto">
+            <p className="text-sm md:text-base text-brand-text-muted dark:text-slate-300 max-w-2xl mx-auto">
               Testimonials from consulting physicians, healthcare specialists, and verified patients across Egypt.
             </p>
           </div>

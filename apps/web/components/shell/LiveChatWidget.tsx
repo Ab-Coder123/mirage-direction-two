@@ -50,7 +50,7 @@ export const LiveChatWidget: React.FC = () => {
       {open && (
         <div
           dir={isAr ? 'rtl' : 'ltr'}
-          className="mb-4 w-80 sm:w-96 rounded-2xl bg-white border border-brand-border-subtle shadow-2xl overflow-hidden flex flex-col h-[420px] animate-in fade-in-50 slide-in-from-bottom-5"
+          className="mb-4 w-80 sm:w-96 rounded-2xl bg-white dark:bg-[#041B3B] border border-brand-border-subtle dark:border-white/10 shadow-2xl overflow-hidden flex flex-col h-[420px] animate-in fade-in-50 slide-in-from-bottom-5 transition-colors"
         >
           {/* Header */}
           <div className="bg-gradient-to-r from-brand-navy to-brand-primary p-4 text-white flex items-center justify-between">
@@ -77,7 +77,7 @@ export const LiveChatWidget: React.FC = () => {
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50 text-xs">
+          <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50 dark:bg-[#020F24] text-xs">
             {messages.map((msg, idx) => (
               <div
                 key={idx}
@@ -87,7 +87,7 @@ export const LiveChatWidget: React.FC = () => {
                   className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 leading-relaxed shadow-sm ${
                     msg.fromUser
                       ? 'bg-brand-primary text-white rounded-br-none'
-                      : 'bg-white text-slate-800 border border-slate-200 rounded-bl-none'
+                      : 'bg-white dark:bg-[#041B3B] text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-white/10 rounded-bl-none'
                   }`}
                 >
                   {msg.text}
@@ -97,13 +97,13 @@ export const LiveChatWidget: React.FC = () => {
           </div>
 
           {/* Input Bar */}
-          <form onSubmit={handleSend} className="p-3 bg-white border-t border-slate-100 flex items-center gap-2">
+          <form onSubmit={handleSend} className="p-3 bg-white dark:bg-[#041B3B] border-t border-slate-100 dark:border-white/10 flex items-center gap-2">
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder={isAr ? 'اسأل عن الجرعات، المكونات، الدواعي...' : 'Ask about dosage, ingredients...'}
-              className="flex-1 px-3 py-2 rounded-xl text-xs bg-slate-100 border-none outline-none focus:ring-1 focus:ring-brand-primary text-slate-800"
+              className="flex-1 px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-[#020F24] border border-transparent dark:border-white/10 outline-none focus:ring-1 focus:ring-brand-primary text-slate-800 dark:text-white placeholder:text-slate-400"
             />
             <button
               type="submit"

@@ -26,7 +26,7 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="w-full bg-[#022852] text-white border-t border-brand-navy-light/40 relative overflow-hidden">
+    <footer className="w-full bg-[#022852] dark:bg-[#01142B] text-white border-t border-brand-navy-light/40 dark:border-white/10 relative overflow-hidden transition-colors duration-200">
       {/* Top Wave/Substrate Ambient Lighting */}
       <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-brand-primary via-brand-cyan to-brand-green" />
 

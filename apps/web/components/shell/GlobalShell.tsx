@@ -17,7 +17,7 @@ export interface GlobalShellProps {
 
 export const GlobalShell: React.FC<GlobalShellProps> = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-brand-surface font-sans antialiased text-brand-navy">
+    <div className="min-h-screen flex flex-col justify-between bg-brand-surface font-sans antialiased text-brand-navy dark:bg-[#020F24] dark:text-[#F8FAFC] transition-colors duration-200">
       <div>
         <TopUtilityBar />
         <Navbar />

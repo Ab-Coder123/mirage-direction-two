@@ -4,9 +4,9 @@ import { Button, Badge, Card } from '@mirage/ui';
 
 export default function ArabicOurStoryPage() {
   return (
-    <main className="min-h-screen bg-slate-50/50 pb-20">
+    <main className="min-h-screen bg-slate-50/50 dark:bg-[#020F24] pb-20 transition-colors duration-200">
       {/* Top Banner */}
-      <section className="relative bg-gradient-to-r from-[#023368] via-[#054b98] to-[#0a66c2] text-white py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-brand-primary/30">
+      <section className="relative bg-gradient-to-r from-[#023368] via-[#054b98] to-[#0a66c2] dark:from-[#011B3B] dark:via-[#023368] dark:to-[#022852] text-white py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-brand-primary/30 dark:border-white/10">
         <div className="max-w-4xl mx-auto text-center space-y-4">
           <Badge variant="cyan" size="md">
             تاريخنا ورسالتنا العلمية
@@ -24,31 +24,31 @@ export default function ArabicOurStoryPage() {
         {/* Core Philosophy Section */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           <div className="lg:col-span-6 space-y-5">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-primary">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-primary dark:text-brand-cyan-light">
               نشأة وتأسيس Naturals 4be
             </span>
-            <h2 className="font-heading text-3xl sm:text-4xl font-extrabold text-brand-navy leading-tight">
+            <h2 className="font-heading text-3xl sm:text-4xl font-extrabold text-brand-navy dark:text-white leading-tight">
               تركيبات رائدة تهدف إلى استدامة الصحة وطول العمر
             </h2>
-            <p className="text-sm sm:text-base text-brand-text-muted leading-relaxed">
+            <p className="text-sm sm:text-base text-brand-text-muted dark:text-slate-300 leading-relaxed">
               انطلاقاً من القناعة الراسخة بأن المكملات الغذائية اليومية يجب أن تخضع لنفس المعايير الدوائية الصارمة التي تخضع لها الأدوية الموصوفة طبياً، أسست <strong>ميراج فارما (Mirage Pharma)</strong> قطاع <strong>Naturals 4be</strong> للقضاء على التركيبات العشوائية ضعيفة الامتصاص المليئة بالمواد المالئة عديمة الجدوى.
             </p>
-            <p className="text-sm sm:text-base text-brand-text-muted leading-relaxed">
+            <p className="text-sm sm:text-base text-brand-text-muted dark:text-slate-300 leading-relaxed">
               كل مركب داخل محفظتنا الدوائية — بدءاً من محفزات الطاقة المعايرة في <em>Man Edge</em>، إلى النسبة الفسيولوجية المثبتة 40:1 في <em>Inositol 40:1</em>، والفولات النشط ميثيل تيتراهيدروفولات — تتم معايرته بأعلى درجات الدقة الإكلينيكية، مدعوماً بأبحاث محكمة وملفات تحليل دوائي معتمدة.
             </p>
           </div>
 
           <div className="lg:col-span-6">
-            <div className="rounded-3xl bg-gradient-to-br from-blue-50 to-cyan-50 p-8 border border-brand-primary/20 shadow-lg space-y-6">
+            <div className="rounded-3xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-[#041B3B] dark:to-[#020F24] p-8 border border-brand-primary/20 dark:border-white/10 shadow-lg space-y-6 transition-colors">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-brand-primary text-white flex items-center justify-center font-bold shrink-0">
                   <Microscope className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-lg text-brand-navy">
+                  <h3 className="font-heading font-bold text-lg text-brand-navy dark:text-white">
                     المعايرة الجزيئية الدقيقة
                   </h3>
-                  <p className="text-xs text-brand-text-muted">
+                  <p className="text-xs text-brand-text-muted dark:text-slate-400">
                     صفر بودرة نباتية عشوائية دون شهادات تحليل كروماتوغرافي HPLC تثبت نقاء المادة الفعالة.
                   </p>
                 </div>
@@ -59,10 +59,10 @@ export default function ArabicOurStoryPage() {
                   <ShieldCheck className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-lg text-brand-navy">
+                  <h3 className="font-heading font-bold text-lg text-brand-navy dark:text-white">
                     النقاء وفق معايير التصنيع الدوائي GxP
                   </h3>
-                  <p className="text-xs text-brand-text-muted">
+                  <p className="text-xs text-brand-text-muted dark:text-slate-400">
                     التصنيع حصراً في غرف نظيفة معتمدة وفق أعلى معايير cGMP و ISO 22000 الدولية.
                   </p>
                 </div>
@@ -73,10 +73,10 @@ export default function ArabicOurStoryPage() {
                   <HeartHandshake className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-lg text-brand-navy">
+                  <h3 className="font-heading font-bold text-lg text-brand-navy dark:text-white">
                     الشفافية الطبية والموثوقية
                   </h3>
-                  <p className="text-xs text-brand-text-muted">
+                  <p className="text-xs text-brand-text-muted dark:text-slate-400">
                     إتاحة الوصول المفتوح لكافة نتائج التجارب السريرية وتفاصيل المكونات الفعالة للمرضى والأطباء.
                   </p>
                 </div>
@@ -88,44 +88,44 @@ export default function ArabicOurStoryPage() {
         {/* Pillars Cards */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card variant="glass" className="p-8 space-y-3">
-            <span className="text-xs font-mono font-bold text-brand-primary uppercase">
+            <span className="text-xs font-mono font-bold text-brand-primary dark:text-brand-cyan-light uppercase">
               الركيزة الأولى
             </span>
-            <h3 className="font-heading font-bold text-xl text-brand-navy">
+            <h3 className="font-heading font-bold text-xl text-brand-navy dark:text-white">
               البحث والتطوير القائم على البراهين
             </h3>
-            <p className="text-sm text-brand-text-muted leading-relaxed">
+            <p className="text-sm text-brand-text-muted dark:text-slate-300 leading-relaxed">
               نرفض الممارسات التسويقية غير المستندة إلى أسس علمية. يبدأ كل مستحضر لدينا بدراسة إكلينيكية مستفيضة ومراجعة منهجية لجرعات الامتصاص والتحليل الميتري.
             </p>
           </Card>
 
           <Card variant="glass" className="p-8 space-y-3">
-            <span className="text-xs font-mono font-bold text-brand-green uppercase">
+            <span className="text-xs font-mono font-bold text-brand-green dark:text-emerald-400 uppercase">
               الركيزة الثانية
             </span>
-            <h3 className="font-heading font-bold text-xl text-brand-navy">
+            <h3 className="font-heading font-bold text-xl text-brand-navy dark:text-white">
               المعايرة الصيدلانية الصارمة
             </h3>
-            <p className="text-sm text-brand-text-muted leading-relaxed">
+            <p className="text-sm text-brand-text-muted dark:text-slate-300 leading-relaxed">
               نضمن ثبات تركيز المواد الفعالة في كل كبسولة من أول حبة وحتى آخر تشغيلة، مع إخضاع الشحنات لفحوصات ميكروبيولوجية وخلو المعادن الثقيلة.
             </p>
           </Card>
 
           <Card variant="glass" className="p-8 space-y-3">
-            <span className="text-xs font-mono font-bold text-brand-cyan uppercase">
+            <span className="text-xs font-mono font-bold text-brand-cyan dark:text-brand-cyan-light uppercase">
               الركيزة الثالثة
             </span>
-            <h3 className="font-heading font-bold text-xl text-brand-navy">
+            <h3 className="font-heading font-bold text-xl text-brand-navy dark:text-white">
               سلاسل التبريد والتتبع الرقمي
             </h3>
-            <p className="text-sm text-brand-text-muted leading-relaxed">
+            <p className="text-sm text-brand-text-muted dark:text-slate-300 leading-relaxed">
               حماية المركبات الحساسة للحرارة عبر مستودعات مبردة وشاحنات مراقبة رقمياً بأجهزة استشعار IoT على مدار الساعة لضمان وصول المنتج بكامل فاعليته.
             </p>
           </Card>
         </section>
 
         {/* CTA Bar */}
-        <div className="rounded-3xl bg-gradient-to-r from-[#023368] to-[#0a66c2] text-white p-8 sm:p-12 text-center space-y-6 shadow-xl">
+        <div className="rounded-3xl bg-gradient-to-r from-[#023368] to-[#0a66c2] dark:from-[#011B3B] dark:to-[#041B3B] text-white p-8 sm:p-12 text-center space-y-6 shadow-xl border border-transparent dark:border-white/10 transition-colors">
           <h2 className="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight">
             مستعد لاكتشاف أثر النقاء الإكلينيكي في حياتك؟
           </h2>

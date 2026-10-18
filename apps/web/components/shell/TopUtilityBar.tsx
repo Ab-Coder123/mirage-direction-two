@@ -21,7 +21,7 @@ export const TopUtilityBar: React.FC = () => {
   };
 
   return (
-    <div className="w-full bg-brand-navy text-white text-xs py-2 px-4 border-b border-brand-navy-light/40 transition-colors">
+    <div className="w-full bg-brand-navy dark:bg-[#01142B] text-white text-xs py-2 px-4 border-b border-brand-navy-light/40 dark:border-white/10 transition-colors duration-200">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
         {/* Left Telemetry / Welcome Tagline */}
         <div className="hidden md:flex items-center gap-3 text-slate-300 font-mono text-[11px]">

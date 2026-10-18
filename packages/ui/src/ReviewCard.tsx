@@ -13,7 +13,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = React.memo(({ review, class
   return (
     <div
       className={cn(
-        'group relative flex flex-col justify-between rounded-2xl bg-white/90 backdrop-blur-sm border border-brand-border-subtle p-6 shadow-sm transition-all duration-300 hover:shadow-hud-glow hover:border-brand-primary/40',
+        'group relative flex flex-col justify-between rounded-2xl bg-white/90 dark:bg-[#041B3B] backdrop-blur-sm border border-brand-border-subtle dark:border-white/10 p-6 shadow-sm transition-all duration-300 hover:shadow-hud-glow hover:border-brand-primary/40 dark:hover:border-brand-primary/50',
         className
       )}
     >
@@ -26,33 +26,33 @@ export const ReviewCard: React.FC<ReviewCardProps> = React.memo(({ review, class
                 key={i}
                 className={cn(
                   'w-4 h-4',
-                  i < review.rating ? 'fill-current' : 'text-slate-200 fill-slate-200'
+                  i < review.rating ? 'fill-current' : 'text-slate-200 fill-slate-200 dark:text-slate-700 dark:fill-slate-700'
                 )}
               />
             ))}
           </div>
-          <Quote className="w-5 h-5 text-brand-primary/20" />
+          <Quote className="w-5 h-5 text-brand-primary/20 dark:text-brand-cyan-light/30" />
         </div>
 
         {/* Comment */}
-        <p className="text-sm text-brand-navy leading-relaxed italic mb-4">
+        <p className="text-sm text-brand-navy dark:text-slate-200 leading-relaxed italic mb-4">
           "{review.comment}"
         </p>
       </div>
 
       {/* Author & Verification Footer */}
-      <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+      <div className="pt-4 border-t border-slate-100 dark:border-white/10 flex items-center justify-between">
         <div>
-          <h5 className="font-heading font-bold text-sm text-brand-navy">
+          <h5 className="font-heading font-bold text-sm text-brand-navy dark:text-white">
             {review.authorName}
           </h5>
-          <p className="text-xs text-brand-text-muted">
+          <p className="text-xs text-brand-text-muted dark:text-slate-400">
             {review.authorRole} {review.location && `• ${review.location}`}
           </p>
         </div>
 
         {review.verified && (
-          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-brand-green bg-brand-green/10 px-2 py-0.5 rounded-full border border-brand-green/20">
+          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-brand-green dark:text-emerald-400 bg-brand-green/10 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-brand-green/20 dark:border-emerald-500/30">
             <CheckCircle className="w-3 h-3" />
             {isArabic ? 'تقييم معتمد' : 'Verified'}
           </span>

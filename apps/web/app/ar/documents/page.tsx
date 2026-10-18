@@ -22,9 +22,9 @@ export default function ArabicDocumentsPage() {
     MOCK_PRODUCTS_AR.find((p) => p.slug === selectedProductSlug) || MOCK_PRODUCTS_AR[0]!;
 
   return (
-    <main className="min-h-screen bg-slate-50/50 pb-20">
+    <main className="min-h-screen bg-slate-50/50 dark:bg-[#020F24] pb-20 transition-colors duration-200">
       {/* Top Banner (matching Hetero Cure Image 4) */}
-      <section className="relative bg-gradient-to-r from-[#023368] via-[#054b98] to-[#0a66c2] text-white py-16 px-4 sm:px-6 lg:px-8 border-b border-brand-primary/30">
+      <section className="relative bg-gradient-to-r from-[#023368] via-[#054b98] to-[#0a66c2] dark:from-[#011B3B] dark:via-[#023368] dark:to-[#022852] text-white py-16 px-4 sm:px-6 lg:px-8 border-b border-brand-primary/30 dark:border-white/10">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-right">
           <div>
             <span className="font-heading font-black text-xs uppercase tracking-widest text-brand-cyan-light flex items-center justify-center md:justify-start gap-1.5 mb-2">
@@ -47,10 +47,10 @@ export default function ArabicDocumentsPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
         {/* Product Formulation Switcher Tabs */}
-        <div className="bg-white p-4 rounded-2xl border border-brand-border-subtle shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="bg-white dark:bg-[#041B3B] p-4 rounded-2xl border border-brand-border-subtle dark:border-white/10 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors">
           <div className="flex items-center gap-2">
-            <Pill className="w-4 h-4 text-brand-primary shrink-0" />
-            <span className="text-xs font-bold uppercase tracking-wider text-brand-navy">
+            <Pill className="w-4 h-4 text-brand-primary dark:text-brand-cyan-light shrink-0" />
+            <span className="text-xs font-bold uppercase tracking-wider text-brand-navy dark:text-white">
               اختر الدوسيه العلمي:
             </span>
           </div>
@@ -65,7 +65,7 @@ export default function ArabicDocumentsPage() {
                   className={`px-4 py-2 rounded-xl text-xs font-heading font-bold transition-all whitespace-nowrap cursor-pointer ${
                     active
                       ? 'bg-brand-primary text-white shadow-md'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                      : 'bg-slate-100 dark:bg-[#020F24] text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-white/10 border border-transparent dark:border-white/10'
                   }`}
                 >
                   {prod.name}
@@ -80,15 +80,15 @@ export default function ArabicDocumentsPage() {
             onClick={() => alert(`جاري تحميل الدوسيه السريري المعتمد لمستحضر ${activeProduct.name}...`)}
             className="text-xs flex items-center gap-1.5 shrink-0"
           >
-            <Download className="w-3.5 h-3.5 text-brand-primary" />
+            <Download className="w-3.5 h-3.5 text-brand-primary dark:text-brand-cyan-light" />
             <span>تحميل الدوسيه (PDF)</span>
           </Button>
         </div>
 
         {/* Selected Product Banner Card */}
-        <div className="rounded-3xl bg-white border border-brand-border-subtle p-6 sm:p-8 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="rounded-3xl bg-white dark:bg-[#041B3B] border border-brand-border-subtle dark:border-white/10 p-6 sm:p-8 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 transition-colors">
           <div className="flex items-center gap-5">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-brand-primary/10 to-blue-100 flex items-center justify-center text-brand-primary shrink-0 shadow-inner overflow-hidden p-1.5">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-brand-primary/10 to-blue-100 dark:from-[#020F24] dark:to-[#031530] flex items-center justify-center text-brand-primary dark:text-brand-cyan-light shrink-0 shadow-inner overflow-hidden p-1.5 border border-transparent dark:border-white/10">
               {activeProduct.heroImage ? (
                 <img
                   src={activeProduct.heroImage}
@@ -101,18 +101,18 @@ export default function ArabicDocumentsPage() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono font-bold text-brand-primary uppercase">
+                <span className="text-xs font-mono font-bold text-brand-primary dark:text-brand-cyan-light uppercase">
                   {activeProduct.brandLine}
                 </span>
-                <span className="text-slate-300">•</span>
-                <span className="text-xs text-brand-text-muted font-medium">
+                <span className="text-slate-300 dark:text-slate-600">•</span>
+                <span className="text-xs text-brand-text-muted dark:text-slate-400 font-medium">
                   {activeProduct.category}
                 </span>
               </div>
-              <h2 className="font-heading font-extrabold text-2xl text-brand-navy mt-0.5">
+              <h2 className="font-heading font-extrabold text-2xl text-brand-navy dark:text-white mt-0.5">
                 {activeProduct.name}
               </h2>
-              <p className="text-xs sm:text-sm text-brand-text-muted mt-1 max-w-xl">
+              <p className="text-xs sm:text-sm text-brand-text-muted dark:text-slate-300 mt-1 max-w-xl">
                 {activeProduct.subtitle}
               </p>
             </div>
@@ -129,13 +129,13 @@ export default function ArabicDocumentsPage() {
         {/* Section 1: Standardized Raw Materials */}
         <section className="space-y-6">
           <div>
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-primary">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-primary dark:text-brand-cyan-light">
               تكوين التركيبة الدوائية
             </span>
-            <h3 className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-navy mt-1">
+            <h3 className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-navy dark:text-white mt-1">
               المواد الخام الفعالة والخلاصات المعيارية
             </h3>
-            <p className="text-xs sm:text-sm text-brand-text-muted mt-1 max-w-2xl">
+            <p className="text-xs sm:text-sm text-brand-text-muted dark:text-slate-400 mt-1 max-w-2xl">
               تخضع جميع المركبات النباتية والدوائية لاختبارات التحليل الكروماتوغرافي السائل (HPLC) للتحقق من نسب النقاوة والفاعلية الحيوية.
             </p>
           </div>
@@ -146,7 +146,7 @@ export default function ArabicDocumentsPage() {
                 <RawMaterialCard key={material.id} material={material} isArabic={true} />
               ))
             ) : (
-              <p className="text-sm text-brand-text-muted">
+              <p className="text-sm text-brand-text-muted dark:text-slate-400">
                 تفاصيل المواد الخام متوفرة في ملف SmPC الكامل.
               </p>
             )}
@@ -156,13 +156,13 @@ export default function ArabicDocumentsPage() {
         {/* Section 2: Clinical Evidence & Published Trials */}
         <section className="space-y-6">
           <div>
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-cyan">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-cyan dark:text-brand-cyan-light">
               التوثيق السريري
             </span>
-            <h3 className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-navy mt-1">
+            <h3 className="font-heading font-extrabold text-2xl sm:text-3xl text-brand-navy dark:text-white mt-1">
               الدراسات الإكلينيكية والأبحاث المنشورة
             </h3>
-            <p className="text-xs sm:text-sm text-brand-text-muted mt-1 max-w-2xl">
+            <p className="text-xs sm:text-sm text-brand-text-muted dark:text-slate-400 mt-1 max-w-2xl">
               تعتمد تركيبات Naturals 4be على أوراق بحثية منشورة في دوريات طبية دولية محكمة ومفهرسة عبر DOI.
             </p>
           </div>
@@ -173,7 +173,7 @@ export default function ArabicDocumentsPage() {
                 <ClinicalEvidenceCard key={evidence.id} evidence={evidence} isArabic={true} />
               ))
             ) : (
-              <p className="text-sm text-brand-text-muted">
+              <p className="text-sm text-brand-text-muted dark:text-slate-400">
                 الأبحاث السريرية مفصلة بالكامل في ملف الدوسيه المرفق.
               </p>
             )}
@@ -181,7 +181,7 @@ export default function ArabicDocumentsPage() {
         </section>
 
         {/* Regulatory Clearance Banner */}
-        <div className="rounded-3xl bg-gradient-to-br from-[#023368] to-[#0a66c2] text-white p-8 sm:p-10 shadow-lg border border-white/20 space-y-4">
+        <div className="rounded-3xl bg-gradient-to-br from-[#023368] to-[#0a66c2] dark:from-[#011B3B] dark:to-[#022852] text-white p-8 sm:p-10 shadow-lg border border-white/20 dark:border-white/10 space-y-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center">
               <ShieldCheck className="w-6 h-6" />

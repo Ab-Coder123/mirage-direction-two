@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { fontJakarta, fontInter, fontSpace } from '@/lib/fonts';
 import { GlobalShell } from '@/components/shell/GlobalShell';
+import { ThemeScript, ThemeProvider } from '@/components/theme';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -28,10 +29,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`h-full antialiased scroll-smooth ${fontJakarta.variable} ${fontInter.variable} ${fontSpace.variable}`}
     >
-      <body className="min-h-full bg-brand-surface text-brand-navy font-sans selection:bg-brand-primary/20">
-        <GlobalShell>{children}</GlobalShell>
+      <head>
+        <ThemeScript />
+      </head>
+      <body className="min-h-full bg-brand-surface text-brand-navy font-sans selection:bg-brand-primary/20 dark:bg-[#020F24] dark:text-[#F8FAFC] transition-colors duration-200">
+        <ThemeProvider>
+          <GlobalShell>{children}</GlobalShell>
+        </ThemeProvider>
       </body>
     </html>
   );

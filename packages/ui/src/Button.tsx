@@ -19,13 +19,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       primary:
         'bg-brand-primary hover:bg-brand-primary-600 text-white shadow-sm focus-visible:ring-brand-primary',
       secondary:
-        'bg-brand-navy hover:bg-brand-navy-dark text-white shadow-sm focus-visible:ring-brand-navy',
+        'bg-brand-navy hover:bg-brand-navy-dark text-white shadow-sm focus-visible:ring-brand-navy dark:bg-brand-primary dark:hover:bg-brand-primary-600',
       vitality:
         'bg-brand-green hover:bg-brand-green-dark text-white shadow-sm focus-visible:ring-brand-green',
       glass:
-        'hud-glass hover:bg-white/95 text-brand-navy shadow-hud-glass focus-visible:ring-brand-primary',
+        'hud-glass hover:bg-white/95 text-brand-navy shadow-hud-glass focus-visible:ring-brand-primary dark:text-white dark:hover:bg-[#041B3B]',
       outline:
-        'border border-brand-border-subtle hover:bg-brand-surface text-brand-navy focus-visible:ring-brand-primary',
+        'border border-brand-border-subtle hover:bg-brand-surface text-brand-navy focus-visible:ring-brand-primary dark:border-white/15 dark:text-white dark:hover:bg-white/10',
     };
 
     const sizes = {

@@ -10,11 +10,11 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     const base = 'rounded-2xl transition-all duration-300 relative';
 
     const variants = {
-      glass: 'hud-glass shadow-hud-glass border border-white/80',
-      solid: 'bg-white border border-[#E2E8F0] shadow-sm',
+      glass: 'hud-glass shadow-hud-glass border border-white/80 dark:border-white/10 dark:shadow-hud-glass-dark',
+      solid: 'bg-white border border-[#E2E8F0] shadow-sm dark:bg-[#041B3B] dark:border-white/10 dark:text-white',
       obsidian: 'bg-[#020F24] border border-white/10 text-white shadow-xl',
       interactive:
-        'hud-glass shadow-hud-glass border border-white/80 hover:shadow-hud-glow hover:border-[#2878BC]/40 hover:-translate-y-1 cursor-pointer',
+        'hud-glass shadow-hud-glass border border-white/80 dark:border-white/10 hover:shadow-hud-glow hover:border-[#2878BC]/40 dark:hover:border-brand-primary/50 hover:-translate-y-1 cursor-pointer',
     };
 
     return (

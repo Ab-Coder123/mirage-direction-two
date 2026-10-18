@@ -53,9 +53,9 @@ export default function FaqPage() {
   const [openIndex, setOpenIndex] = React.useState<number | null>(0);
 
   return (
-    <main className="min-h-screen bg-slate-50/50 pb-20">
+    <main className="min-h-screen bg-slate-50/50 dark:bg-[#020F24] pb-20 transition-colors duration-200">
       {/* Top Banner */}
-      <section className="relative bg-gradient-to-r from-[#023368] via-[#054b98] to-[#0a66c2] text-white py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-brand-primary/30">
+      <section className="relative bg-gradient-to-r from-[#023368] via-[#054b98] to-[#0a66c2] dark:from-[#011B3B] dark:via-[#023368] dark:to-[#022852] text-white py-16 md:py-24 px-4 sm:px-6 lg:px-8 border-b border-brand-primary/30 dark:border-white/10">
         <div className="max-w-4xl mx-auto text-center space-y-4">
           <Badge variant="cyan" size="md">
             Help & Knowledge Base
@@ -75,23 +75,25 @@ export default function FaqPage() {
           return (
             <div
               key={idx}
-              className="rounded-2xl bg-white border border-brand-border-subtle overflow-hidden shadow-sm transition-all"
+              className="rounded-2xl bg-white dark:bg-[#041B3B] border border-brand-border-subtle dark:border-white/10 overflow-hidden shadow-sm transition-colors"
             >
               <button
                 onClick={() => setOpenIndex(isOpen ? null : idx)}
-                className="w-full p-6 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50 transition-colors"
+                className="w-full p-6 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
               >
                 <div className="space-y-1">
-                  <span className="text-[11px] font-mono font-bold text-brand-primary uppercase tracking-wider">
+                  <span className="text-[11px] font-mono font-bold text-brand-primary dark:text-brand-cyan-light uppercase tracking-wider">
                     {item.category}
                   </span>
-                  <h3 className="font-heading font-bold text-base sm:text-lg text-brand-navy">
+                  <h3 className="font-heading font-bold text-base sm:text-lg text-brand-navy dark:text-white">
                     {item.question}
                   </h3>
                 </div>
                 <div
-                  className={`w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center shrink-0 transition-transform duration-200 ${
-                    isOpen ? 'rotate-180 bg-brand-primary text-white' : 'text-slate-600'
+                  className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-200 ${
+                    isOpen
+                      ? 'rotate-180 bg-brand-primary text-white shadow-sm'
+                      : 'bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300'
                   }`}
                 >
                   <ChevronDown className="w-4 h-4" />
@@ -99,7 +101,7 @@ export default function FaqPage() {
               </button>
 
               {isOpen && (
-                <div className="px-6 pb-6 pt-2 text-sm text-slate-600 leading-relaxed border-t border-slate-100 bg-slate-50/40">
+                <div className="px-6 pb-6 pt-2 text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-white/10 bg-slate-50/40 dark:bg-white/[0.02]">
                   <p>{item.answer}</p>
                 </div>
               )}
