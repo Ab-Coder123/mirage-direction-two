@@ -51,7 +51,15 @@ export const Navbar: React.FC = () => {
             width={160}
             height={48}
             priority
-            className="h-10 sm:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
+            className="h-10 sm:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02] dark:hidden"
+          />
+          <Image
+            src="/brand/mirage_pharma_logo_dark.png"
+            alt="Mirage Pharma — Healthy Life"
+            width={160}
+            height={48}
+            priority
+            className="h-10 sm:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02] hidden dark:block"
           />
         </Link>
 

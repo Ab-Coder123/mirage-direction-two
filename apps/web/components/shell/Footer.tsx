@@ -36,14 +36,21 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-4 space-y-6">
             <Link
               href={isAr ? '/ar' : '/'}
-              className="inline-block p-1 bg-white/10 rounded-xl backdrop-blur-md border border-white/20 transition-transform hover:scale-105"
+              className="inline-block p-1 bg-white/10 dark:bg-white/5 rounded-xl backdrop-blur-md border border-white/20 dark:border-white/10 transition-transform hover:scale-105"
             >
               <Image
                 src="/brand/mirage_pharma_logo.png"
                 alt="Mirage Pharma"
                 width={170}
                 height={50}
-                className="h-11 w-auto object-contain"
+                className="h-11 w-auto object-contain dark:hidden"
+              />
+              <Image
+                src="/brand/mirage_pharma_logo_dark.png"
+                alt="Mirage Pharma"
+                width={170}
+                height={50}
+                className="h-11 w-auto object-contain hidden dark:block"
               />
             </Link>
 
