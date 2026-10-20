@@ -7,3 +7,7 @@ export * from './ProductCard';
 export * from './RawMaterialCard';
 export * from './ClinicalEvidenceCard';
 export * from './ReviewCard';
+export * from './TelemetryCard';
+export * from './StatusBadge';
+export * from './ClinicalModal';
+export * from './DataTable';

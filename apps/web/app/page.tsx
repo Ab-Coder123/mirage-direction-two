@@ -185,7 +185,7 @@ export default function HomePage() {
         </div>
 
         {/* Responsive Grid showcasing formulations */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {featuredProducts.map((product) => (
             <ProductCard key={product.id} product={product} variant="grid" />
           ))}
@@ -195,37 +195,39 @@ export default function HomePage() {
         <div className="mt-12 text-center">
           <Button variant="secondary" size="lg" asChild className="px-8 shadow-md">
             <Link href="/products" className="flex items-center gap-2">
-              <span>Show More Products</span>
+              <span>Explore All Products</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>
         </div>
       </section>
 
-      {/* CUSTOMER REVIEWS Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-blue-50/40 dark:from-[#031530] dark:to-[#020F24] border-t border-brand-border-subtle dark:border-white/10 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5 pointer-events-none telemetry-grid" />
+      {/* CUSTOMER REVIEWS Section (only shown if verified reviews exist) */}
+      {MOCK_REVIEWS.length > 0 && (
+        <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-blue-50/40 dark:from-[#031530] dark:to-[#020F24] border-t border-brand-border-subtle dark:border-white/10 relative overflow-hidden">
+          <div className="absolute inset-0 opacity-5 pointer-events-none telemetry-grid" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center space-y-3 mb-12">
-            <Badge variant="cyan" size="md">
-              Clinical Feedback
-            </Badge>
-            <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-brand-navy dark:text-white tracking-tight">
-              CUSTOMER REVIEWS
-            </h2>
-            <p className="text-sm md:text-base text-brand-text-muted dark:text-slate-300 max-w-2xl mx-auto">
-              Testimonials from consulting physicians, healthcare specialists, and verified patients across Egypt.
-            </p>
-          </div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="text-center space-y-3 mb-12">
+              <Badge variant="cyan" size="md">
+                Clinical Feedback
+              </Badge>
+              <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-brand-navy dark:text-white tracking-tight">
+                CUSTOMER REVIEWS
+              </h2>
+              <p className="text-sm md:text-base text-brand-text-muted dark:text-slate-300 max-w-2xl mx-auto">
+                Testimonials from consulting physicians, healthcare specialists, and verified patients across Egypt.
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {MOCK_REVIEWS.slice(0, 3).map((review) => (
-              <ReviewCard key={review.id} review={review} />
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {MOCK_REVIEWS.slice(0, 3).map((review) => (
+                <ReviewCard key={review.id} review={review} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </main>
   );
 }

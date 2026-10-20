@@ -82,7 +82,11 @@ export default async function ArabicProductDetailPage({ params }: Props) {
                     className="max-h-64 sm:max-h-72 max-w-full object-contain drop-shadow-xl"
                   />
                   <div className="mt-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-primary/10 dark:bg-brand-primary/20 text-brand-primary dark:text-brand-cyan-light border border-brand-primary/20 dark:border-brand-primary/30">
-                    {product.category === 'Gastrointestinal & Immunity' ? 'الجهاز الهضمي والمناعة' : product.category}
+                    {product.category === 'Gastrointestinal & Immunity'
+                      ? 'الجهاز الهضمي والمناعة'
+                      : product.category === 'Acid Suppression (P-CAB)'
+                        ? 'تثبيط الحمض المعدي (P-CAB)'
+                        : product.category}
                   </div>
                 </div>
               ) : (
@@ -142,15 +146,22 @@ export default async function ArabicProductDetailPage({ params }: Props) {
 
             {/* Rating & Commercial Price */}
             <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
-                <div className="flex items-center text-amber-500">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-current" />
-                  ))}
+              {product.reviewsCount > 0 ? (
+                <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
+                  <div className="flex items-center text-amber-500">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-current" />
+                    ))}
+                  </div>
+                  <span className="font-bold text-brand-navy dark:text-white">{product.rating.toFixed(1)}</span>
+                  <span className="text-slate-400">({product.reviewsCount} تقييم موثق)</span>
                 </div>
-                <span className="font-bold text-brand-navy dark:text-white">{product.rating.toFixed(1)}</span>
-                <span className="text-slate-400">({product.reviewsCount} تقييم موثق)</span>
-              </div>
+              ) : (
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-primary/10 dark:bg-brand-primary/20 text-brand-primary dark:text-brand-cyan-light text-xs font-semibold">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>مستحضر رسمي معتمد من Mirage Pharma</span>
+                </div>
+              )}
 
               {product.priceInfo && (
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-300/80 dark:border-emerald-700 text-xs sm:text-sm font-mono font-extrabold text-emerald-800 dark:text-emerald-300 shadow-2xs">
@@ -356,7 +367,7 @@ export default async function ArabicProductDetailPage({ params }: Props) {
                       className="mt-3 text-[11px] font-bold text-brand-cyan dark:text-brand-cyan-light hover:underline flex items-center gap-1"
                     >
                       <BookOpen className="w-3 h-3" />
-                      <span>المرجع الطبي المفهرس (PubMed: 34190033)</span>
+                      <span>المرجع الطبي المفهرس (PubMed / DOI)</span>
                     </a>
                   )}
                 </div>

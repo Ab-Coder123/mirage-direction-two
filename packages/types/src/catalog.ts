@@ -57,6 +57,7 @@ export interface Product {
   brandLine: string; // e.g. "Mirage Pharma" or "Naturals 4be"
   category:
     | 'Gastrointestinal & Immunity'
+    | 'Acid Suppression (P-CAB)'
     | 'Men Health'
     | 'Women Health'
     | 'Vitamins & Minerals'

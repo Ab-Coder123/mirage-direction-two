@@ -9,11 +9,7 @@ import { ProductHeroSlider } from '@/components/products/ProductHeroSlider';
 const CATEGORIES = [
   'All Formulations',
   'Gastrointestinal & Immunity',
-  'Men Health',
-  'Women Health',
-  'Vitamins & Minerals',
-  'Maternal Care',
-  'Pediatrics & Immunity',
+  'Acid Suppression (P-CAB)',
 ] as const;
 
 export default function ProductsPage() {
@@ -43,7 +39,7 @@ export default function ProductsPage() {
           <div>
             <span className="font-heading font-black text-xs uppercase tracking-widest text-brand-cyan-light flex items-center justify-center md:justify-start gap-1.5 mb-2">
               <Sparkles className="w-4 h-4" />
-              Naturals 4be Life Sciences
+              Mirage Pharma • Healthy Life
             </span>
             <h1 className="font-heading text-4xl sm:text-5xl font-black tracking-tight text-white">
               PRODUCTS
@@ -54,7 +50,7 @@ export default function ProductsPage() {
           </div>
 
           <div className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-2xl border border-white/20 text-xs font-mono text-slate-200">
-            <span className="text-emerald-400 font-bold">6 Registered Formulations</span> • GxP Standard
+            <span className="text-emerald-400 font-bold">{MOCK_PRODUCTS.length} Registered Formulations</span> • GxP Standard
           </div>
         </div>
       </section>

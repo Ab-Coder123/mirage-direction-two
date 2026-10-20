@@ -9,11 +9,7 @@ import { ProductHeroSlider } from '@/components/products/ProductHeroSlider';
 const CATEGORIES_AR = [
   { id: 'all', label: 'جميع المستحضرات', match: 'all' },
   { id: 'git', label: 'الجهاز الهضمي والمناعة', match: 'Gastrointestinal & Immunity' },
-  { id: 'men', label: 'صحة الرجل', match: 'Men Health' },
-  { id: 'women', label: 'صحة المرأة', match: 'Women Health' },
-  { id: 'vitamins', label: 'فيتامينات ومعادن', match: 'Vitamins & Minerals' },
-  { id: 'maternal', label: 'رعاية الأمومة', match: 'Maternal Care' },
-  { id: 'pediatrics', label: 'الأطفال والمناعة', match: 'Pediatrics & Immunity' },
+  { id: 'pcab', label: 'تثبيط الحمض المعدي (P-CAB)', match: 'Acid Suppression (P-CAB)' },
 ] as const;
 
 export default function ArabicProductsPage() {
@@ -44,7 +40,7 @@ export default function ArabicProductsPage() {
           <div>
             <span className="font-heading font-black text-xs uppercase tracking-widest text-brand-cyan-light flex items-center justify-center md:justify-start gap-1.5 mb-2">
               <Sparkles className="w-4 h-4" />
-              مختبرات Naturals 4be — علوم الحياة والتركيبات الطبية
+              ميراج فارما (Mirage Pharma) — Healthy Life
             </span>
             <h1 className="font-heading text-4xl sm:text-5xl font-black tracking-tight text-white">
               المستحضرات الدوائية
@@ -55,7 +51,7 @@ export default function ArabicProductsPage() {
           </div>
 
           <div className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-2xl border border-white/20 text-xs font-mono text-slate-200">
-            <span className="text-emerald-400 font-bold">6 مستحضرات معتمدة</span> • معايير GxP الدوائية
+            <span className="text-emerald-400 font-bold">{MOCK_PRODUCTS_AR.length} مستحضرات معتمدة</span> • معايير GxP الدوائية
           </div>
         </div>
       </section>

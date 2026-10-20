@@ -142,15 +142,22 @@ export default async function ProductDetailPage({ params }: Props) {
 
             {/* Rating & Commercial Price */}
             <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
-                <div className="flex items-center text-amber-500">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-current" />
-                  ))}
+              {product.reviewsCount > 0 ? (
+                <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
+                  <div className="flex items-center text-amber-500">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-current" />
+                    ))}
+                  </div>
+                  <span className="font-bold text-brand-navy dark:text-white">{product.rating.toFixed(1)}</span>
+                  <span className="text-slate-400">({product.reviewsCount} verified reviews)</span>
                 </div>
-                <span className="font-bold text-brand-navy dark:text-white">{product.rating.toFixed(1)}</span>
-                <span className="text-slate-400">({product.reviewsCount} verified reviews)</span>
-              </div>
+              ) : (
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-primary/10 dark:bg-brand-primary/20 text-brand-primary dark:text-brand-cyan-light text-xs font-semibold">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>Official Mirage Pharma Formulation</span>
+                </div>
+              )}
 
               {product.priceInfo && (
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-300/80 dark:border-emerald-700 text-xs sm:text-sm font-mono font-extrabold text-emerald-800 dark:text-emerald-300 shadow-2xs">

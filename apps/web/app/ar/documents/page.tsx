@@ -16,7 +16,7 @@ import { MOCK_PRODUCTS_AR } from '@mirage/types';
 import { Button, RawMaterialCard, ClinicalEvidenceCard } from '@mirage/ui';
 
 export default function ArabicDocumentsPage() {
-  const [selectedProductSlug, setSelectedProductSlug] = React.useState<string>('man-edge');
+  const [selectedProductSlug, setSelectedProductSlug] = React.useState<string>('sympdca');
 
   const activeProduct =
     MOCK_PRODUCTS_AR.find((p) => p.slug === selectedProductSlug) || MOCK_PRODUCTS_AR[0]!;
@@ -163,7 +163,7 @@ export default function ArabicDocumentsPage() {
               الدراسات الإكلينيكية والأبحاث المنشورة
             </h3>
             <p className="text-xs sm:text-sm text-brand-text-muted dark:text-slate-400 mt-1 max-w-2xl">
-              تعتمد تركيبات Naturals 4be على أوراق بحثية منشورة في دوريات طبية دولية محكمة ومفهرسة عبر DOI.
+              تعتمد تركيبات Mirage Pharma على أوراق بحثية منشورة في دوريات طبية دولية محكمة ومفهرسة عبر PubMed / DOI.
             </p>
           </div>
 
@@ -197,7 +197,7 @@ export default function ArabicDocumentsPage() {
           </div>
 
           <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-sans">
-            تخضع جميع منشآت التصنيع التابعة لميراج فارما ومختبرات Naturals 4be لعمليات تدقيق دورية صارمة تشمل معايير ممارسات التصنيع الجيد (cGMP)، ونظام إدارة سلامة الغذاء (ISO 22000)، مع توثيق كامل لدفعات الإنتاج لضمان التتبع الرقمي وسلاسل التبريد الموثوقة.
+            تخضع جميع منشآت التصنيع التابعة لميراج فارما (Mirage Pharma) لعمليات تدقيق دورية صارمة تشمل معايير ممارسات التصنيع الجيد (cGMP)، ونظام إدارة سلامة الغذاء (ISO 22000)، مع توثيق كامل لدفعات الإنتاج لضمان التتبع الرقمي وسلاسل التبريد الموثوقة.
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-mono text-emerald-300">

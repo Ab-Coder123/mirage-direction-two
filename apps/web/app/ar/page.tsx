@@ -184,8 +184,8 @@ export default function ArabicHomePage() {
           </p>
         </div>
 
-        {/* 3-Column Responsive Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* 2-Column Responsive Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {featuredProducts.map((product) => (
             <ProductCard
               key={product.id}
@@ -209,29 +209,31 @@ export default function ArabicHomePage() {
       </section>
 
       {/* CUSTOMER REVIEWS Section (التقييمات الإكلينيكية) */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-blue-50/40 dark:from-[#031530] dark:to-[#020F24] border-t border-brand-border-subtle dark:border-white/10 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5 pointer-events-none telemetry-grid" />
+      {MOCK_REVIEWS_AR.length > 0 && (
+        <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-blue-50/40 dark:from-[#031530] dark:to-[#020F24] border-t border-brand-border-subtle dark:border-white/10 relative overflow-hidden">
+          <div className="absolute inset-0 opacity-5 pointer-events-none telemetry-grid" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center space-y-3 mb-12">
-            <Badge variant="cyan" size="md">
-              التقييمات الإكلينيكية
-            </Badge>
-            <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-brand-navy dark:text-white tracking-tight">
-              آراء الأطباء والاستشاريين المعتمدين
-            </h2>
-            <p className="text-sm md:text-base text-brand-text-muted dark:text-slate-300 max-w-2xl mx-auto">
-              شهادات وتجارب من كبار الأطباء والاستشاريين والمتعافين في مختلف المستشفيات والمراكز التخصصية.
-            </p>
-          </div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="text-center space-y-3 mb-12">
+              <Badge variant="cyan" size="md">
+                التقييمات الإكلينيكية
+              </Badge>
+              <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-brand-navy dark:text-white tracking-tight">
+                آراء الأطباء والاستشاريين المعتمدين
+              </h2>
+              <p className="text-sm md:text-base text-brand-text-muted dark:text-slate-300 max-w-2xl mx-auto">
+                شهادات وتجارب من كبار الأطباء والاستشاريين والمتعافين في مختلف المستشفيات والمراكز التخصصية.
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {MOCK_REVIEWS_AR.map((review) => (
-              <ReviewCard key={review.id} review={review} isArabic={true} />
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {MOCK_REVIEWS_AR.map((review) => (
+                <ReviewCard key={review.id} review={review} isArabic={true} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </main>
   );
 }

@@ -12,7 +12,7 @@ import { MOCK_PRODUCTS } from '@mirage/types';
 import { Button, RawMaterialCard, ClinicalEvidenceCard } from '@mirage/ui';
 
 export default function DocumentsPage() {
-  const [selectedProductSlug, setSelectedProductSlug] = React.useState<string>('man-edge');
+  const [selectedProductSlug, setSelectedProductSlug] = React.useState<string>('sympdca');
 
   const activeProduct =
     MOCK_PRODUCTS.find((p) => p.slug === selectedProductSlug) || MOCK_PRODUCTS[0]!;
