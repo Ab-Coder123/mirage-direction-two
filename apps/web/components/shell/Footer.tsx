@@ -56,8 +56,8 @@ export const Footer: React.FC = () => {
 
             <p className="text-sm text-slate-300 leading-relaxed">
               {isAr
-                ? 'تطوير تركيبات غذائية ومستحضرات دوائية متقدمة قائمة على الأبحاث الإكلينيكية وعلوم النباتات الطبية، لتتجاوز معايير الرعاية الصحية التقليدية.'
-                : 'Developing advanced, science-based nutritional formulations and clinical phytotherapy, going beyond traditional healthcare standards.'}
+                ? 'انطلقت عام 2019 لتصبح إحدى كبرى الشركات الرائدة في مجال التصنيع والتجارة للمكملات الغذائية والأدوية في مصر والشرق الأوسط برأس مال 50 مليون جنيه.'
+                : 'Launched in 2019, Mirage Pharma is one of the biggest industrial & trading leaders in the food supplements and medicine industry across Egypt and the Middle East.'}
             </p>
 
             <ul className="space-y-3 text-xs text-slate-200 font-sans">
@@ -65,8 +65,8 @@ export const Footer: React.FC = () => {
                 <MapPin className="w-4 h-4 text-brand-cyan-light shrink-0 mt-0.5" />
                 <span>
                   {isAr
-                    ? 'فيلا 270 الأندلس، التجمع الخامس، القاهرة، مصر'
-                    : 'Villa 270 AL Andalus, Fifth Settlement, Cairo, Egypt'}
+                    ? 'المقر الرئيسي والفروع: القاهرة، جمهورية مصر العربية'
+                    : 'Headquarters & Branches: Cairo, Egypt'}
                 </span>
               </li>
               <li className="flex items-center gap-3">
@@ -84,10 +84,10 @@ export const Footer: React.FC = () => {
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-brand-cyan-light shrink-0" />
                 <a
-                  href="mailto:info@hetero-cure.com"
+                  href="mailto:info@mirage-pharma.com"
                   className="font-mono hover:text-white transition-colors"
                 >
-                  info@hetero-cure.com
+                  info@mirage-pharma.com
                 </a>
               </li>
             </ul>
@@ -290,8 +290,8 @@ export const Footer: React.FC = () => {
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
             <p>
               {isAr
-                ? '© 2026 ميراج فارما (Mirage Pharma) / ناتشورالز 4be. جميع الحقوق محفوظة.'
-                : '© 2026 Mirage Pharma / Hetero Cure Pharma. All Rights Reserved.'}
+                ? '© 2026 شركة ميراج فارما (Mirage Pharma — Healthy Life). جميع الحقوق محفوظة.'
+                : '© 2026 Mirage Pharma — Healthy Life (Est. 2019). All Rights Reserved.'}
             </p>
             <span className="hidden sm:inline text-white/20">|</span>
             <Link

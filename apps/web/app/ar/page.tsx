@@ -2,10 +2,13 @@ import Link from 'next/link';
 import {
   Sparkles,
   ArrowLeft,
-  ShieldCheck,
+  Building2,
+  TrendingUp,
+  Users,
+  Calendar,
+  Globe2,
   Microscope,
-  HeartHandshake,
-  Award,
+  ShieldCheck,
 } from 'lucide-react';
 import { MOCK_PRODUCTS_AR, MOCK_REVIEWS_AR } from '@mirage/types';
 import { Button, Badge, ProductCard, ReviewCard } from '@mirage/ui';
@@ -20,16 +23,16 @@ export default function ArabicHomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary dark:text-brand-cyan-light text-xs font-semibold">
             <Sparkles className="w-4 h-4" />
-            <span>مختبرات Naturals 4be — تركيبات نباتية علاجية متقدمة</span>
+            <span>ميراج فارما (Mirage Pharma) • Healthy Life • تأسست عام 2019</span>
           </div>
 
           <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-brand-navy dark:text-white tracking-tight leading-tight max-w-4xl mx-auto">
-            تركيبات غذائية ودوائية سريرية.. <br />
-            <span className="text-brand-primary dark:text-brand-cyan-light">مبنية على القيم ومدعومة بالعلوم الطبية</span>
+            رؤية جديدة.. عصر جديد في <br />
+            <span className="text-brand-primary dark:text-brand-cyan-light">المكملات الغذائية وصناعة الدواء</span>
           </h1>
 
           <p className="text-brand-text-muted dark:text-slate-300 text-base md:text-lg max-w-3xl mx-auto leading-relaxed font-medium">
-            نطور حلولاً صحية ودوائية متقدمة تتجاوز المكملات التقليدية. تقدم Naturals 4be منظومة متكاملة من المستحضرات الدوائية والغذائية الوظيفية القائمة على خلاصات نباتية فائقة النقاء وأنظمة امتصاص دوائي حديثة تواكب أعلى المعايير العالمية.
+            انطلقت شركة <strong>ميراج فارما (Mirage Pharma)</strong> في عام 2019 لتصبح واحدة من أكبر الشركات الرائدة في مجال التصنيع والتجارة للمكملات الغذائية والأدوية في مصر والشرق الأوسط، وتقديم خيارات علاجية متطورة تلبي الاحتياجات الصحية للمجتمع.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
@@ -40,33 +43,128 @@ export default function ArabicHomePage() {
               </Link>
             </Button>
             <Button variant="outline" size="lg" asChild className="hover:border-brand-primary">
-              <Link href="/ar/documents">
-                الدوسيهات والأبحاث الإكلينيكية
+              <Link href="/ar/our-story">
+                عن الشركة ورؤيتنا
               </Link>
             </Button>
           </div>
 
-          {/* Quick Metrics & Scientific Validation Bar */}
+          {/* Official Corporate Telemetry Bar */}
           <div className="pt-8 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
             <div className="p-4 rounded-2xl bg-white dark:bg-[#041B3B] border border-brand-border-subtle dark:border-white/10 shadow-sm hover:shadow-md transition-shadow">
-              <ShieldCheck className="w-5 h-5 text-brand-green mx-auto mb-1.5" />
-              <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white block">cGMP / GxP</span>
-              <span className="text-xs text-brand-text-muted dark:text-slate-400">معايير التصنيع الدوائي</span>
+              <Calendar className="w-5 h-5 text-brand-primary dark:text-brand-cyan-light mx-auto mb-1.5" />
+              <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white block">2019</span>
+              <span className="text-xs text-brand-text-muted dark:text-slate-400">تاريخ التأسيس بالقاهرة</span>
             </div>
             <div className="p-4 rounded-2xl bg-white dark:bg-[#041B3B] border border-brand-border-subtle dark:border-white/10 shadow-sm hover:shadow-md transition-shadow">
-              <Microscope className="w-5 h-5 text-brand-primary dark:text-brand-cyan-light mx-auto mb-1.5" />
-              <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white block">درجة نقاء دوائية</span>
-              <span className="text-xs text-brand-text-muted dark:text-slate-400">خلاصات نباتية معيارية</span>
+              <Building2 className="w-5 h-5 text-brand-green mx-auto mb-1.5" />
+              <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white block">50 مليون ج.م</span>
+              <span className="text-xs text-brand-text-muted dark:text-slate-400">رأس مال الشركة</span>
             </div>
             <div className="p-4 rounded-2xl bg-white dark:bg-[#041B3B] border border-brand-border-subtle dark:border-white/10 shadow-sm hover:shadow-md transition-shadow">
-              <Award className="w-5 h-5 text-brand-cyan dark:text-brand-cyan-light mx-auto mb-1.5" />
-              <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white block">اعتماد رقابي</span>
-              <span className="text-xs text-brand-text-muted dark:text-slate-400">ملفات SmPC موثقة</span>
+              <TrendingUp className="w-5 h-5 text-brand-cyan dark:text-brand-cyan-light mx-auto mb-1.5" />
+              <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white block">80 مليون ج.م</span>
+              <span className="text-xs text-brand-text-muted dark:text-slate-400">حجم الأعمال السنوي</span>
             </div>
             <div className="p-4 rounded-2xl bg-white dark:bg-[#041B3B] border border-brand-border-subtle dark:border-white/10 shadow-sm hover:shadow-md transition-shadow">
-              <HeartHandshake className="w-5 h-5 text-amber-500 mx-auto mb-1.5" />
-              <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white block">99.4%</span>
-              <span className="text-xs text-brand-text-muted dark:text-slate-400">نسبة الرضا الإكلينيكي</span>
+              <Users className="w-5 h-5 text-brand-primary dark:text-brand-cyan-light mx-auto mb-1.5" />
+              <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white block">75 + 500</span>
+              <span className="text-xs text-brand-text-muted dark:text-slate-400">حجم الكوادر البشرية</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ABOUT MIRAGE PHARMA — Corporate Overview Section (عن ميراج فارما) */}
+      <section className="py-16 md:py-20 bg-white dark:bg-[#02132B] border-b border-brand-border-subtle dark:border-white/10 transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <div className="lg:col-span-7 space-y-5">
+              <Badge variant="cyan" size="md">
+                عن ميراج فارما — Mirage Pharma
+              </Badge>
+              <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-brand-navy dark:text-white tracking-tight leading-tight">
+                في طليعة صناعة الرعاية الصحية والدوائية
+              </h2>
+              <p className="text-sm md:text-base text-brand-text-muted dark:text-slate-300 leading-relaxed">
+                نسعى لأن نكون في طليعة صناعة الرعاية الصحية في تقديم مستحضرات دوائية متطورة وعلامات تجارية رائدة للمرضى في الأسواق التي نخدمها. يتم اختيار مستحضراتنا بعناية فائقة لتلبية وتحقيق الرفاه الصحي المتكامل.
+              </p>
+              <p className="text-sm md:text-base text-brand-text-muted dark:text-slate-300 leading-relaxed">
+                يرتكز جوهر استراتيجية الشركة على بناء محفظة واسعة من العلامات التجارية الفريدة والمستحضرات الدوائية من خلال <strong>التطوير الذاتي (Self Development)</strong>، و<strong>تمثيل الشركات الأوروبية والأمريكية</strong> في مصر والشرق الأوسط — لمواجهة تحديات التطوير والتصنيع وتوفير خيارات علاجية عالية الجودة تلبي الاحتياجات الصحية المستقبلية للمجتمع.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#041B3B] border border-slate-200/70 dark:border-white/10">
+                  <Microscope className="w-5 h-5 text-brand-primary dark:text-brand-cyan-light mb-1.5" />
+                  <span className="font-heading font-bold text-sm text-brand-navy dark:text-white block">
+                    التطوير الذاتي
+                  </span>
+                  <span className="text-xs text-brand-text-muted dark:text-slate-400">
+                    علامات تجارية ومستحضرات نوعية
+                  </span>
+                </div>
+                <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#041B3B] border border-slate-200/70 dark:border-white/10">
+                  <Globe2 className="w-5 h-5 text-brand-green mb-1.5" />
+                  <span className="font-heading font-bold text-sm text-brand-navy dark:text-white block">
+                    وكالات أوروبية وأمريكية
+                  </span>
+                  <span className="text-xs text-brand-text-muted dark:text-slate-400">
+                    تمثيل كبرى الشركات العالمية
+                  </span>
+                </div>
+                <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#041B3B] border border-slate-200/70 dark:border-white/10">
+                  <ShieldCheck className="w-5 h-5 text-brand-cyan mb-1.5" />
+                  <span className="font-heading font-bold text-sm text-brand-navy dark:text-white block">
+                    تصنيع وتجارة
+                  </span>
+                  <span className="text-xs text-brand-text-muted dark:text-slate-400">
+                    المكملات الغذائية والأدوية
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Fact Summary Box */}
+            <div className="lg:col-span-5">
+              <div className="rounded-3xl bg-gradient-to-br from-[#023368] to-[#0a66c2] dark:from-[#041B3B] dark:to-[#01142B] text-white p-8 shadow-xl border border-white/10 space-y-5">
+                <div className="border-b border-white/15 pb-4">
+                  <span className="text-xs font-mono uppercase tracking-wider text-brand-cyan-light block">
+                    البيانات الأساسية للشركة
+                  </span>
+                  <h3 className="font-heading text-2xl font-extrabold mt-1">
+                    ميراج فارما في أرقام
+                  </h3>
+                </div>
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-center justify-between border-b border-white/10 pb-2.5">
+                    <span className="text-slate-300">تاريخ الانطلاق</span>
+                    <span className="font-mono font-bold text-white">2019</span>
+                  </li>
+                  <li className="flex items-center justify-between border-b border-white/10 pb-2.5">
+                    <span className="text-slate-300">مجال العمل</span>
+                    <span className="font-semibold text-white">صناعي وتجاري</span>
+                  </li>
+                  <li className="flex items-center justify-between border-b border-white/10 pb-2.5">
+                    <span className="text-slate-300">رأس المال</span>
+                    <span className="font-mono font-bold text-brand-cyan-light">50 مليون جنيه مصري</span>
+                  </li>
+                  <li className="flex items-center justify-between border-b border-white/10 pb-2.5">
+                    <span className="text-slate-300">حجم الأعمال</span>
+                    <span className="font-mono font-bold text-emerald-300">80 مليون جنيه مصري</span>
+                  </li>
+                  <li className="flex items-center justify-between border-b border-white/10 pb-2.5">
+                    <span className="text-slate-300">عدد الموظفين</span>
+                    <span className="font-mono font-bold text-white">75 + 500</span>
+                  </li>
+                  <li className="flex items-center justify-between border-b border-white/10 pb-2.5">
+                    <span className="text-slate-300">المقر الرئيسي والفروع</span>
+                    <span className="font-semibold text-white">القاهرة</span>
+                  </li>
+                  <li className="flex items-center justify-between">
+                    <span className="text-slate-300">نطاق العمل</span>
+                    <span className="font-semibold text-white">مصر والشرق الأوسط</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -82,7 +180,7 @@ export default function ArabicHomePage() {
             مستحضراتنا الدوائية المعتمدة
           </h2>
           <p className="text-sm md:text-base text-brand-text-muted dark:text-slate-300 max-w-2xl mx-auto">
-            حلول علاجية موجهة ومصممة بأعلى درجات الدقة الدوائية وخلاصات المواد الفعالة النقية لتعزيز صحة الإنسان.
+            مكملات غذائية ومستحضرات دوائية مختارة بعناية فائقة لتلبية وتحقيق الرفاه الصحي للمجتمع.
           </p>
         </div>
 
@@ -112,7 +210,6 @@ export default function ArabicHomePage() {
 
       {/* CUSTOMER REVIEWS Section (التقييمات الإكلينيكية) */}
       <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-blue-50/40 dark:from-[#031530] dark:to-[#020F24] border-t border-brand-border-subtle dark:border-white/10 relative overflow-hidden">
-        {/* Background Capsule Atmosphere */}
         <div className="absolute inset-0 opacity-5 pointer-events-none telemetry-grid" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

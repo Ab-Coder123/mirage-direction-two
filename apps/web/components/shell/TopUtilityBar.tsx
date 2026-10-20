@@ -25,12 +25,12 @@ export const TopUtilityBar: React.FC = () => {
           <span className="inline-block w-2 h-2 rounded-full bg-brand-green animate-pulse" />
           <span>
             {isAr
-              ? 'الرعاية الصحية الإكلينيكية والتميز في العلاجات النباتية'
-              : 'Clinical Healthcare & Phytotherapeutic Excellence'}
+              ? 'ميراج فارما • تأسست 2019 • تصنيع وتجارة المكملات الغذائية والأدوية'
+              : 'Mirage Pharma • Est. 2019 • Food Supplements & Medicine Industry'}
           </span>
           <span className="text-slate-600">|</span>
           <span className="text-slate-400">
-            {isAr ? 'القاهرة • عمليات الشرق الأوسط وأفريقيا' : 'Cairo • EMEA Operations'}
+            {isAr ? 'القاهرة، مصر • رأس المال 50 مليون ج.م' : 'Cairo HQ • 50M EGP Capital'}
           </span>
         </div>
 
