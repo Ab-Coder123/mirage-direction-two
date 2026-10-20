@@ -24,7 +24,7 @@ describe('FormulationStudioPage (Admin Products Management)', () => {
   });
 
   it('switches between studio tabs (general, supplement, materials, evidence, serialization)', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<FormulationStudioPage />);
 
     // Click '2. Supplement Facts' tab
@@ -40,7 +40,9 @@ describe('FormulationStudioPage (Admin Products Management)', () => {
     // Click '4. Clinical Studies' tab
     const evidenceTab = screen.getByRole('button', { name: /4\.\s*Clinical Studies/i });
     await user.click(evidenceTab);
-    expect(screen.getByText(/Peer-Reviewed Clinical Papers/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/PubMed \/ National Library of Medicine/i)
+    ).toBeInTheDocument();
 
     // Click '5. GS1 2D DataMatrix' tab
     const serialTab = screen.getByRole('button', { name: /5\.\s*GS1 2D DataMatrix/i });
@@ -51,7 +53,7 @@ describe('FormulationStudioPage (Admin Products Management)', () => {
   });
 
   it('filters product list by category chips', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<FormulationStudioPage />);
 
     // Select category 'Gastrointestinal & Immunity'
@@ -70,7 +72,7 @@ describe('FormulationStudioPage (Admin Products Management)', () => {
   });
 
   it('toggles pack size stock availability and triggers GxP notification', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<FormulationStudioPage />);
 
     // Look for pack stock indicator
@@ -94,7 +96,7 @@ describe('FormulationStudioPage (Admin Products Management)', () => {
   });
 
   it('adds an active compound in the Supplement Facts tab', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<FormulationStudioPage />);
 
     // Switch to Supplement Facts tab
@@ -125,7 +127,7 @@ describe('FormulationStudioPage (Admin Products Management)', () => {
   });
 
   it('creates a new formulation via the registration modal', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<FormulationStudioPage />);
 
     // Click "+ Register New Formulation" header button
@@ -166,7 +168,7 @@ describe('FormulationStudioPage (Admin Products Management)', () => {
   });
 
   it('rejects formulation creation when required SKU name is empty', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<FormulationStudioPage />);
 
     // Open modal
@@ -183,7 +185,7 @@ describe('FormulationStudioPage (Admin Products Management)', () => {
   });
 
   it('renders serialization GS1 2D DataMatrix parameters', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(<FormulationStudioPage />);
 
     await user.click(screen.getByRole('button', { name: /5\.\s*GS1 2D DataMatrix/i }));
