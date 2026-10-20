@@ -26,7 +26,8 @@ export default function ProductsPage() {
         query === '' ||
         product.name.toLowerCase().includes(query) ||
         product.description.toLowerCase().includes(query) ||
-        product.subtitle.toLowerCase().includes(query);
+        product.subtitle.toLowerCase().includes(query) ||
+        (product.tagline && product.tagline.toLowerCase().includes(query));
       return matchesCategory && matchesSearch;
     });
   }, [selectedCategory, deferredSearch]);

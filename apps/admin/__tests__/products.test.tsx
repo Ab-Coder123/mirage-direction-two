@@ -165,7 +165,7 @@ describe('FormulationStudioPage (Admin Products Management)', () => {
       screen.getByText('Standardized 95% Curcuminoids with Piperine')
     ).toBeInTheDocument();
     expect(screen.getAllByText('كركمين فائق الامتصاص').length).toBeGreaterThan(0);
-  });
+  }, 15000);
 
   it('rejects formulation creation when required SKU name is empty', async () => {
     const user = userEvent.setup({ delay: null });

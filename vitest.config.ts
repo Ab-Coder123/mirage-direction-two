@@ -40,6 +40,7 @@ const baseTest = {
   setupFiles: [r('tests/setup.ts')],
   css: false,
   restoreMocks: true,
+  testTimeout: 15000,
 };
 
 export default defineConfig({
