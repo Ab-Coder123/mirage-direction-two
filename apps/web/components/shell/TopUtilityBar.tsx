@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Search, Globe } from 'lucide-react';
 
@@ -10,15 +11,11 @@ export const TopUtilityBar: React.FC = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
   const isAr = pathname?.startsWith('/ar');
 
-  const toggleLanguage = () => {
-    if (isAr) {
-      const enPath = pathname.replace(/^\/ar/, '') || '/';
-      router.push(enPath);
-    } else {
-      const arPath = pathname === '/' ? '/ar' : `/ar${pathname}`;
-      router.push(arPath);
-    }
-  };
+  const targetPath = isAr
+    ? pathname.replace(/^\/ar/, '') || '/'
+    : pathname === '/'
+    ? '/ar'
+    : `/ar${pathname}`;
 
   return (
     <div className="w-full bg-brand-navy dark:bg-[#01142B] text-white text-xs py-2 px-4 border-b border-brand-navy-light/40 dark:border-white/10 transition-colors duration-200">
@@ -104,14 +101,15 @@ export const TopUtilityBar: React.FC = () => {
             </a>
           </div>
 
-          {/* Language Toggle Button */}
-          <button
-            onClick={toggleLanguage}
-            className="flex items-center gap-1 px-2.5 py-1 rounded bg-brand-primary hover:bg-brand-primary-light text-white font-medium text-xs transition-colors shadow-sm"
+          {/* Language Toggle Link */}
+          <Link
+            href={targetPath}
+            aria-label={isAr ? 'Switch to English' : 'التبديل إلى العربية'}
+            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-primary hover:bg-brand-primary-light text-white font-medium text-xs transition-colors shadow-sm"
           >
-            <Globe className="w-3 h-3" />
+            <Globe className="w-3.5 h-3.5" />
             <span>{isAr ? 'English' : 'العربية'}</span>
-          </button>
+          </Link>
         </div>
       </div>
     </div>
