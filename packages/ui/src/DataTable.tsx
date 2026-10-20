@@ -129,7 +129,12 @@ export function DataTable<T extends Record<string, any>>({
           const raw = col.csvValue
             ? col.csvValue(row)
             : row[col.key] ?? '';
-          return `"${String(raw).replace(/"/g, '""')}"`;
+          const str = String(raw);
+          // Mitigate CSV / formula injection (=, +, -, @) unless genuine number
+          if (/^[=+\-@]/.test(str) && isNaN(Number(str))) {
+            return `"'${str.replace(/"/g, '""')}"`;
+          }
+          return `"${str.replace(/"/g, '""')}"`;
         })
         .join(',')
     );
@@ -313,7 +318,7 @@ export function DataTable<T extends Record<string, any>>({
       {/* Pagination Footer */}
       <div className="px-5 py-3.5 bg-slate-50/60 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500 font-mono tabular-numbers">
         <div className="flex items-center gap-2">
-          <span>
+          <span data-testid="pagination-summary">
             Showing{' '}
             <strong className="text-[#023368]">
               {sortedData.length === 0 ? 0 : (currentPage - 1) * pageSize + 1}

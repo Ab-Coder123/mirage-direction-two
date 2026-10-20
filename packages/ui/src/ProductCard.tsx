@@ -67,8 +67,11 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(({
               <img
                 src={product.heroImage}
                 alt={product.name}
-                className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(2,15,36,0.1)] group-hover:scale-108 transition-transform duration-500 ease-out"
+                width={400}
+                height={250}
                 loading="lazy"
+                decoding="async"
+                className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(2,15,36,0.1)] group-hover:scale-108 transition-transform duration-500 ease-out"
               />
             ) : (
               <div className="text-center">
@@ -220,8 +223,11 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(({
             <img
               src={product.heroImage}
               alt={product.name}
-              className="max-h-40 max-w-full object-contain drop-shadow-[0_8px_16px_rgba(2,15,36,0.12)] group-hover:scale-108 group-hover:-translate-y-1 transition-all duration-500 ease-out"
+              width={400}
+              height={250}
               loading="lazy"
+              decoding="async"
+              className="max-h-40 max-w-full object-contain drop-shadow-[0_8px_16px_rgba(2,15,36,0.12)] group-hover:scale-108 group-hover:-translate-y-1 transition-all duration-500 ease-out"
             />
           ) : (
             <div className="text-center">

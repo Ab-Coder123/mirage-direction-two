@@ -12,3 +12,5 @@ export function formatPharmaTemperature(celsius: number): string {
 export function formatBatchCode(code: string): string {
   return `LOT-${code.toUpperCase().replace(/[^A-Z0-9]/g, '')}`;
 }
+
+export * from './slug';

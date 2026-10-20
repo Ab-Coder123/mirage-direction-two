@@ -76,6 +76,10 @@ export default async function ProductDetailPage({ params }: Props) {
                   <img
                     src={product.heroImage}
                     alt={product.name}
+                    width={700}
+                    height={438}
+                    fetchPriority="high"
+                    decoding="async"
                     className="max-h-64 sm:max-h-72 max-w-full object-contain drop-shadow-xl"
                   />
                   <div className="mt-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-primary/10 dark:bg-brand-primary/20 text-brand-primary dark:text-brand-cyan-light border border-brand-primary/20 dark:border-brand-primary/30">

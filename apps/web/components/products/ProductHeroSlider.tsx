@@ -96,6 +96,10 @@ export const ProductHeroSlider: React.FC<ProductHeroSliderProps> = ({ products, 
                 <img
                   src={current.heroImage}
                   alt={current.name}
+                  width={600}
+                  height={375}
+                  fetchPriority="high"
+                  decoding="async"
                   className="max-h-52 sm:max-h-60 max-w-full object-contain drop-shadow-2xl group-hover:scale-105 transition-transform duration-500 rounded-xl"
                 />
                 <div className="mt-3 flex items-center justify-center gap-2">
