@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, ShieldCheck, Globe, MessageCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { Button, Card, Badge } from '@mirage/ui';
 
 export default function ArabicContactPage() {
@@ -93,38 +93,6 @@ export default function ArabicContactPage() {
                     >
                       info@miragepharma.com
                     </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3.5">
-                  <div className="w-9 h-9 rounded-xl bg-brand-primary/10 dark:bg-brand-primary/20 text-brand-primary dark:text-brand-cyan-light flex items-center justify-center shrink-0 mt-0.5">
-                    <Globe className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="font-bold text-brand-navy dark:text-brand-cyan-light block text-xs uppercase tracking-wider">
-                      الموقع الإلكتروني:
-                    </span>
-                    <a
-                      href="https://miragepharma.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-mono text-sm text-brand-primary dark:text-brand-cyan-light hover:underline"
-                      dir="ltr"
-                    >
-                      miragepharma.com
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3.5">
-                  <div className="w-9 h-9 rounded-xl bg-brand-cyan/10 dark:bg-brand-cyan/20 text-brand-cyan dark:text-brand-cyan-light flex items-center justify-center shrink-0 mt-0.5">
-                    <MessageCircle className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="font-bold text-brand-navy dark:text-brand-cyan-light block text-xs uppercase tracking-wider">
-                      ماسنجر والتواصل الاجتماعي:
-                    </span>
-                    <p className="text-sm font-semibold">Mirage Pharma</p>
                   </div>
                 </div>
 

@@ -108,7 +108,7 @@ export const Navbar: React.FC = () => {
           >
             <ShoppingBag className="w-4 h-4" />
             <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-brand-primary text-[10px] font-bold text-white flex items-center justify-center font-mono">
-              5
+              2
             </span>
           </Link>
 
