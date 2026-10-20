@@ -11,9 +11,11 @@ import {
   Star,
   Award,
   BookOpen,
+  Zap,
+  Stethoscope,
 } from 'lucide-react';
 import { MOCK_PRODUCTS_AR, MOCK_REVIEWS_AR, Product } from '@mirage/types';
-import { Button, Card, ReviewCard } from '@mirage/ui';
+import { Button, Badge, Card, ReviewCard } from '@mirage/ui';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -80,7 +82,7 @@ export default async function ArabicProductDetailPage({ params }: Props) {
                     className="max-h-64 sm:max-h-72 max-w-full object-contain drop-shadow-xl"
                   />
                   <div className="mt-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-primary/10 dark:bg-brand-primary/20 text-brand-primary dark:text-brand-cyan-light border border-brand-primary/20 dark:border-brand-primary/30">
-                    {product.category}
+                    {product.category === 'Gastrointestinal & Immunity' ? 'الجهاز الهضمي والمناعة' : product.category}
                   </div>
                 </div>
               ) : (
@@ -94,9 +96,6 @@ export default async function ArabicProductDetailPage({ params }: Props) {
                   <span className="text-xs font-mono uppercase tracking-widest text-slate-400 mt-1">
                     {product.brandLine}
                   </span>
-                  <div className="mt-4 px-3 py-1 rounded-full text-xs font-semibold bg-brand-primary/10 dark:bg-brand-primary/20 text-brand-primary dark:text-brand-cyan-light border border-brand-primary/20 dark:border-brand-primary/30">
-                    {product.category}
-                  </div>
                 </>
               )}
             </div>
@@ -135,15 +134,30 @@ export default async function ArabicProductDetailPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Rating */}
-            <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
-              <div className="flex items-center text-amber-500">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-current" />
-                ))}
+            {product.tagline && (
+              <div className="p-3.5 rounded-xl bg-gradient-to-r from-brand-primary/10 to-brand-cyan/10 dark:from-brand-primary/20 dark:to-brand-cyan/10 border border-brand-primary/20 dark:border-brand-primary/30 text-xs sm:text-sm font-heading font-bold text-brand-navy dark:text-white">
+                {product.tagline}
               </div>
-              <span className="font-bold text-brand-navy dark:text-white">{product.rating.toFixed(1)}</span>
-              <span className="text-slate-400">({product.reviewsCount} تقييم موثق من الأطباء والمرضى)</span>
+            )}
+
+            {/* Rating & Commercial Price */}
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
+                <div className="flex items-center text-amber-500">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-current" />
+                  ))}
+                </div>
+                <span className="font-bold text-brand-navy dark:text-white">{product.rating.toFixed(1)}</span>
+                <span className="text-slate-400">({product.reviewsCount} تقييم موثق)</span>
+              </div>
+
+              {product.priceInfo && (
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-300/80 dark:border-emerald-700 text-xs sm:text-sm font-mono font-extrabold text-emerald-800 dark:text-emerald-300 shadow-2xs">
+                  <span>السعر الرسمي:</span>
+                  <span>{product.priceInfo}</span>
+                </div>
+              )}
             </div>
 
             <p className="text-sm sm:text-base text-brand-text-muted dark:text-slate-300 leading-relaxed">
@@ -156,17 +170,24 @@ export default async function ArabicProductDetailPage({ params }: Props) {
                 العبوات المتوفرة:
               </span>
               <div className="flex flex-wrap items-center gap-2">
-                {product.packSizes.map((pack, idx) => (
-                  <span
-                    key={idx}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold bg-slate-50 dark:bg-[#020F24] text-brand-navy dark:text-slate-200 border border-slate-200 dark:border-white/10 shadow-sm"
-                  >
+                {product.packagingDetails ? (
+                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold bg-slate-50 dark:bg-[#020F24] text-brand-navy dark:text-slate-200 border border-slate-200 dark:border-white/10 shadow-sm">
                     <Pill className="w-3.5 h-3.5 text-brand-primary dark:text-brand-cyan-light" />
-                    <span>
-                      {pack.quantity} {pack.unit === 'capsules' ? 'كبسولة' : pack.unit === 'ml' ? 'مل' : pack.unit}
-                    </span>
+                    <span>{product.packagingDetails}</span>
                   </span>
-                ))}
+                ) : (
+                  product.packSizes.map((pack, idx) => (
+                    <span
+                      key={idx}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold bg-slate-50 dark:bg-[#020F24] text-brand-navy dark:text-slate-200 border border-slate-200 dark:border-white/10 shadow-sm"
+                    >
+                      <Pill className="w-3.5 h-3.5 text-brand-primary dark:text-brand-cyan-light" />
+                      <span>
+                        {pack.quantity} {pack.unit === 'capsules' ? 'كبسولة' : pack.unit === 'ml' ? 'مل' : pack.unit}
+                      </span>
+                    </span>
+                  ))
+                )}
               </div>
             </div>
 
@@ -199,16 +220,67 @@ export default async function ArabicProductDetailPage({ params }: Props) {
           </div>
         </div>
 
+        {/* Synergy Architecture Banner (1 + 1 = 3 Smart Synergy Ratio) */}
+        {product.synergyBanner && (
+          <section className="rounded-3xl bg-gradient-to-r from-[#023368] via-[#054b98] to-[#0a66c2] dark:from-[#031530] dark:via-[#041B3B] dark:to-[#020F24] text-white p-8 sm:p-10 shadow-lg border border-brand-primary/30 dark:border-white/10 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <Badge variant="cyan" size="md">
+                {product.synergyBanner.badge}
+              </Badge>
+              <span className="text-xs font-mono uppercase tracking-widest text-emerald-300 font-bold flex items-center gap-1.5">
+                <Zap className="w-4 h-4" />
+                <span>آلية التآزر الحيوي الذكي</span>
+              </span>
+            </div>
+            <h2 className="font-heading text-2xl sm:text-3xl font-extrabold tracking-tight">
+              {product.synergyBanner.title}
+            </h2>
+            <p className="text-sm sm:text-base text-slate-200 leading-relaxed max-w-4xl">
+              {product.synergyBanner.description}
+            </p>
+          </section>
+        )}
+
+        {/* Clinical Indications Section */}
+        {product.clinicalIndications && product.clinicalIndications.length > 0 && (
+          <section className="space-y-6">
+            <div>
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-primary dark:text-brand-cyan-light block mb-1">
+                دواعي الاستعمال الإكلينيكية
+              </span>
+              <h3 className="font-heading font-extrabold text-2xl text-brand-navy dark:text-white">
+                {product.name} — المسار الموثوق لحالات:
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {product.clinicalIndications.map((ind, idx) => (
+                <Card key={idx} variant="glass" className="p-6 space-y-3 border-t-4 border-t-brand-green">
+                  <div className="w-10 h-10 rounded-xl bg-brand-green/10 text-brand-green flex items-center justify-center">
+                    <Stethoscope className="w-5 h-5" />
+                  </div>
+                  <h4 className="font-heading font-bold text-lg text-brand-navy dark:text-white">
+                    {ind.title}
+                  </h4>
+                  <p className="text-xs sm:text-sm text-brand-text-muted dark:text-slate-300 leading-relaxed">
+                    {ind.description}
+                  </p>
+                </Card>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Ingredients & Raw Materials Breakdown */}
         {product.rawMaterials && product.rawMaterials.length > 0 && (
           <section className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-heading font-extrabold text-2xl text-brand-navy dark:text-white">
-                  المركبات الفعالة والخلاصات النباتية المعيارية
+                  المركبات الفعالة والسلالات الحيوية المعيارية
                 </h3>
                 <p className="text-xs sm:text-sm text-brand-text-muted dark:text-slate-400 mt-1">
-                  خلاصات نقية ذات درجة صيدلانية مستخدمة في تركيبة {product.name}
+                  مكونات نقية ذات درجة صيدلانية مستخدمة في تركيبة {product.name}
                 </p>
               </div>
               <Button variant="outline" size="sm" asChild>
@@ -240,8 +312,8 @@ export default async function ArabicProductDetailPage({ params }: Props) {
                     ))}
                   </ul>
                   {rm.mechanism && (
-                    <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-white/10 text-xs text-brand-navy/90 dark:text-slate-200 bg-brand-surface dark:bg-[#020F24] p-2 rounded-lg">
-                      <strong className="text-brand-navy dark:text-brand-cyan-light font-bold">الآلية البيوكيميائية للعمل: </strong>
+                    <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-white/10 text-xs text-brand-navy/90 dark:text-slate-200 bg-brand-surface dark:bg-[#020F24] p-2.5 rounded-lg">
+                      <strong className="text-brand-navy dark:text-brand-cyan-light font-bold">آلية العمل الحيوية: </strong>
                       <span className="text-slate-600 dark:text-slate-300">{rm.mechanism}</span>
                     </div>
                   )}
@@ -261,18 +333,18 @@ export default async function ArabicProductDetailPage({ params }: Props) {
               {product.clinicalEvidences.map((ev) => (
                 <div
                   key={ev.id}
-                  className="p-4 rounded-xl bg-white dark:bg-[#041B3B] border border-brand-border-subtle dark:border-white/10 shadow-sm flex flex-col justify-between"
+                  className="p-5 rounded-xl bg-white dark:bg-[#041B3B] border border-brand-border-subtle dark:border-white/10 shadow-sm flex flex-col justify-between"
                 >
                   <div>
                     <span className="text-[11px] font-mono font-bold text-brand-primary dark:text-brand-cyan-light uppercase block mb-1">
                       {ev.journalName} {ev.year ? `(${ev.year})` : ''}
                     </span>
-                    <h5 className="font-heading font-bold text-xs text-brand-navy dark:text-white leading-snug">
+                    <h5 className="font-heading font-bold text-xs sm:text-sm text-brand-navy dark:text-white leading-snug">
                       {ev.paperTitle}
                     </h5>
                     {ev.keyFinding && (
-                      <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-2 p-2 rounded-lg bg-slate-50 dark:bg-[#020F24] border border-slate-100 dark:border-white/10 italic">
-                        "{ev.keyFinding}"
+                      <p className="text-xs text-slate-600 dark:text-slate-300 mt-2.5 p-2.5 rounded-lg bg-slate-50 dark:bg-[#020F24] border border-slate-100 dark:border-white/10 italic">
+                        &laquo;{ev.keyFinding}&raquo;
                       </p>
                     )}
                   </div>
@@ -284,7 +356,7 @@ export default async function ArabicProductDetailPage({ params }: Props) {
                       className="mt-3 text-[11px] font-bold text-brand-cyan dark:text-brand-cyan-light hover:underline flex items-center gap-1"
                     >
                       <BookOpen className="w-3 h-3" />
-                      <span>رابط البحث المفهرس DOI</span>
+                      <span>المرجع الطبي المفهرس (PubMed: 34190033)</span>
                     </a>
                   )}
                 </div>

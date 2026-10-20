@@ -8,6 +8,7 @@ import { ProductHeroSlider } from '@/components/products/ProductHeroSlider';
 
 const CATEGORIES = [
   'All Formulations',
+  'Gastrointestinal & Immunity',
   'Men Health',
   'Women Health',
   'Vitamins & Minerals',
@@ -53,7 +54,7 @@ export default function ProductsPage() {
           </div>
 
           <div className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-2xl border border-white/20 text-xs font-mono text-slate-200">
-            <span className="text-emerald-400 font-bold">5 Registered Formulations</span> • GxP Standard
+            <span className="text-emerald-400 font-bold">6 Registered Formulations</span> • GxP Standard
           </div>
         </div>
       </section>

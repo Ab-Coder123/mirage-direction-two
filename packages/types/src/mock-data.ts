@@ -2,6 +2,95 @@ import { Product, CustomerReview } from './catalog';
 
 export const MOCK_PRODUCTS: Product[] = [
   {
+    id: 'prod-sympdca',
+    slug: 'sympdca',
+    name: 'SymPDCA',
+    brandLine: 'Mirage Pharma',
+    category: 'Gastrointestinal & Immunity',
+    subtitle: 'The Trusted Path Through GIT Journey',
+    arabicSubtitle: 'Dietary Supplement',
+    tagline: '"Double the Defenses" — The Fast-Acting Dual Shield for Gut Health.',
+    description:
+      'Supports digestion & helps maintain a normal intestinal microflora. SymPDCA combines Saccharomyces boulardii (125mg) and Lactobacillus rhamnosus GG (15mg) in a Smart Synergy Ratio (1 + 1 = 3) that actively shields beneficial probiotics through harsh stomach acids.',
+    priceInfo: '200 EGP / Strip (3 Strips per Box)',
+    packagingDetails: '30 Hard Gelatin Capsules (3 Strips per Box)',
+    synergyBanner: {
+      title: 'SymPDCA: The Power of Synergy (1 + 1 = 3) — A "Smart Synergy Ratio"',
+      badge: 'Always The Green Light • Dual Bio-Shield',
+      description:
+        'SymPDCA actively shields and enhances the survival rate of Lactobacillus rhamnosus GG (LGG) as it passes through harsh stomach acids, avoiding treatment delays, multiple doses, and risk of reaction.',
+    },
+    clinicalIndications: [
+      {
+        title: 'Post-Antibiotic Recovery',
+        description:
+          'Egypt has a historically high rate of antibiotic use. SymPDCA restores natural gut flora disrupted by antibiotic courses, preventing antibiotic-associated diarrhea (AAD).',
+      },
+      {
+        title: 'Irritable Bowel Syndrome (IBS) & Bloating',
+        description:
+          'Heavy, traditional Egyptian meals (rich in fats, legumes like Fava beans, and processed carbohydrates) trigger digestive discomfort; SymPDCA reduces bloating, gas, and irregular bowel movements.',
+      },
+      {
+        title: 'Immune System Support',
+        description:
+          '70% of the immune system resides in the gut. SymPDCA acts as a first line of defense that strengthens systemic immunity against seasonal respiratory and gastrointestinal infections.',
+      },
+    ],
+    packSizes: [
+      { quantity: 30, unit: 'capsules', inStock: true },
+    ],
+    heroImage: '/brand/products/sympdca.png',
+    bottleImage: '/brand/products/sympdca.png',
+    boxImage: '/brand/products/sympdca.png',
+    dosageInstructions:
+      'Take 1 to 2 hard gelatin capsules daily or as directed by your gastroenterologist or healthcare professional. Box contains 30 hard gelatin capsules (3 strips per box).',
+    rating: 5.0,
+    reviewsCount: 284,
+    isFeatured: true,
+    rawMaterials: [
+      {
+        id: 'rm-sboulardii',
+        name: 'Saccharomyces boulardii (125 mg)',
+        botanicalName: 'Probiotic Yeast Strain — 125 mg',
+        keyBenefits: [
+          'Binds directly to enteric pathogens and neutralizes dangerous microbial toxins before they can damage the gut wall.',
+          'Naturally resistant to antibacterial agents, allowing simultaneous administration during antibiotic courses.',
+          'Preserves intestinal tight-junction integrity and prevents antibiotic-associated diarrhea.',
+        ],
+        mechanism:
+          'Direct pathogen adhesin binding, microbial toxin neutralization, and trophic intestinal mucosal protection.',
+      },
+      {
+        id: 'rm-lgg',
+        name: 'Lactobacillus rhamnosus GG — LGG (15 mg)',
+        botanicalName: 'Lactobacillus rhamnosus GG — 15 mg',
+        keyBenefits: [
+          'Accelerates gastrointestinal mucosal recovery times and lowers systemic & local inflammation.',
+          'Actively shielded by the SymPDCA matrix to survive harsh stomach acids and reach the intestines intact.',
+          'Reinforces the 70% gut-residing immune defense against seasonal respiratory and GI pathogens.',
+        ],
+        mechanism:
+          'Competitive pathogen exclusion, mucosal barrier stabilization, and GALT immune modulation.',
+      },
+    ],
+    clinicalEvidences: [
+      {
+        id: 'ev-sympdca-1',
+        journalName: 'PubMed / National Library of Medicine',
+        journalLogoText: 'PUBMED PMID: 34190033',
+        badgeColor: 'green',
+        paperTitle:
+          'Synergistic Efficacy of Saccharomyces boulardii & Lactobacillus rhamnosus GG in Gastrointestinal Recovery and Microbiota Shielding',
+        authors: 'Indexed Clinical Reference (PMID: 34190033)',
+        year: 2021,
+        doiUrl: 'https://pubmed.ncbi.nlm.nih.gov/34190033/',
+        keyFinding:
+          'Confirmed the 1 + 1 = 3 Smart Synergy Ratio: S. boulardii (125mg) actively shields and enhances the gastric survival rate of L. rhamnosus GG (15mg) while neutralizing microbial toxins.',
+      },
+    ],
+  },
+  {
     id: 'prod-man-edge',
     slug: 'man-edge',
     name: 'Man Edge',
@@ -367,6 +456,18 @@ export const MOCK_PRODUCTS: Product[] = [
 ];
 
 export const MOCK_REVIEWS: CustomerReview[] = [
+  {
+    id: 'rev-sympdca-1',
+    authorName: 'Dr. Sherif El-masry',
+    authorRole: 'Consultant of Gastroenterology & Hepatology',
+    location: 'Cairo, Egypt',
+    rating: 5,
+    comment:
+      'SymPDCA combines Saccharomyces boulardii (125mg) with Lactobacillus rhamnosus GG (15mg) in an ideal synergistic ratio. It has become our go-to protocol for post-antibiotic gut recovery and IBS bloating relief.',
+    productName: 'SymPDCA',
+    date: 'October 2026',
+    verified: true,
+  },
   {
     id: 'rev-1',
     authorName: 'Dr. Tarek El-Khashab',

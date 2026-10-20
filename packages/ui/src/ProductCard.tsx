@@ -26,6 +26,8 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(({
   const categoryName = React.useMemo(() => {
     if (!isArabic) return product.category;
     switch (product.category) {
+      case 'Gastrointestinal & Immunity':
+        return 'الجهاز الهضمي والمناعة';
       case 'Men Health':
         return 'صحة الرجل';
       case 'Women Health':
@@ -121,6 +123,12 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(({
             <p className="text-sm text-brand-text-muted dark:text-slate-300 leading-relaxed line-clamp-2 mt-2">
               {product.description}
             </p>
+            {product.priceInfo && (
+              <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/60 text-xs font-mono font-bold text-emerald-800 dark:text-emerald-300">
+                <span>{isArabic ? 'السعر:' : 'Price:'}</span>
+                <span>{product.priceInfo}</span>
+              </div>
+            )}
           </div>
 
           {/* Bottom Bar: Pack Sizes & Rating */}
@@ -244,9 +252,14 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(({
         <p className="text-xs font-semibold text-slate-500 dark:text-slate-300 mt-0.5 mb-2 line-clamp-1">
           {product.subtitle}
         </p>
-        <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2 mb-4 font-normal min-h-[2.25rem]">
+        <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2 mb-3 font-normal min-h-[2.25rem]">
           {product.description}
         </p>
+        {product.priceInfo && (
+          <div className="mb-3 px-2.5 py-1.5 rounded-lg bg-emerald-50/90 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/60 text-[11px] font-mono font-bold text-emerald-800 dark:text-emerald-300 text-center">
+            {product.priceInfo}
+          </div>
+        )}
       </div>
 
       {/* Footer Area: Pack Sizes & Single-Line CTA Button */}

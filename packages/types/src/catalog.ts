@@ -39,16 +39,37 @@ export interface CustomerReview {
   verified: boolean;
 }
 
+export interface ClinicalIndication {
+  title: string;
+  description: string;
+}
+
+export interface SynergyBanner {
+  title: string;
+  badge: string;
+  description: string;
+}
+
 export interface Product {
   id: string;
   slug: string;
   name: string;
-  brandLine: string; // e.g. "Naturals 4be"
-  category: 'Men Health' | 'Women Health' | 'Vitamins & Minerals' | 'Maternal Care' | 'Pediatrics & Immunity';
-  subtitle: string; // e.g. "Elevate Your Edge"
+  brandLine: string; // e.g. "Mirage Pharma" or "Naturals 4be"
+  category:
+    | 'Gastrointestinal & Immunity'
+    | 'Men Health'
+    | 'Women Health'
+    | 'Vitamins & Minerals'
+    | 'Maternal Care'
+    | 'Pediatrics & Immunity';
+  subtitle: string; // e.g. "The Trusted Path Through GIT Journey"
   arabicSubtitle: string; // e.g. "مكمل غذائي"
   tagline: string;
   description: string;
+  priceInfo?: string; // e.g. "200 EGP / Strip (3 Strips per Box)"
+  packagingDetails?: string; // e.g. "30 Hard Gelatin Capsules (3 Strips per Box)"
+  synergyBanner?: SynergyBanner;
+  clinicalIndications?: ClinicalIndication[];
   packSizes: PackSize[];
   heroImage: string;
   bottleImage?: string;

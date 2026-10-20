@@ -2,6 +2,95 @@ import { Product, CustomerReview } from './catalog';
 
 export const MOCK_PRODUCTS_AR: Product[] = [
   {
+    id: 'prod-sympdca',
+    slug: 'sympdca',
+    name: 'سيمبيدكا (SymPDCA)',
+    brandLine: 'Mirage Pharma',
+    category: 'Gastrointestinal & Immunity',
+    subtitle: 'المسار الموثوق طوال رحلة الجهاز الهضمي',
+    arabicSubtitle: 'مكمل غذائي معتمد',
+    tagline: '«مضاعفة الدفاعات» — الدرع المزدوج سريع المفعول لصحة الجهاز الهضمي والأمعاء.',
+    description:
+      'يدعم عملية الهضم ويساعد في الحفاظ على التوازن الطبيعي للميكروبيوم المعوي (البكتيريا النافعة). يجمع SymPDCA بين Saccharomyces boulardii (125 مجم) و Lactobacillus rhamnosus GG (15 مجم) بنسق تآزري ذكي (1 + 1 = 3) يحمي البكتيريا النافعة من أحماض المعدة القاسية.',
+    priceInfo: '200 ج.م للشريط (3 شرائط بالعبوة)',
+    packagingDetails: '30 كبسولة جيلاتينية صلبة (3 شرائط بالعبوة)',
+    synergyBanner: {
+      title: 'قوة التآزر الذكي في SymPDCA (1 + 1 = 3) — Smart Synergy Ratio',
+      badge: 'الضوء الأخضر دائماً • درع حيوي مزدوج',
+      description:
+        'يوفر SymPDCA حماية فعالة ويرفع معدل بقاء بكتيريا Lactobacillus rhamnosus GG (LGG) أثناء مرورها عبر أحماض المعدة القاسية، مما يضمن وصولها بكامل حيويتها إلى الأمعاء دون تأخير أو تعقيد.',
+    },
+    clinicalIndications: [
+      {
+        title: 'التعافي بعد المضادات الحيوية (Post-Antibiotic Recovery)',
+        description:
+          'نظراً لمعدلات الاستخدام المرتفعة للمضادات الحيوية في مصر، يعيد SymPDCA توازن الفلورا المعوية الطبيعية التي تتضرر بسبب كورسات المضادات الحيوية، ويمنع الإسهال المصاحب للمضادات الحيوية.',
+      },
+      {
+        title: 'القولون العصبي والانتفاخ (IBS & Bloating)',
+        description:
+          'الوجبات المصرية التقليدية الدسمة (الغنية بالدهون والبقوليات كالفول والكربوهيدرات) تسبب عسر الهضم؛ يعمل SymPDCA بفاعلية على تقليل الانتفاخ والغازات واضطرابات حركة الأمعاء.',
+      },
+      {
+        title: 'دعم الجهاز المناعي (Immune System Support)',
+        description:
+          'يتواجد 70% من الجهاز المناعي داخل الأمعاء؛ يعمل SymPDCA كخط دفاع أول يقوي المناعة الجهازية ضد العدوى التنفسية والمعوية الموسمية.',
+      },
+    ],
+    packSizes: [
+      { quantity: '30', unit: 'capsules', inStock: true },
+    ],
+    heroImage: '/brand/products/sympdca.png',
+    bottleImage: '/brand/products/sympdca.png',
+    boxImage: '/brand/products/sympdca.png',
+    dosageInstructions:
+      'تناول من 1 إلى 2 كبسولة جيلاتينية صلبة يومياً أو حسب إرشادات الطبيب المختص. تحتوي العبوة على 30 كبسولة (3 شرائط).',
+    rating: 5.0,
+    reviewsCount: 284,
+    isFeatured: true,
+    rawMaterials: [
+      {
+        id: 'rm-sboulardii-ar',
+        name: 'ساكاروميسس بولاردي — Saccharomyces boulardii (125 مجم)',
+        botanicalName: 'Saccharomyces boulardii — 125 mg',
+        keyBenefits: [
+          'يرتبط مباشرة بمسببات الأمراض المعوية ويعادل السموم الميكروبية الخطيرة قبل أن تلحق الضرر بجدار الأمعاء.',
+          'مقاوم بطبيعته للمضادات الحيوية البكتيرية، مما يجعله مثالياً للاستخدام المتزامن أثناء كورس المضاد الحيوي.',
+          'يحافظ على سلامة الغشاء المخاطي المعوي ويمنع الإسهال الحاد والمزمن.',
+        ],
+        mechanism:
+          'ارتباط مباشر بالبكتيريا الممرضة، وتحييد السموم البكتيرية، وتوفير حماية غذائية لخلايا جدار الأمعاء.',
+      },
+      {
+        id: 'rm-lgg-ar',
+        name: 'لاكتوباسيلس رامنوسوس — Lactobacillus rhamnosus GG (15 مجم)',
+        botanicalName: 'Lactobacillus rhamnosus GG (LGG) — 15 mg',
+        keyBenefits: [
+          'يسرع أوقات التعافي المعوي ويقلل الالتهابات الجهازية والموضعية في القناة الهضمية.',
+          'محمي بدرع SymPDCA التآزري لعبور أحماض المعدة القاسية والوصول إلى الأمعاء بأعلى كفاءة.',
+          'يدعم خط الدفاع المناعي المعوي (الذي يمثل 70% من مناعة الجسم) ضد العدوى الموسمية.',
+        ],
+        mechanism:
+          'إقصاء تنافسي للميكروبات الضارة، وتقوية الحاجز المخاطي، وتنشيط الاستجابة المناعية المعوية.',
+      },
+    ],
+    clinicalEvidences: [
+      {
+        id: 'ev-sympdca-ar-1',
+        journalName: 'المكتبة الوطنية للطب — PubMed Indexed',
+        journalLogoText: 'PUBMED PMID: 34190033',
+        badgeColor: 'green',
+        paperTitle:
+          'الفاعلية التآزرية لـ Saccharomyces boulardii و Lactobacillus rhamnosus GG في استعادة الفلورا المعوية وحمايتها',
+        authors: 'مرجع طبي مفهرس (PMID: 34190033)',
+        year: 2021,
+        doiUrl: 'https://pubmed.ncbi.nlm.nih.gov/34190033/',
+        keyFinding:
+          'إثبات معادلة التآزر الذكي (1 + 1 = 3): حماية بكتيريا LGG ورفع معدل بقائها عبر أحماض المعدة مع تحييد السموم الميكروبية والوقاية من اضطرابات القولون والإسهال.',
+      },
+    ],
+  },
+  {
     id: 'prod-man-edge',
     slug: 'man-edge',
     name: 'مان إيدج (Man Edge)',
@@ -290,6 +379,18 @@ export const MOCK_PRODUCTS_AR: Product[] = [
 ];
 
 export const MOCK_REVIEWS_AR: CustomerReview[] = [
+  {
+    id: 'rev-ar-sympdca-1',
+    authorName: 'د. شريف المصري',
+    authorRole: 'استشاري أمراض الجهاز الهضمي والكبد والمناظير',
+    location: 'القاهرة، مصر',
+    rating: 5,
+    comment:
+      'مستحضر SymPDCA من ميراج فارما قدم معادلة التآزر الذكي بين Saccharomyces boulardii (125 مجم) و LGG (15 مجم) بكفاءة إكلينيكية استثنائية في حالات القولون العصبي والانتفاخ واستعادة الفلورا المعوية بعد كورسات المضادات الحيوية.',
+    productName: 'سيمبيدكا (SymPDCA)',
+    date: '2026-10-15',
+    verified: true,
+  },
   {
     id: 'rev-ar-1',
     authorName: 'د. أحمد الشناوي',
