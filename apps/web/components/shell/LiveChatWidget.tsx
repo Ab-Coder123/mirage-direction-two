@@ -36,8 +36,8 @@ export const LiveChatWidget: React.FC = () => {
         ...prev,
         {
           text: isAr
-            ? 'شكراً لتواصلك! سيقوم صيدلي إكلينيكي بالرد على استفسارك خلال دقائق. يمكنك أيضاً الاتصال بنا مباشرة على: 01070786720.'
-            : 'Thank you for reaching out! A clinical pharmacist will review your question shortly. You can also call us directly at 01070786720.',
+            ? 'شكراً لتواصلك! سيقوم صيدلي إكلينيكي بالرد على استفسارك خلال دقائق. يمكنك أيضاً الاتصال بنا مباشرة على: +20 10 00499587.'
+            : 'Thank you for reaching out! A clinical pharmacist will review your question shortly. You can also call us directly at +20 10 00499587.',
           fromUser: false,
         },
       ]);

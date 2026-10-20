@@ -150,7 +150,7 @@ export default function PrivacyPolicyPage() {
               Data Protection Officer Contact:
             </span>
             <p>
-              If you have any questions or data removal requests regarding this Privacy Policy, please write to: <a href="mailto:info@hetero-cure.com" className="text-brand-primary dark:text-brand-cyan-light font-mono font-bold hover:underline">info@hetero-cure.com</a> or visit our headquarters at Villa 270 AL Andalus, Fifth Settlement, Cairo, Egypt.
+              If you have any questions or data removal requests regarding this Privacy Policy, please write to: <a href="mailto:info@miragepharma.com" className="text-brand-primary dark:text-brand-cyan-light font-mono font-bold hover:underline">info@miragepharma.com</a> or visit our headquarters at Mohamed ElMaraashly St, Building 1, Abu El-Feda, Zamalek, Cairo, Egypt.
             </p>
           </div>
         </div>

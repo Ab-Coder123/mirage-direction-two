@@ -134,12 +134,12 @@ export default function ArabicPrivacyPolicyPage() {
           <div className="pt-6 border-t border-slate-100 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-brand-text-muted dark:text-slate-400">
             <div>
               <span className="font-bold text-brand-navy dark:text-white block">مسؤول حماية البيانات (DPO):</span>
-              <a href="mailto:privacy@hetero-cure.com" className="font-mono text-brand-primary dark:text-brand-cyan-light hover:underline" dir="ltr">
-                privacy@hetero-cure.com
+              <a href="mailto:info@miragepharma.com" className="font-mono text-brand-primary dark:text-brand-cyan-light hover:underline" dir="ltr">
+                info@miragepharma.com
               </a>
             </div>
             <p className="font-mono">
-              ميراج فارما — فيلا 270 الأندلس، التجمع الخامس، القاهرة
+              ميراج فارما — 1 شارع محمد المرعشلي، أبو الفدا، الزمالك، القاهرة
             </p>
           </div>
         </div>

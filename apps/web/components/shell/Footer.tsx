@@ -65,29 +65,25 @@ export const Footer: React.FC = () => {
                 <MapPin className="w-4 h-4 text-brand-cyan-light shrink-0 mt-0.5" />
                 <span>
                   {isAr
-                    ? 'المقر الرئيسي والفروع: القاهرة، جمهورية مصر العربية'
-                    : 'Headquarters & Branches: Cairo, Egypt'}
+                    ? '1 شارع محمد المرعشلي، أبو الفدا، الزمالك، القاهرة، مصر'
+                    : 'Mohamed ElMaraashly St, Building 1, Abu El-Feda, Zamalek, Cairo, Egypt'}
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-brand-cyan-light shrink-0" />
-                <div className="flex items-center gap-2 font-mono">
-                  <a href="tel:01070786720" className="hover:text-white transition-colors">
-                    01070786720
-                  </a>
-                  <span>-</span>
-                  <a href="tel:01070786721" className="hover:text-white transition-colors">
-                    01070786721
+                <div className="flex items-center gap-2 font-mono" dir="ltr">
+                  <a href="tel:+201000499587" className="hover:text-white transition-colors">
+                    +20 10 00499587
                   </a>
                 </div>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-brand-cyan-light shrink-0" />
                 <a
-                  href="mailto:info@mirage-pharma.com"
+                  href="mailto:info@miragepharma.com"
                   className="font-mono hover:text-white transition-colors"
                 >
-                  info@mirage-pharma.com
+                  info@miragepharma.com
                 </a>
               </li>
             </ul>

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, ShieldCheck, Globe, MessageCircle } from 'lucide-react';
 import { Button, Card, Badge } from '@mirage/ui';
 
 export default function ArabicContactPage() {
@@ -45,7 +45,7 @@ export default function ArabicContactPage() {
                 المقر الرئيسي لشركة ميراج فارما
               </h3>
               <p className="text-sm text-brand-text-muted dark:text-slate-300 leading-relaxed">
-                تقع مكاتبنا الرئيسية ومكتب الاتصال العلمي في القاهرة الجديدة، لتنسيق سلاسل الإمداد والتوزيع لكبرى الصيدليات في كافة محافظات مصر.
+                يقع مقرنا الرئيسي ومكتب الاتصال العلمي في الزمالك بالقاهرة، لتنسيق عمليات التصنيع والإمداد والتوزيع لكبرى الصيدليات والمراكز الطبية في كافة محافظات مصر.
               </p>
 
               <div className="space-y-4 text-sm text-slate-700 dark:text-slate-200">
@@ -55,9 +55,12 @@ export default function ArabicContactPage() {
                   </div>
                   <div>
                     <span className="font-bold text-brand-navy dark:text-brand-cyan-light block text-xs uppercase tracking-wider">
-                      العنوان الميداني:
+                      العنوان الرسمي:
                     </span>
-                    <p className="text-sm">فيلا 270 الأندلس، التجمع الخامس، القاهرة، جمهورية مصر العربية</p>
+                    <p className="text-sm">1 شارع محمد المرعشلي، أبو الفدا، الزمالك، القاهرة، مصر</p>
+                    <p className="text-xs text-slate-400 font-mono mt-0.5" dir="ltr">
+                      Mohamed ElMaraashly St, Building 1, Abu El-Feda, Zamalek, Cairo, Egypt
+                    </p>
                   </div>
                 </div>
 
@@ -67,10 +70,10 @@ export default function ArabicContactPage() {
                   </div>
                   <div>
                     <span className="font-bold text-brand-navy dark:text-brand-cyan-light block text-xs uppercase tracking-wider">
-                      الهواتف المباشرة:
+                      الهاتف المباشر:
                     </span>
                     <p className="font-mono text-sm" dir="ltr">
-                      <a href="tel:01070786720" className="hover:text-brand-primary">01070786720</a> • <a href="tel:01070786721" className="hover:text-brand-primary">01070786721</a>
+                      <a href="tel:+201000499587" className="hover:text-brand-primary dark:hover:text-brand-cyan-light transition-colors">+20 10 00499587</a>
                     </p>
                   </div>
                 </div>
@@ -81,15 +84,47 @@ export default function ArabicContactPage() {
                   </div>
                   <div>
                     <span className="font-bold text-brand-navy dark:text-brand-cyan-light block text-xs uppercase tracking-wider">
-                      البريد الإلكتروني للاستفسارات:
+                      البريد الإلكتروني الرسمي:
                     </span>
                     <a
-                      href="mailto:info@hetero-cure.com"
-                      className="font-mono text-sm text-brand-primary hover:underline"
+                      href="mailto:info@miragepharma.com"
+                      className="font-mono text-sm text-brand-primary dark:text-brand-cyan-light hover:underline"
                       dir="ltr"
                     >
-                      info@hetero-cure.com
+                      info@miragepharma.com
                     </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3.5">
+                  <div className="w-9 h-9 rounded-xl bg-brand-primary/10 dark:bg-brand-primary/20 text-brand-primary dark:text-brand-cyan-light flex items-center justify-center shrink-0 mt-0.5">
+                    <Globe className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="font-bold text-brand-navy dark:text-brand-cyan-light block text-xs uppercase tracking-wider">
+                      الموقع الإلكتروني:
+                    </span>
+                    <a
+                      href="https://miragepharma.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono text-sm text-brand-primary dark:text-brand-cyan-light hover:underline"
+                      dir="ltr"
+                    >
+                      miragepharma.com
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3.5">
+                  <div className="w-9 h-9 rounded-xl bg-brand-cyan/10 dark:bg-brand-cyan/20 text-brand-cyan dark:text-brand-cyan-light flex items-center justify-center shrink-0 mt-0.5">
+                    <MessageCircle className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="font-bold text-brand-navy dark:text-brand-cyan-light block text-xs uppercase tracking-wider">
+                      ماسنجر والتواصل الاجتماعي:
+                    </span>
+                    <p className="text-sm font-semibold">Mirage Pharma</p>
                   </div>
                 </div>
 
@@ -101,7 +136,7 @@ export default function ArabicContactPage() {
                     <span className="font-bold text-brand-navy dark:text-brand-cyan-light block text-xs uppercase tracking-wider">
                       مواعيد العمل الرسمية:
                     </span>
-                    <p className="text-sm text-brand-text-muted dark:text-slate-400">الأحد إلى الخميس: 9:00 صباحاً – 5:00 مساءً</p>
+                    <p className="text-sm text-brand-text-muted dark:text-slate-400">الأحد إلى الخميس: 9:00 صباحاً – 6:00 مساءً</p>
                   </div>
                 </div>
               </div>

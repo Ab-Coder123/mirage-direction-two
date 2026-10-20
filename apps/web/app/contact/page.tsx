@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle2 } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, Globe, MessageCircle } from 'lucide-react';
 import { Button, Card, Badge } from '@mirage/ui';
 
 export default function ContactPage() {
@@ -45,7 +45,7 @@ export default function ContactPage() {
                 Mirage Pharma Headquarters
               </h3>
               <p className="text-sm text-brand-text-muted dark:text-slate-300 leading-relaxed">
-                Our main offices and regulatory liaison bureau are situated in New Cairo, coordinating logistics and distributor supplies nationwide.
+                Our main corporate headquarters and scientific liaison bureau are located in Zamalek, Cairo, coordinating manufacturing, logistics, and distributor supplies nationwide.
               </p>
 
               <div className="space-y-4 text-sm text-slate-700 dark:text-slate-200">
@@ -57,7 +57,7 @@ export default function ContactPage() {
                     <span className="font-bold text-brand-navy dark:text-brand-cyan-light block text-xs uppercase tracking-wider">
                       Physical Address:
                     </span>
-                    <p className="text-sm">Villa 270 AL Andalus, Fifth Settlement, Cairo, Egypt</p>
+                    <p className="text-sm">Mohamed ElMaraashly St, Building 1, Abu El-Feda, Zamalek, Cairo, Egypt</p>
                   </div>
                 </div>
 
@@ -67,10 +67,10 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <span className="font-bold text-brand-navy dark:text-brand-cyan-light block text-xs uppercase tracking-wider">
-                      Direct Telephones:
+                      Direct Telephone:
                     </span>
                     <p className="font-mono text-sm">
-                      <a href="tel:01070786720" className="hover:text-brand-primary">01070786720</a> • <a href="tel:01070786721" className="hover:text-brand-primary">01070786721</a>
+                      <a href="tel:+201000499587" className="hover:text-brand-primary dark:hover:text-brand-cyan-light transition-colors">+20 10 00499587</a>
                     </p>
                   </div>
                 </div>
@@ -84,11 +84,42 @@ export default function ContactPage() {
                       Inquiries Email:
                     </span>
                     <a
-                      href="mailto:info@hetero-cure.com"
-                      className="font-mono text-sm text-brand-primary hover:underline"
+                      href="mailto:info@miragepharma.com"
+                      className="font-mono text-sm text-brand-primary dark:text-brand-cyan-light hover:underline"
                     >
-                      info@hetero-cure.com
+                      info@miragepharma.com
                     </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3.5">
+                  <div className="w-9 h-9 rounded-xl bg-brand-primary/10 dark:bg-brand-primary/20 text-brand-primary dark:text-brand-cyan-light flex items-center justify-center shrink-0 mt-0.5">
+                    <Globe className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="font-bold text-brand-navy dark:text-brand-cyan-light block text-xs uppercase tracking-wider">
+                      Official Website:
+                    </span>
+                    <a
+                      href="https://miragepharma.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono text-sm text-brand-primary dark:text-brand-cyan-light hover:underline"
+                    >
+                      miragepharma.com
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3.5">
+                  <div className="w-9 h-9 rounded-xl bg-brand-cyan/10 dark:bg-brand-cyan/20 text-brand-cyan dark:text-brand-cyan-light flex items-center justify-center shrink-0 mt-0.5">
+                    <MessageCircle className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="font-bold text-brand-navy dark:text-brand-cyan-light block text-xs uppercase tracking-wider">
+                      Messenger &amp; Social:
+                    </span>
+                    <p className="text-sm font-semibold">Mirage Pharma</p>
                   </div>
                 </div>
 
