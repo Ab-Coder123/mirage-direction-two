@@ -79,22 +79,12 @@ export const SECONDARY_OPS_NAV_ITEMS: NavItem[] = [];
 
 const NAV_ITEMS: NavItem[] = [...PRIMARY_CMS_NAV_ITEMS];
 
-const ROLES = [
-  { name: 'Super Admin', actor: 'Dr. Tarek El Attar', clearance: 'LVL-5 GxP Signatory' },
-  { name: 'Medical Director', actor: 'Dr. Nadia Mansour', clearance: 'LVL-4 Clinical Safety' },
-  { name: 'QA & GxP Lead', actor: 'Eng. Karim Hassan', clearance: 'LVL-4 Cold-Chain QA' },
-  { name: 'Catalog Manager', actor: 'Salma El-Shazly', clearance: 'LVL-2 Commercial Ops' },
-] as const;
-
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedRoleIdx, setSelectedRoleIdx] = useState(0);
-
-  const activeRole = ROLES[selectedRoleIdx] ?? ROLES[0];
 
   const currentNav = useMemo(() => {
     if (pathname === '/') return NAV_ITEMS[0];
@@ -304,44 +294,31 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           )}
         </div>
 
-        {/* Active RBAC Operator Switcher Footer */}
-        <div className="p-4 border-t border-white/10 bg-[#041B3B]/60 space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1">
-              <Lock className="w-3 h-3 text-[#35AB38]" /> Active Session Role
-            </span>
-            <span className="text-[10px] font-mono text-[#35AB38] font-bold">
-              21 CFR Pt.11
-            </span>
+        {/* Admin User Badge & Web App Link Footer */}
+        <div className="p-4 border-t border-white/10 bg-[#041B3B]/60 flex items-center justify-between">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#2878BC] to-[#308995] text-white font-heading font-bold text-xs flex items-center justify-center shrink-0 shadow-sm">
+              AD
+            </div>
+            <div className="min-w-0">
+              <span className="text-xs font-bold text-white block truncate">
+                Admin
+              </span>
+              <span className="text-[10px] text-slate-400 block truncate">
+                admin@miragepharma.com
+              </span>
+            </div>
           </div>
 
-          <select
-            aria-label="Switch active RBAC operator role"
-            value={selectedRoleIdx}
-            onChange={(e) => setSelectedRoleIdx(Number(e.target.value))}
-            className="w-full rounded-xl bg-[#020F24] border border-white/15 px-3 py-2 text-xs text-white font-medium focus:outline-none focus:border-[#61C0E4]"
+          <a
+            href="http://localhost:3000"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-slate-300 hover:text-[#61C0E4] transition-colors shrink-0 px-2 py-1 rounded-lg hover:bg-white/5"
           >
-            {ROLES.map((role, idx) => (
-              <option key={role.name} value={idx}>
-                {role.name} — {role.actor}
-              </option>
-            ))}
-          </select>
-
-          <div className="flex items-center justify-between text-[11px] text-slate-300 pt-1">
-            <span className="truncate font-mono text-[10px] text-[#61C0E4]">
-              {activeRole.clearance}
-            </span>
-            <a
-              href="http://localhost:3000"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 text-xs font-semibold text-white hover:text-[#61C0E4] transition-colors"
-            >
-              <span>Web App</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
-          </div>
+            <span>Live Site</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
         </div>
       </aside>
 
@@ -449,18 +426,14 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
             <div className="hidden sm:flex items-center gap-2 pl-2 border-l border-slate-200">
               <div className="w-8 h-8 rounded-xl bg-brand-navy text-white font-heading font-bold text-xs flex items-center justify-center">
-                {activeRole.actor
-                  .split(' ')
-                  .map((n) => n[0])
-                  .slice(0, 2)
-                  .join('')}
+                AD
               </div>
               <div className="text-left leading-tight">
                 <span className="text-xs font-bold text-brand-navy block">
-                  {activeRole.actor}
+                  Admin
                 </span>
                 <span className="text-[10px] font-mono text-brand-primary block">
-                  {activeRole.name}
+                  Super Admin
                 </span>
               </div>
             </div>

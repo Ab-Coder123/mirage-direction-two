@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import {
   Button,
   Card,
@@ -21,9 +21,22 @@ import {
   Plus,
   Sparkles,
   FilePlus2,
+  Edit3,
+  Trash2,
+  AlertTriangle,
 } from 'lucide-react';
 import { type Product } from '@mirage/types';
-import { createProduct, togglePackStock as dbTogglePackStock, memoryStore } from '@mirage/db';
+import {
+  createProduct,
+  updateProduct as dbUpdateProduct,
+  deleteProduct as dbDeleteProduct,
+  togglePackStock as dbTogglePackStock,
+  memoryStore,
+} from '@mirage/db';
+import {
+  updateProductAction,
+  deleteProductAction,
+} from './actions';
 
 const CATEGORIES = [
   'All',
@@ -58,6 +71,20 @@ export default function FormulationStudioPage() {
   const [newSkuCategory, setNewSkuCategory] =
     useState<Product['category']>('Vitamins & Minerals');
 
+  // Edit Formulation Modal State
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editSubtitle, setEditSubtitle] = useState('');
+  const [editArabicSubtitle, setEditArabicSubtitle] = useState('');
+  const [editCategory, setEditCategory] =
+    useState<Product['category']>('Vitamins & Minerals');
+  const [editDescription, setEditDescription] = useState('');
+
+  // Delete Formulation Modal State
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+
   // New Ingredient State inside Tab 2
   const [newIngName, setNewIngName] = useState('');
   const [newIngAmount, setNewIngAmount] = useState('');
@@ -84,9 +111,24 @@ export default function FormulationStudioPage() {
     );
   }, [products, selectedProductId, filteredProducts]);
 
+  const toastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimeoutRef.current) {
+        clearTimeout(toastTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const triggerToast = (msg: string) => {
     setSavedToast(msg);
-    setTimeout(() => setSavedToast(null), 4000);
+    if (toastTimeoutRef.current) {
+      clearTimeout(toastTimeoutRef.current);
+    }
+    toastTimeoutRef.current = setTimeout(() => {
+      setSavedToast(null);
+    }, 4000);
   };
 
   const togglePackStock = (productId: string, packIndex: number) => {
@@ -217,6 +259,75 @@ export default function FormulationStudioPage() {
     triggerToast(`Registered new formulation "${created.name}" & generated GS1 GTIN record.`);
   };
 
+  const handleOpenEdit = (prod: Product, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setEditingProduct(prod);
+    setEditName(prod.name);
+    setEditSubtitle(prod.subtitle);
+    setEditArabicSubtitle(prod.arabicSubtitle);
+    setEditCategory(prod.category);
+    setEditDescription(prod.description);
+    setEditModalOpen(true);
+  };
+
+  const handleSaveEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingProduct || !editName.trim()) return;
+
+    const updates = {
+      name: editName.trim(),
+      subtitle: editSubtitle.trim(),
+      arabicSubtitle: editArabicSubtitle.trim(),
+      category: editCategory,
+      description: editDescription.trim(),
+    };
+
+    try {
+      await updateProductAction(editingProduct.id, updates);
+    } catch {
+      try {
+        dbUpdateProduct(editingProduct.id, updates);
+      } catch {}
+    }
+
+    setProducts((prev) =>
+      prev.map((p) => (p.id === editingProduct.id ? { ...p, ...updates } : p))
+    );
+    setEditModalOpen(false);
+    triggerToast(`Updated "${editName.trim()}" formulation monograph.`);
+  };
+
+  const handleOpenDelete = (prod: Product, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setProductToDelete(prod);
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!productToDelete) return;
+    const targetId = productToDelete.id;
+    const targetName = productToDelete.name;
+
+    try {
+      await deleteProductAction(targetId);
+    } catch {
+      try {
+        dbDeleteProduct(targetId);
+      } catch {}
+    }
+
+    setProducts((prev) => prev.filter((p) => p.id !== targetId));
+    if (selectedProductId === targetId) {
+      const remaining = products.filter((p) => p.id !== targetId);
+      if (remaining.length > 0 && remaining[0]) {
+        setSelectedProductId(remaining[0].id);
+      }
+    }
+    setDeleteModalOpen(false);
+    setProductToDelete(null);
+    triggerToast(`Deleted formulation "${targetName}" from commercial catalog.`);
+  };
+
   // Deterministic 14x14 DataMatrix pattern generator
   const matrixCells = useMemo(() => {
     const seedStr = `${gtinCode}-${batchCode}-${expiryDate}-${serialNo}-${activeProduct?.slug ?? ''}`;
@@ -327,6 +438,31 @@ export default function FormulationStudioPage() {
         </StatusBadge>
       ),
     },
+    {
+      key: 'actions',
+      header: 'Actions',
+      sortable: false,
+      render: (row) => (
+        <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+          <button
+            type="button"
+            onClick={(e) => handleOpenEdit(row, e)}
+            className="p-1.5 rounded-lg text-slate-500 hover:text-brand-primary hover:bg-sky-50 transition-colors"
+            title="Edit formulation"
+          >
+            <Edit3 className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => handleOpenDelete(row, e)}
+            className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+            title="Delete formulation"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      ),
+    },
   ];
 
   const totalIngredientsCount = useMemo(
@@ -352,7 +488,7 @@ export default function FormulationStudioPage() {
       <div className="hud-glass p-6 rounded-3xl border border-white/80 shadow-hud-glass flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <StatusBadge variant="regulatory" size="sm" pulse code="PHASE 03">
+            <StatusBadge variant="in-spec" size="sm" pulse code="CATALOG">
               Formulation Lifecycle Studio
             </StatusBadge>
             <StatusBadge variant="in-spec" size="xs" code="EDA">
@@ -447,67 +583,78 @@ export default function FormulationStudioPage() {
         ))}
       </div>
 
-      {/* Main Split Workstation: Product Selector List (Left) + 5-Tab Formulation Studio (Right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left Column: Commercial Formulations List */}
-        <div className="lg:col-span-4 space-y-3">
-          {filteredProducts.map((prod) => {
-            const isSelected = activeProduct?.id === prod.id;
-            return (
-              <button
-                key={prod.id}
-                type="button"
-                onClick={() => setSelectedProductId(prod.id)}
-                className={`w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
-                  isSelected
-                    ? 'bg-white border-brand-primary ring-2 ring-brand-primary/15 shadow-md'
-                    : 'bg-white/80 border-slate-200/80 hover:bg-white hover:border-slate-300'
-                }`}
-              >
-                <div className="flex items-center gap-3.5 min-w-0">
-                  <div className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center p-1">
-                    {prod.heroImage ? (
-                      <img
-                        src={prod.heroImage}
-                        alt={prod.name}
-                        className="w-full h-full object-contain"
-                      />
-                    ) : (
-                      <Pill className="w-5 h-5 text-brand-primary" />
-                    )}
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="font-heading font-extrabold text-sm text-brand-navy truncate">
-                        {prod.name}
-                      </span>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-50 text-brand-primary font-bold">
-                        {prod.brandLine}
-                      </span>
+      {/* Main Workstation: Horizontal Product Selector (Flex) on Top + Formulation Studio Below */}
+      <div className="space-y-6">
+        {/* Horizontal Product Selector Row */}
+        <div>
+          <div className="flex items-center justify-between mb-2.5">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
+              Select Product to Edit ({filteredProducts.length})
+            </span>
+            <span className="text-xs text-slate-400">
+              Click any product to switch editor
+            </span>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            {filteredProducts.map((prod) => {
+              const isSelected = activeProduct?.id === prod.id;
+              return (
+                <button
+                  key={prod.id}
+                  type="button"
+                  onClick={() => setSelectedProductId(prod.id)}
+                  className={`flex-1 min-w-[260px] max-w-sm text-left p-3.5 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
+                    isSelected
+                      ? 'bg-white border-brand-primary ring-2 ring-brand-primary/20 shadow-md'
+                      : 'bg-white/80 border-slate-200/80 hover:bg-white hover:border-slate-300 shadow-sm'
+                  }`}
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center p-1">
+                      {prod.heroImage ? (
+                        <img
+                          src={prod.heroImage}
+                          alt={prod.name}
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <Pill className="w-5 h-5 text-brand-primary" />
+                      )}
                     </div>
-                    <span className="text-xs text-slate-500 block truncate">
-                      {prod.category} • {prod.arabicSubtitle}
-                    </span>
-                    <div className="flex items-center gap-1.5 mt-1.5">
-                      {prod.packSizes.map((ps, idx) => (
-                        <span
-                          key={idx}
-                          className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 font-semibold"
-                        >
-                          {ps.quantity} {ps.unit}
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-heading font-extrabold text-sm text-brand-navy truncate">
+                          {prod.name}
                         </span>
-                      ))}
+                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-sky-50 text-brand-primary font-bold">
+                          {prod.brandLine}
+                        </span>
+                      </div>
+                      <span className="text-xs text-slate-500 block truncate">
+                        {prod.category} • {prod.arabicSubtitle}
+                      </span>
+                      <div className="flex items-center gap-1.5 mt-1">
+                        {prod.packSizes.map((ps, idx) => (
+                          <span
+                            key={idx}
+                            className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 font-semibold"
+                          >
+                            {ps.quantity} {ps.unit}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </button>
-            );
-          })}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Right Column: 5-Tab Formulation Lifecycle Studio */}
+        {/* 5-Tab Formulation Lifecycle Studio */}
         {activeProduct ? (
-          <div className="lg:col-span-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm overflow-hidden">
+          <div className="w-full rounded-3xl bg-white border border-slate-200/90 shadow-sm overflow-hidden">
             {/* Studio Product Banner */}
             <div className="p-6 bg-gradient-to-r from-[#020F24] to-[#023368] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center gap-4">
@@ -533,15 +680,33 @@ export default function FormulationStudioPage() {
                 </div>
               </div>
 
-              <a
-                href={`http://localhost:3000/products/${activeProduct.slug}`}
-                target="_blank"
-                rel="noreferrer"
-                className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-xs font-semibold text-white inline-flex items-center gap-1.5 self-start sm:self-center shrink-0 transition-colors"
-              >
-                <span>Live Public Page</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
+              <div className="flex flex-wrap items-center gap-2 self-start sm:self-center shrink-0">
+                <button
+                  type="button"
+                  onClick={() => handleOpenEdit(activeProduct)}
+                  className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-semibold text-white inline-flex items-center gap-1.5 transition-colors"
+                >
+                  <Edit3 className="w-3.5 h-3.5" />
+                  <span>Edit SKU</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleOpenDelete(activeProduct)}
+                  className="px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-400/30 text-xs font-semibold text-rose-200 hover:text-white inline-flex items-center gap-1.5 transition-colors"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Delete</span>
+                </button>
+                <a
+                  href={`http://localhost:3000/products/${activeProduct.slug}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-xs font-semibold text-white inline-flex items-center gap-1.5 transition-colors"
+                >
+                  <span>Live Public Page</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
             </div>
 
             {/* 5-Tab Navigation Bar */}
@@ -928,7 +1093,7 @@ export default function FormulationStudioPage() {
         onClose={() => setCreateModalOpen(false)}
         title="Register New Commercial Formulation SKU"
         subtitle="Initialize an EDA-compliant Naturals 4be monograph & GS1 serialization record"
-        gxpBadge="PHASE 03 • FORMULATION REGISTRATION"
+        gxpBadge="FORMULATION REGISTRATION"
       >
         <form onSubmit={handleCreateFormulation} className="space-y-4 text-xs">
           <div>
@@ -1005,6 +1170,147 @@ export default function FormulationStudioPage() {
             </Button>
           </div>
         </form>
+      </ClinicalModal>
+
+      {/* Edit Formulation Modal */}
+      <ClinicalModal
+        open={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        title="Edit Formulation Monograph"
+        subtitle={`Update details for ${editingProduct?.name ?? 'product'} and sync across public website`}
+        gxpBadge="MONOGRAPH UPDATE"
+      >
+        <form onSubmit={handleSaveEdit} className="space-y-4 text-xs">
+          <div>
+            <label className="text-[11px] font-mono uppercase text-slate-500 block mb-1">
+              Commercial Product Name *
+            </label>
+            <input
+              type="text"
+              required
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
+              className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-brand-navy font-semibold"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="text-[11px] font-mono uppercase text-slate-500 block mb-1">
+                Therapeutic Category
+              </label>
+              <select
+                value={editCategory}
+                onChange={(e) =>
+                  setEditCategory(e.target.value as Product['category'])
+                }
+                className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-brand-navy font-semibold bg-slate-50"
+              >
+                <option value="Vitamins & Minerals">Vitamins & Minerals</option>
+                <option value="Men Health">Men Health</option>
+                <option value="Women Health">Women Health</option>
+                <option value="Maternal Care">Maternal Care</option>
+                <option value="Pediatrics & Immunity">Pediatrics & Immunity</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="text-[11px] font-mono uppercase text-slate-500 block mb-1">
+                Arabic Regulatory Classification
+              </label>
+              <input
+                type="text"
+                value={editArabicSubtitle}
+                onChange={(e) => setEditArabicSubtitle(e.target.value)}
+                className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-brand-navy font-mono"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="text-[11px] font-mono uppercase text-slate-500 block mb-1">
+              Clinical Subtitle / Positioning
+            </label>
+            <input
+              type="text"
+              value={editSubtitle}
+              onChange={(e) => setEditSubtitle(e.target.value)}
+              className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-brand-navy"
+            />
+          </div>
+
+          <div>
+            <label className="text-[11px] font-mono uppercase text-slate-500 block mb-1">
+              Clinical Description
+            </label>
+            <textarea
+              rows={3}
+              value={editDescription}
+              onChange={(e) => setEditDescription(e.target.value)}
+              className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-brand-navy leading-relaxed"
+            />
+          </div>
+
+          <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setEditModalOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" variant="primary" size="sm">
+              Save & Sync Changes
+            </Button>
+          </div>
+        </form>
+      </ClinicalModal>
+
+      {/* Delete Confirmation Modal */}
+      <ClinicalModal
+        open={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        title="Confirm Formulation Deletion"
+        subtitle="This action removes the SKU from public catalogs and archives the monograph"
+        gxpBadge="GxP DELETION"
+      >
+        <div className="space-y-4 text-xs">
+          <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold text-rose-900">
+                Are you sure you want to delete formulation:
+              </p>
+              <p className="font-mono text-sm mt-1 text-rose-950 font-bold">
+                {productToDelete?.name}
+              </p>
+              <p className="text-[11px] text-rose-700 mt-1">
+                The product will be removed from both English and Arabic public catalogs and cannot be recovered without GxP database restoration.
+              </p>
+            </div>
+          </div>
+
+          <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setDeleteModalOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="primary"
+              size="sm"
+              className="bg-rose-600 hover:bg-rose-700 text-white"
+              onClick={handleConfirmDelete}
+            >
+              Confirm Permanent Deletion
+            </Button>
+          </div>
+        </div>
       </ClinicalModal>
     </div>
   );
