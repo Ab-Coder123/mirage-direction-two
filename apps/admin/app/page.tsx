@@ -13,39 +13,26 @@ import {
 } from '@mirage/ui';
 import {
   Pill,
-  Thermometer,
   ShieldCheck,
-  UserCheck,
-  HeartPulse,
-  Handshake,
-  Mail,
+  FileText,
   Settings,
   ArrowUpRight,
   ChevronRight,
   CheckCircle2,
   AlertTriangle,
   Eye,
+  Globe2,
 } from 'lucide-react';
 import {
   MOCK_PRODUCTS,
   MOCK_COLD_CHAIN_DEPOTS,
   MOCK_GXP_AUDIT_LOGS,
-  MOCK_HCP_APPLICATIONS,
-  MOCK_ADVERSE_EVENTS,
-  MOCK_B2B_INQUIRIES,
   type Product,
 } from '@mirage/types';
 
 export default function AdminDashboardPage() {
   const [inspectedProduct, setInspectedProduct] = useState<Product | null>(null);
   const [modalMode, setModalMode] = useState<'dialog' | 'sheet'>('dialog');
-
-  const pendingHcps = MOCK_HCP_APPLICATIONS.filter(
-    (h) => h.status === 'Pending Review'
-  ).length;
-  const openAdrs = MOCK_ADVERSE_EVENTS.filter(
-    (a) => a.status !== 'Closed'
-  ).length;
 
   const productColumns: DataTableColumn<Product>[] = [
     {
@@ -156,78 +143,42 @@ export default function AdminDashboardPage() {
     },
   ];
 
-  const phaseModules = [
+  const cmsModules = [
     {
-      phase: 'Phase 3',
-      title: 'Formulation Lifecycle Studio',
-      desc: 'Commercial SKUs, supplement facts, raw materials, and GS1 2D DataMatrix serialization.',
+      title: 'Formulation Studio (Products CMS)',
+      desc: 'Add, edit, and manage public formulations, packaging sizes, prices, and stock.',
       href: '/products',
-      metric: `${MOCK_PRODUCTS.length} Active SKUs`,
+      metric: `${MOCK_PRODUCTS.length} Published SKUs`,
       icon: Pill,
       badgeVariant: 'bioglass' as const,
+      tag: 'Catalog',
     },
     {
-      phase: 'Phase 4',
-      title: 'Cold-Chain Cryo-Depot Telemetry',
-      desc: 'Real-time IoT thermal feeds across Cairo, Alexandria, Giza, and Asyut with excursion alerts.',
-      href: '/cold-chain',
-      metric: '4 Depots Online',
-      icon: Thermometer,
+      title: 'Homepage & Hero Copy CMS',
+      desc: 'Live bilingual headlines, badges, supporting mission paragraphs, and call-to-actions.',
+      href: '/settings?tab=cms',
+      metric: 'Bilingual (EN / AR)',
+      icon: Globe2,
       badgeVariant: 'in-spec' as const,
+      tag: 'Website Copy',
     },
     {
-      phase: 'Phase 5',
-      title: '21 CFR Part 11 GxP Audit Ledger',
-      desc: 'Cryptographic SHA-256 compliance logs, JSON payload diffs, and EDA/FDA regulatory export.',
-      href: '/gxp-logs',
-      metric: `${MOCK_GXP_AUDIT_LOGS.length} Signed Logs`,
-      icon: ShieldCheck,
+      title: 'Company Story & About CMS',
+      desc: 'Bilingual corporate journey, scientific pillars, and certified quality standard descriptions.',
+      href: '/settings?tab=company',
+      metric: 'Bilingual (EN / AR)',
+      icon: FileText,
       badgeVariant: 'regulatory' as const,
+      tag: 'Story Copy',
     },
     {
-      phase: 'Phase 6',
-      title: 'HCP Credentialing Queue',
-      desc: 'Egyptian Medical & Pharmacist Syndicate license verification and monograph access keys.',
-      href: '/hcp-verify',
-      metric: `${pendingHcps} Pending Review`,
-      icon: UserCheck,
-      badgeVariant: 'caution' as const,
-    },
-    {
-      phase: 'Phase 7',
-      title: 'Pharmacovigilance 24/7 Triage',
-      desc: 'WHO CIOMS-I adverse event intake, MedDRA preferred term coding, and 15-day expedited alerts.',
-      href: '/pharmacovigilance',
-      metric: `${openAdrs} Active Cases`,
-      icon: HeartPulse,
-      badgeVariant: 'excursion' as const,
-    },
-    {
-      phase: 'Phase 8',
-      title: 'B2B Strategic Alliances Hub',
-      desc: 'MENA/GCC distribution tenders, CMO manufacturing leads, NDA tracking, and SmPC analytics.',
-      href: '/b2b-leads',
-      metric: '$3.42M Pipeline',
-      icon: Handshake,
-      badgeVariant: 'in-spec' as const,
-    },
-    {
-      phase: 'Phase 9',
-      title: 'Audience & Newsletter Dispatch',
-      desc: 'Segmented HCP & patient subscriber intelligence with rich clinical broadcast composer.',
-      href: '/subscribers',
-      metric: '1,248 Opt-In',
-      icon: Mail,
-      badgeVariant: 'bioglass' as const,
-    },
-    {
-      phase: 'Phase 10',
-      title: 'Security Hardening & RBAC Matrix',
-      desc: 'Multi-tier clearance permissions, Edge middleware security headers, and session policies.',
+      title: 'Security & Access Control',
+      desc: 'Operator clearance levels, 21 CFR Part 11 policy controls, and system diagnostics.',
       href: '/settings',
-      metric: '4 Clearance Tiers',
+      metric: 'Active & Verified',
       icon: Settings,
-      badgeVariant: 'regulatory' as const,
+      badgeVariant: 'caution' as const,
+      tag: 'System',
     },
   ];
 
@@ -237,22 +188,22 @@ export default function AdminDashboardPage() {
       <section className="hud-glass p-6 sm:p-8 rounded-3xl flex flex-col lg:flex-row lg:items-center justify-between gap-6 border border-white/80 shadow-hud-glass">
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2.5">
-            <StatusBadge variant="regulatory" size="sm" pulse code="PHASE 02">
-              Biomedical HUD & Telemetry Engine Active
+            <StatusBadge variant="in-spec" size="sm" pulse code="CMS SYNC">
+              Website Content Hub Active
             </StatusBadge>
-            <StatusPip status="optimal" label="EDA & 21 CFR Part 11 Compliant" />
+            <StatusPip status="optimal" label="Catalog & Public Routes Synchronized" />
           </div>
           <h1 className="font-heading font-black text-2xl sm:text-3xl text-brand-navy tracking-tight">
-            Mirage Pharma — Clinical & Operations Command Center
+            Mirage Pharma — Content Management &amp; Operations Center
           </h1>
           <p className="text-xs sm:text-sm text-brand-text-muted max-w-3xl">
-            Powered by the <strong>Phase 02 Biomedical HUD Design System</strong> (`TelemetryCard`, `DataTable`, `StatusBadge`, `ClinicalModal`) governing commercial formulations, cold-chain sensors, and GxP compliance.
+            Streamlined administration console for managing commercial formulations, bilingual website copy, our company story, and platform configurations.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3 shrink-0">
           <Button variant="outline" size="sm" asChild>
-            <Link href="/gxp-logs">Inspect GxP Ledger</Link>
+            <Link href="/settings?tab=cms">Edit Homepage Copy</Link>
           </Button>
           <Button variant="primary" size="sm" asChild>
             <Link href="/products">Open Formulation Studio →</Link>
@@ -260,57 +211,57 @@ export default function AdminDashboardPage() {
         </div>
       </section>
 
-      {/* Phase 2: Enhanced Sparkline Telemetry KPI Cards */}
+      {/* Sparkline Telemetry KPI Cards */}
       <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         <TelemetryCard
-          label="Active Formulations"
+          label="Active Website Products"
           value={MOCK_PRODUCTS.length}
-          subtitle="100% EDA & MoH Registered"
-          delta="Naturals 4be"
-          targetSpec="100% COA Verified"
+          subtitle="Published on /products & /ar/products"
+          delta="Catalog Live"
+          targetSpec="100% In Spec"
           status="optimal"
           sparkline={[3, 3, 4, 4, 5, 5, 5]}
           icon={<Pill className="w-4 h-4" />}
         />
 
         <TelemetryCard
-          label="Mean Cold-Chain Temp"
-          value="+4.6°C"
-          subtitle="4 Regional Depots Monitored"
-          delta="1 Pre-Warn (Asyut)"
-          targetSpec="+2.0°C to +8.0°C"
-          status="warning"
-          sparkline={[4.2, 4.3, 4.4, 4.5, 4.8, 4.7, 4.6]}
-          icon={<Thermometer className="w-4 h-4" />}
+          label="Bilingual Sync Status"
+          value="EN & AR"
+          subtitle="Real-Time Revalidation"
+          delta="Live Sync"
+          targetSpec="SSR / ISR Active"
+          status="optimal"
+          sparkline={[1, 1, 1, 1, 2, 2, 2]}
+          icon={<Globe2 className="w-4 h-4" />}
         />
 
         <TelemetryCard
-          label="HCP Credentialing"
-          value={`${pendingHcps} Pending`}
-          subtitle={`${MOCK_HCP_APPLICATIONS.length} Syndicate Dossiers`}
-          delta="98.4% SLA"
-          targetSpec="< 24h Verification"
-          status="nominal"
-          sparkline={[12, 15, 14, 18, 21, 19, 24]}
-          icon={<UserCheck className="w-4 h-4" />}
+          label="Our Story CMS"
+          value="Published"
+          subtitle="Bilingual Mission & Quality"
+          delta="Sync Live"
+          targetSpec="SSR / ISR Active"
+          status="optimal"
+          sparkline={[5, 5, 6, 6, 6, 7, 7]}
+          icon={<FileText className="w-4 h-4" />}
         />
 
         <TelemetryCard
-          label="B2B Licensing Pipeline"
-          value="$3.42M"
-          subtitle={`${MOCK_B2B_INQUIRIES.length} Active MENA Tenders`}
-          delta="+18.4% QoQ"
-          targetSpec="NDA & SmPC Cleared"
+          label="Security & Compliance"
+          value="Active"
+          subtitle="21 CFR Part 11 & EDA"
+          delta="Audit Active"
+          targetSpec="Signed Records"
           status="optimal"
           sparkline={[1.8, 2.1, 2.4, 2.6, 2.9, 3.1, 3.42]}
-          icon={<Handshake className="w-4 h-4" />}
+          icon={<ShieldCheck className="w-4 h-4" />}
         />
       </section>
 
-      {/* Phase 2 DataTable Primitive: Interactive Formulation & Batch Matrix */}
+      {/* DataTable: Formulations & Website Catalog */}
       <DataTable
-        title="Commercial Formulation & Packaging Matrix (Phase 02 DataTable)"
-        subtitle="Click any column header to sort, toggle visible columns, export CSV, or click a row to launch the Clinical Dossier Modal"
+        title="Commercial Formulations & Website Catalog"
+        subtitle="Manage product monographs, pack sizes, stock availability, and Arabic regulatory labels"
         data={MOCK_PRODUCTS}
         columns={productColumns}
         rowKey={(row) => row.id}
@@ -323,15 +274,15 @@ export default function AdminDashboardPage() {
         }}
       />
 
-      {/* 10-Phase Interactive Architecture Matrix */}
+      {/* Website Management Workstations */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="font-heading font-bold text-lg text-brand-navy">
-              Operational Control Modules (Phases 3 – 10)
+              Website Management &amp; Operations Workstations
             </h2>
             <p className="text-xs text-brand-text-muted">
-              Select any specialized clinical or supply-chain workstation to manage live records
+              Select any workstation to update public website content, products, or system security
             </p>
           </div>
           <span className="text-xs font-mono text-slate-400 hidden sm:inline">
@@ -340,7 +291,7 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-          {phaseModules.map((mod) => {
+          {cmsModules.map((mod) => {
             const Icon = mod.icon;
             return (
               <Link
@@ -353,7 +304,7 @@ export default function AdminDashboardPage() {
                     <StatusBadge
                       variant={mod.badgeVariant}
                       size="xs"
-                      code={mod.phase}
+                      code={mod.tag}
                     >
                       Active
                     </StatusBadge>
@@ -373,11 +324,11 @@ export default function AdminDashboardPage() {
                 </div>
 
                 <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span className="font-mono font-bold text-brand-navy">
+                  <span className="font-mono font-semibold text-brand-primary">
                     {mod.metric}
                   </span>
-                  <span className="inline-flex items-center gap-1 font-semibold text-brand-primary group-hover:translate-x-0.5 transition-transform">
-                    <span>Launch</span>
+                  <span className="text-slate-400 group-hover:text-brand-primary transition-colors flex items-center gap-0.5">
+                    <span>Open</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                   </span>
                 </div>

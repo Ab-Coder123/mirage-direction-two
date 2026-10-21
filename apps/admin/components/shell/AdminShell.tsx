@@ -10,7 +10,6 @@ import {
   ShieldCheck,
   UserCheck,
   HeartPulse,
-  Handshake,
   Mail,
   Settings,
   Search,
@@ -21,8 +20,10 @@ import {
   Command,
   Sparkles,
   Lock,
+  Globe2,
+  FileText,
 } from 'lucide-react';
-import { Badge, StatusPip } from '@mirage/ui';
+import { StatusPip } from '@mirage/ui';
 import {
   MOCK_PRODUCTS,
   MOCK_COLD_CHAIN_DEPOTS,
@@ -32,75 +33,87 @@ import {
 export interface NavItem {
   label: string;
   href: string;
-  phase: string;
+  description?: string;
   badge?: string;
   badgeVariant?: 'primary' | 'secondary' | 'outline';
   icon: React.ComponentType<{ className?: string }>;
 }
 
-const NAV_ITEMS: NavItem[] = [
+export const PRIMARY_CMS_NAV_ITEMS: NavItem[] = [
   {
-    label: 'Executive HUD',
+    label: 'Overview',
     href: '/',
-    phase: 'Phase 1–2',
+    description: 'Dashboard & Catalog Stats',
     icon: LayoutDashboard,
   },
   {
-    label: 'Formulation Studio',
+    label: 'Products & Formulations',
     href: '/products',
-    phase: 'Phase 3',
+    description: 'Catalog Management (CRUD)',
     badge: `${MOCK_PRODUCTS.length}`,
     icon: Pill,
   },
   {
+    label: 'Homepage & Hero CMS',
+    href: '/settings?tab=cms',
+    description: 'Bilingual Copy & Banners',
+    badge: 'Bilingual',
+    icon: Globe2,
+  },
+  {
+    label: 'Company Story CMS',
+    href: '/settings?tab=company',
+    description: 'About & Quality Narrative',
+    badge: 'Bilingual',
+    icon: FileText,
+  },
+  {
+    label: 'Settings & Security',
+    href: '/settings',
+    description: 'Access Controls & Config',
+    icon: Settings,
+  },
+];
+
+export const SECONDARY_OPS_NAV_ITEMS: NavItem[] = [
+  {
     label: 'Cold-Chain Telemetry',
     href: '/cold-chain',
-    phase: 'Phase 4',
+    description: 'IoT Depot Sensors',
     badge: '4 Nodes',
     icon: Thermometer,
   },
   {
     label: 'GxP Audit Ledger',
     href: '/gxp-logs',
-    phase: 'Phase 5',
+    description: 'Compliance & Diff Logs',
     badge: 'CFR-11',
     icon: ShieldCheck,
   },
   {
     label: 'HCP Credentialing',
     href: '/hcp-verify',
-    phase: 'Phase 6',
+    description: 'Syndicate Verification',
     badge: '2 Pending',
     icon: UserCheck,
   },
   {
     label: 'Pharmacovigilance',
     href: '/pharmacovigilance',
-    phase: 'Phase 7',
+    description: 'ADR Triage Desk',
     badge: 'CIOMS',
     icon: HeartPulse,
   },
   {
-    label: 'B2B Alliances Hub',
-    href: '/b2b-leads',
-    phase: 'Phase 8',
-    badge: '$3.4M',
-    icon: Handshake,
-  },
-  {
     label: 'Newsletter Dispatch',
     href: '/subscribers',
-    phase: 'Phase 9',
+    description: 'Audience Broadcasts',
     badge: '1.2k',
     icon: Mail,
   },
-  {
-    label: 'Security & RBAC',
-    href: '/settings',
-    phase: 'Phase 10',
-    icon: Settings,
-  },
 ];
+
+const NAV_ITEMS: NavItem[] = [...PRIMARY_CMS_NAV_ITEMS, ...SECONDARY_OPS_NAV_ITEMS];
 
 const ROLES = [
   { name: 'Super Admin', actor: 'Dr. Tarek El Attar', clearance: 'LVL-5 GxP Signatory' },
@@ -143,11 +156,11 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       (item) =>
         !q ||
         item.label.toLowerCase().includes(q) ||
-        item.phase.toLowerCase().includes(q)
+        (item.description && item.description.toLowerCase().includes(q))
     ).map((m) => ({
       type: 'Module',
       title: m.label,
-      subtitle: `${m.phase} • Console Route`,
+      subtitle: m.description || 'Console Route',
       href: m.href,
     }));
 
@@ -231,60 +244,99 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           </button>
         </div>
 
-        {/* Navigation Links (10 Phases) */}
-        <div className="px-3 py-2 flex-1 overflow-y-auto space-y-1">
-          <div className="px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest text-slate-400">
-            10-Phase Operations Suite
-          </div>
-          {NAV_ITEMS.map((item) => {
-            const Icon = item.icon;
-            const isActive =
-              item.href === '/'
-                ? pathname === '/'
-                : pathname.startsWith(item.href);
+        {/* Navigation Links */}
+        <div className="px-3 py-2 flex-1 overflow-y-auto space-y-4">
+          {/* Main Website Content Section */}
+          <div className="space-y-1">
+            <div className="px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest text-slate-400">
+              Website Content &amp; CMS
+            </div>
+            {PRIMARY_CMS_NAV_ITEMS.map((item) => {
+              const Icon = item.icon;
+              const isActive =
+                item.href === '/'
+                  ? pathname === '/'
+                  : pathname.startsWith(item.href.split('?')[0] ?? item.href);
 
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
-                  isActive
-                    ? 'bg-gradient-to-r from-[#2878BC] to-[#2878BC]/80 text-white shadow-md shadow-[#2878BC]/25 border border-white/20'
-                    : 'text-slate-300 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <Icon
-                    className={`w-4 h-4 shrink-0 ${
-                      isActive ? 'text-white' : 'text-[#61C0E4]'
-                    }`}
-                  />
-                  <div className="truncate">
-                    <span className="block truncate font-semibold">{item.label}</span>
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#2878BC] to-[#2878BC]/80 text-white shadow-md shadow-[#2878BC]/25 border border-white/20'
+                      : 'text-slate-300 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <Icon
+                      className={`w-4 h-4 shrink-0 ${
+                        isActive ? 'text-white' : 'text-[#61C0E4]'
+                      }`}
+                    />
+                    <div className="truncate">
+                      <span className="block truncate font-semibold">{item.label}</span>
+                      {item.description && (
+                        <span
+                          className={`text-[10px] block truncate ${
+                            isActive ? 'text-sky-100' : 'text-slate-400'
+                          }`}
+                        >
+                          {item.description}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {item.badge ? (
                     <span
-                      className={`text-[10px] font-mono block ${
-                        isActive ? 'text-sky-100' : 'text-slate-400'
+                      className={`px-2 py-0.5 text-[10px] font-mono rounded-full font-bold ${
+                        isActive
+                          ? 'bg-white/20 text-white'
+                          : 'bg-white/10 text-slate-300'
                       }`}
                     >
-                      {item.phase}
+                      {item.badge}
                     </span>
-                  </div>
-                </div>
+                  ) : null}
+                </Link>
+              );
+            })}
+          </div>
 
-                {item.badge ? (
-                  <span
-                    className={`px-2 py-0.5 text-[10px] font-mono rounded-full font-bold ${
-                      isActive
-                        ? 'bg-white/20 text-white'
-                        : 'bg-white/10 text-slate-300'
-                    }`}
-                  >
-                    {item.badge}
-                  </span>
-                ) : null}
-              </Link>
-            );
-          })}
+          {/* Secondary Operations Section */}
+          <div className="space-y-1 pt-2 border-t border-white/10">
+            <div className="px-3 py-1 text-[10px] font-mono uppercase tracking-widest text-slate-400">
+              Operations Hub
+            </div>
+            {SECONDARY_OPS_NAV_ITEMS.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname.startsWith(item.href);
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                    isActive
+                      ? 'bg-white/15 text-white font-semibold'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <Icon className="w-3.5 h-3.5 shrink-0 text-slate-400" />
+                    <span className="truncate">{item.label}</span>
+                  </div>
+
+                  {item.badge ? (
+                    <span className="px-1.5 py-0.5 text-[9px] font-mono rounded bg-white/10 text-slate-400">
+                      {item.badge}
+                    </span>
+                  ) : null}
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
         {/* Active RBAC Operator Switcher Footer */}
@@ -371,9 +423,11 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                         <Icon className="w-4 h-4 text-[#61C0E4]" />
                         <span>{item.label}</span>
                       </span>
-                      <span className="text-[10px] font-mono text-slate-400">
-                        {item.phase}
-                      </span>
+                      {item.description ? (
+                        <span className="text-[10px] font-mono text-slate-400">
+                          {item.description}
+                        </span>
+                      ) : null}
                     </Link>
                   );
                 })}
@@ -399,15 +453,12 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
             <div className="flex items-center gap-2 text-xs text-slate-500 truncate">
               <Link href="/" className="font-mono hover:text-brand-primary">
-                Mirage Direction Two
+                Mirage Admin
               </Link>
               <ChevronRight className="w-3.5 h-3.5 shrink-0 text-slate-400" />
               <span className="font-heading font-bold text-brand-navy truncate">
                 {currentNav?.label}
               </span>
-              <Badge variant="secondary" size="sm" className="hidden sm:inline-flex">
-                {currentNav?.phase}
-              </Badge>
             </div>
           </div>
 
@@ -415,7 +466,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <div className="hidden xl:flex items-center">
               <StatusPip
                 status="optimal"
-                label="Cryo-Chain: +4.6°C Avg • GxP Ledger Synced"
+                label="Catalog & CMS Synchronized • Live"
               />
             </div>
 
@@ -461,11 +512,11 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-2">
             <Sparkles className="w-3.5 h-3.5 text-brand-primary" />
             <span>
-              <strong>Mirage Pharma Clinical Admin OS</strong> — 10-Phase Unified Architecture (Direction Two)
+              <strong>Mirage Pharma Administration Hub</strong> — Website Content &amp; Operations Management
             </span>
           </div>
           <div className="font-mono text-[11px] text-slate-400">
-            EDA GxP • FDA 21 CFR Part 11 • ISO 9001:2015 Verified
+            EDA GxP • 21 CFR Part 11 Active
           </div>
         </footer>
       </div>
@@ -485,7 +536,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                 autoFocus
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search formulations, cold-chain nodes, HCP licenses, or phases..."
+                placeholder="Search products, website pages, or settings..."
                 className="w-full text-sm text-brand-navy placeholder:text-slate-400 focus:outline-none"
               />
               <button
