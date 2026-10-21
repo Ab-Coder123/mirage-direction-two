@@ -9,6 +9,7 @@ export interface TelemetryCardProps extends React.HTMLAttributes<HTMLDivElement>
   targetSpec?: string;
   status?: 'optimal' | 'warning' | 'critical' | 'nominal';
   sparkline?: number[];
+  showSparkline?: boolean;
   icon?: React.ReactNode;
 }
 
@@ -23,6 +24,7 @@ export const TelemetryCard = React.forwardRef<HTMLDivElement, TelemetryCardProps
       targetSpec,
       status = 'optimal',
       sparkline,
+      showSparkline = false,
       icon,
       ...props
     },
@@ -52,7 +54,7 @@ export const TelemetryCard = React.forwardRef<HTMLDivElement, TelemetryCardProps
     };
 
     const renderSparkline = () => {
-      if (!sparkline || sparkline.length < 2) return null;
+      if (!showSparkline || !sparkline || sparkline.length < 2) return null;
       const min = Math.min(...sparkline);
       const max = Math.max(...sparkline);
       const range = max - min || 1;

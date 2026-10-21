@@ -75,45 +75,9 @@ export const PRIMARY_CMS_NAV_ITEMS: NavItem[] = [
   },
 ];
 
-export const SECONDARY_OPS_NAV_ITEMS: NavItem[] = [
-  {
-    label: 'Cold-Chain Telemetry',
-    href: '/cold-chain',
-    description: 'IoT Depot Sensors',
-    badge: '4 Nodes',
-    icon: Thermometer,
-  },
-  {
-    label: 'GxP Audit Ledger',
-    href: '/gxp-logs',
-    description: 'Compliance & Diff Logs',
-    badge: 'CFR-11',
-    icon: ShieldCheck,
-  },
-  {
-    label: 'HCP Credentialing',
-    href: '/hcp-verify',
-    description: 'Syndicate Verification',
-    badge: '2 Pending',
-    icon: UserCheck,
-  },
-  {
-    label: 'Pharmacovigilance',
-    href: '/pharmacovigilance',
-    description: 'ADR Triage Desk',
-    badge: 'CIOMS',
-    icon: HeartPulse,
-  },
-  {
-    label: 'Newsletter Dispatch',
-    href: '/subscribers',
-    description: 'Audience Broadcasts',
-    badge: '1.2k',
-    icon: Mail,
-  },
-];
+export const SECONDARY_OPS_NAV_ITEMS: NavItem[] = [];
 
-const NAV_ITEMS: NavItem[] = [...PRIMARY_CMS_NAV_ITEMS, ...SECONDARY_OPS_NAV_ITEMS];
+const NAV_ITEMS: NavItem[] = [...PRIMARY_CMS_NAV_ITEMS];
 
 const ROLES = [
   { name: 'Super Admin', actor: 'Dr. Tarek El Attar', clearance: 'LVL-5 GxP Signatory' },
@@ -304,39 +268,40 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             })}
           </div>
 
-          {/* Secondary Operations Section */}
-          <div className="space-y-1 pt-2 border-t border-white/10">
-            <div className="px-3 py-1 text-[10px] font-mono uppercase tracking-widest text-slate-400">
-              Operations Hub
+          {SECONDARY_OPS_NAV_ITEMS.length > 0 && (
+            <div className="space-y-1 pt-2 border-t border-white/10">
+              <div className="px-3 py-1 text-[10px] font-mono uppercase tracking-widest text-slate-400">
+                Operations Hub
+              </div>
+              {SECONDARY_OPS_NAV_ITEMS.map((item) => {
+                const Icon = item.icon;
+                const isActive = pathname.startsWith(item.href);
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                      isActive
+                        ? 'bg-white/15 text-white font-semibold'
+                        : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <Icon className="w-3.5 h-3.5 shrink-0 text-slate-400" />
+                      <span className="truncate">{item.label}</span>
+                    </div>
+
+                    {item.badge ? (
+                      <span className="px-1.5 py-0.5 text-[9px] font-mono rounded bg-white/10 text-slate-400">
+                        {item.badge}
+                      </span>
+                    ) : null}
+                  </Link>
+                );
+              })}
             </div>
-            {SECONDARY_OPS_NAV_ITEMS.map((item) => {
-              const Icon = item.icon;
-              const isActive = pathname.startsWith(item.href);
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all ${
-                    isActive
-                      ? 'bg-white/15 text-white font-semibold'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-                  }`}
-                >
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <Icon className="w-3.5 h-3.5 shrink-0 text-slate-400" />
-                    <span className="truncate">{item.label}</span>
-                  </div>
-
-                  {item.badge ? (
-                    <span className="px-1.5 py-0.5 text-[9px] font-mono rounded bg-white/10 text-slate-400">
-                      {item.badge}
-                    </span>
-                  ) : null}
-                </Link>
-              );
-            })}
-          </div>
+          )}
         </div>
 
         {/* Active RBAC Operator Switcher Footer */}

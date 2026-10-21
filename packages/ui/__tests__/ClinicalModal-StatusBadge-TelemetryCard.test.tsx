@@ -156,21 +156,21 @@ describe('TelemetryCard', () => {
     expect(document.querySelector('svg')).toBeNull();
   });
 
-  it('draws a sparkline only when at least two points are provided', () => {
-    const { rerender } = render(<TelemetryCard label="L" value={1} sparkline={[3]} />);
+  it('draws a sparkline only when at least two points are provided and showSparkline is true', () => {
+    const { rerender } = render(<TelemetryCard label="L" value={1} sparkline={[3]} showSparkline />);
     expect(document.querySelector('polyline')).toBeNull();
-    rerender(<TelemetryCard label="L" value={1} sparkline={[3, 5, 4]} />);
+    rerender(<TelemetryCard label="L" value={1} sparkline={[3, 5, 4]} showSparkline />);
     const points = document.querySelector('polyline')!.getAttribute('points')!.split(' ');
     expect(points).toHaveLength(3);
   });
 
   it('does not produce NaN coordinates for a flat series (zero range)', () => {
-    render(<TelemetryCard label="L" value={1} sparkline={[5, 5, 5, 5]} />);
+    render(<TelemetryCard label="L" value={1} sparkline={[5, 5, 5, 5]} showSparkline />);
     expect(document.querySelector('polyline')!.getAttribute('points')).not.toContain('NaN');
   });
 
   it('colours the sparkline according to status', () => {
-    render(<TelemetryCard label="L" value={1} status="critical" sparkline={[1, 2]} />);
+    render(<TelemetryCard label="L" value={1} status="critical" sparkline={[1, 2]} showSparkline />);
     expect(document.querySelector('polyline')!.getAttribute('stroke')).toBe('#D32F2F');
   });
 });
