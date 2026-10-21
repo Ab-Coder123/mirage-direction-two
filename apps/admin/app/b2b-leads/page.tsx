@@ -23,6 +23,26 @@ import {
   Copy,
 } from 'lucide-react';
 import { MOCK_B2B_INQUIRIES, type B2BAllianceInquiry } from '@mirage/types';
+import { memoryStore, type B2BLeadRecord } from '@mirage/db';
+
+function mapDbLeadToInquiry(l: B2BLeadRecord): B2BAllianceInquiry {
+  return {
+    id: l.id,
+    referenceCode: `B2B-LEAD-${l.id.slice(-4).toUpperCase()}`,
+    companyName: l.company_name,
+    country: 'Egypt / MENA',
+    archetype: (l.partnership_archetype === 'Hospital Network' ? 'Hospital Tender' : 'Commercial Distribution') as any,
+    contactName: l.contact_name,
+    contactRole: 'Procurement / Medical Lead',
+    contactEmail: l.email,
+    targetProducts: ['SymPDCA', 'NovaMirage'],
+    estimatedAnnualValueUSD: '$250,000',
+    ndaStatus: 'Pending Signature',
+    stage: 'Discovery',
+    submittedDate: (l.created_at ? l.created_at.split('T')[0] : null) ?? '2026-04-20',
+    dossiersDownloaded: 0,
+  };
+}
 
 const ARCHETYPES = [
   'All',
@@ -33,7 +53,17 @@ const ARCHETYPES = [
 ] as const;
 
 export default function B2BAlliancesHubPage() {
-  const [leads, setLeads] = useState<B2BAllianceInquiry[]>(MOCK_B2B_INQUIRIES);
+  const [leads, setLeads] = useState<B2BAllianceInquiry[]>(() => {
+    const dbLeads = memoryStore.getLeads().map(mapDbLeadToInquiry);
+    // Combine without duplicate IDs
+    const combined = [...dbLeads];
+    for (const mock of MOCK_B2B_INQUIRIES) {
+      if (!combined.some((c) => c.id === mock.id)) {
+        combined.push(mock);
+      }
+    }
+    return combined;
+  });
   const [selectedArchetype, setSelectedArchetype] = useState<string>('All');
   const [selectedLeadId, setSelectedLeadId] = useState<string>(
     MOCK_B2B_INQUIRIES[0]?.id ?? 'b2b-001'

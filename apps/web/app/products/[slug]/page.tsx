@@ -15,6 +15,7 @@ import {
   Stethoscope,
 } from 'lucide-react';
 import { MOCK_PRODUCTS, MOCK_REVIEWS, Product } from '@mirage/types';
+import { memoryStore } from '@mirage/db';
 import { Button, Badge, Card, ReviewCard } from '@mirage/ui';
 
 interface Props {
@@ -22,14 +23,16 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return MOCK_PRODUCTS.map((p) => ({
+  return memoryStore.getProducts('en').map((p) => ({
     slug: p.slug,
   }));
 }
 
 export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params;
-  const product: Product | undefined = MOCK_PRODUCTS.find((p) => p.slug === slug);
+  const product: Product | undefined =
+    memoryStore.getProductBySlug(slug, 'en') ??
+    MOCK_PRODUCTS.find((p) => p.slug === slug);
 
   if (!product) {
     notFound();

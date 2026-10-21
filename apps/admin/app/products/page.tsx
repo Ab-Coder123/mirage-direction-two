@@ -22,7 +22,8 @@ import {
   Sparkles,
   FilePlus2,
 } from 'lucide-react';
-import { MOCK_PRODUCTS, type Product } from '@mirage/types';
+import { type Product } from '@mirage/types';
+import { createProduct, togglePackStock as dbTogglePackStock, memoryStore } from '@mirage/db';
 
 const CATEGORIES = [
   'All',
@@ -42,10 +43,10 @@ type StudioTab =
   | 'serialization';
 
 export default function FormulationStudioPage() {
-  const [products, setProducts] = useState<Product[]>(MOCK_PRODUCTS);
+  const [products, setProducts] = useState<Product[]>(() => memoryStore.getProducts());
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedProductId, setSelectedProductId] = useState<string>(
-    MOCK_PRODUCTS[0]?.id ?? 'prod-001'
+    () => memoryStore.getProducts()[0]?.id ?? 'prod-sympdca'
   );
   const [activeTab, setActiveTab] = useState<StudioTab>('general');
 
@@ -89,6 +90,11 @@ export default function FormulationStudioPage() {
   };
 
   const togglePackStock = (productId: string, packIndex: number) => {
+    try {
+      dbTogglePackStock(productId, packIndex);
+    } catch {
+      // Fallback if not found in db store
+    }
     setProducts((prev) =>
       prev.map((prod) => {
         if (prod.id !== productId) return prod;
@@ -196,6 +202,12 @@ export default function FormulationStudioPage() {
       reviewsCount: 1,
       isFeatured: true,
     };
+
+    try {
+      createProduct(created);
+    } catch {
+      // In case of duplicate or validation error in store
+    }
 
     setProducts((prev) => [created, ...prev]);
     setSelectedProductId(created.id);
@@ -651,23 +663,23 @@ export default function FormulationStudioPage() {
                   </div>
 
                   {activeProduct.supplementFacts ? (
-                    <div className="overflow-x-auto rounded-2xl border border-slate-200">
-                      <table className="w-full text-left text-xs">
-                        <thead className="bg-slate-50 text-slate-500 font-mono uppercase">
+                    <div className="overflow-x-auto -webkit-overflow-scrolling-touch rounded-2xl border border-slate-200 scrollbar-thin">
+                      <table className="w-full text-left text-xs min-w-[480px]">
+                        <thead className="bg-slate-50 text-slate-500 font-mono uppercase text-[11px]">
                           <tr>
-                            <th className="p-3">Active Nutritional Compound</th>
-                            <th className="p-3">Amount Per Serving</th>
-                            <th className="p-3 text-right">% Daily Value (NRV)</th>
+                            <th className="p-3.5 whitespace-nowrap">Active Nutritional Compound</th>
+                            <th className="p-3.5 whitespace-nowrap">Amount Per Serving</th>
+                            <th className="p-3.5 text-right whitespace-nowrap">% Daily Value (NRV)</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                           {activeProduct.supplementFacts.ingredients.map((ing, i) => (
-                            <tr key={i} className="hover:bg-slate-50/60">
-                              <td className="p-3 font-bold text-brand-navy">{ing.name}</td>
-                              <td className="p-3 font-mono text-brand-primary font-semibold">
+                            <tr key={i} className="hover:bg-slate-50/60 transition-colors">
+                              <td className="p-3.5 font-bold text-brand-navy whitespace-nowrap">{ing.name}</td>
+                              <td className="p-3.5 font-mono text-brand-primary font-semibold whitespace-nowrap">
                                 {ing.amountPerServing}
                               </td>
-                              <td className="p-3 font-mono text-right text-slate-500">
+                              <td className="p-3.5 font-mono text-right text-slate-500 whitespace-nowrap">
                                 {ing.dailyValuePercentage ?? '† Daily Value Not Established'}
                               </td>
                             </tr>

@@ -735,34 +735,34 @@ export default function GxPAuditLedgerPage() {
           </div>
 
           {/* Audit Metrics Table */}
-          <div className="rounded-xl border border-slate-200 overflow-hidden text-xs">
-            <table className="w-full text-left">
+          <div className="rounded-xl border border-slate-200 overflow-x-auto -webkit-overflow-scrolling-touch scrollbar-thin text-xs">
+            <table className="w-full text-left min-w-[540px]">
               <thead className="bg-slate-50 text-slate-600 font-mono uppercase text-[10px]">
                 <tr>
-                  <th className="p-2.5">Audit Scope</th>
-                  <th className="p-2.5">Records Inspected</th>
-                  <th className="p-2.5">Cryptographic Status</th>
-                  <th className="p-2.5">Findings</th>
+                  <th className="p-3 whitespace-nowrap">Audit Scope</th>
+                  <th className="p-3 whitespace-nowrap">Records Inspected</th>
+                  <th className="p-3 whitespace-nowrap">Cryptographic Status</th>
+                  <th className="p-3 whitespace-nowrap">Findings</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-mono text-[11px]">
                 <tr>
-                  <td className="p-2.5 font-bold">Cold-Chain Cryo-Telemetric Log</td>
-                  <td className="p-2.5">4 Depots / 100+ Hours</td>
-                  <td className="p-2.5 text-emerald-600">VERIFIED (SHA-256)</td>
-                  <td className="p-2.5">Zero Excursion Discrepancies</td>
+                  <td className="p-3 font-bold whitespace-nowrap">Cold-Chain Cryo-Telemetric Log</td>
+                  <td className="p-3 whitespace-nowrap">4 Depots / 100+ Hours</td>
+                  <td className="p-3 text-emerald-600 whitespace-nowrap">VERIFIED (SHA-256)</td>
+                  <td className="p-3 whitespace-nowrap">Zero Excursion Discrepancies</td>
                 </tr>
                 <tr>
-                  <td className="p-2.5 font-bold">Formulation GS1 Serialization</td>
-                  <td className="p-2.5">7 Active Products</td>
-                  <td className="p-2.5 text-emerald-600">VERIFIED (SHA-256)</td>
-                  <td className="p-2.5">100% DataMatrix Validated</td>
+                  <td className="p-3 font-bold whitespace-nowrap">Formulation GS1 Serialization</td>
+                  <td className="p-3 whitespace-nowrap">7 Active Products</td>
+                  <td className="p-3 text-emerald-600 whitespace-nowrap">VERIFIED (SHA-256)</td>
+                  <td className="p-3 whitespace-nowrap">100% DataMatrix Validated</td>
                 </tr>
                 <tr>
-                  <td className="p-2.5 font-bold">Syndicate HCP Credentialing</td>
-                  <td className="p-2.5">All Submissions</td>
-                  <td className="p-2.5 text-emerald-600">VERIFIED (SHA-256)</td>
-                  <td className="p-2.5">Syndicate IDs Cross-Referenced</td>
+                  <td className="p-3 font-bold whitespace-nowrap">Syndicate HCP Credentialing</td>
+                  <td className="p-3 whitespace-nowrap">All Submissions</td>
+                  <td className="p-3 text-emerald-600 whitespace-nowrap">VERIFIED (SHA-256)</td>
+                  <td className="p-3 whitespace-nowrap">Syndicate IDs Cross-Referenced</td>
                 </tr>
               </tbody>
             </table>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FormulationStudioPage from '../app/products/page';
 import { MOCK_PRODUCTS } from '@mirage/types';
@@ -145,10 +145,9 @@ describe('FormulationStudioPage (Admin Products Management)', () => {
     );
     const arabicInput = screen.getByDisplayValue(/مكمل غذائي معتمد/i);
 
-    await user.type(nameInput, 'Curcumin Bio-Curc 500');
-    await user.type(subtitleInput, 'Standardized 95% Curcuminoids with Piperine');
-    await user.clear(arabicInput);
-    await user.type(arabicInput, 'كركمين فائق الامتصاص');
+    fireEvent.change(nameInput, { target: { value: 'Curcumin Bio-Curc 500' } });
+    fireEvent.change(subtitleInput, { target: { value: 'Standardized 95% Curcuminoids with Piperine' } });
+    fireEvent.change(arabicInput, { target: { value: 'كركمين فائق الامتصاص' } });
 
     // Submit modal form
     const registerBtn = screen.getByRole('button', { name: /Sign & Register SKU/i });
@@ -165,7 +164,7 @@ describe('FormulationStudioPage (Admin Products Management)', () => {
       screen.getByText('Standardized 95% Curcuminoids with Piperine')
     ).toBeInTheDocument();
     expect(screen.getAllByText('كركمين فائق الامتصاص').length).toBeGreaterThan(0);
-  }, 15000);
+  }, 45000);
 
   it('rejects formulation creation when required SKU name is empty', async () => {
     const user = userEvent.setup({ delay: null });

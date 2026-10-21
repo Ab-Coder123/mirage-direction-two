@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Sparkles, Filter, Search } from 'lucide-react';
 import { MOCK_PRODUCTS_AR } from '@mirage/types';
+import { memoryStore } from '@mirage/db';
 import { ProductCard } from '@mirage/ui';
 import { ProductHeroSlider } from '@/components/products/ProductHeroSlider';
 
@@ -17,8 +18,10 @@ export default function ArabicProductsPage() {
   const [searchFilter, setSearchFilter] = React.useState<string>('');
   const deferredSearch = React.useDeferredValue(searchFilter);
 
+  const [products] = React.useState(() => memoryStore.getProducts('ar'));
+
   const filteredProducts = React.useMemo(() => {
-    return MOCK_PRODUCTS_AR.filter((product) => {
+    return products.filter((product) => {
       const matchesCategory =
         selectedCategory === 'all' || product.category === selectedCategory;
       const query = deferredSearch.toLowerCase().trim();

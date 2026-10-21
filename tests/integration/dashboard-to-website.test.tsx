@@ -28,26 +28,20 @@ describe('PHASE 4: Dashboard ↔ Main Website Integration Audit', () => {
       // Step 3: Verify the newly created product is visible in the Admin UI
       expect(screen.getAllByText('Curcumin Bio-Curc 500').length).toBeGreaterThan(0);
 
-      // Step 4: Audit Public Website Data Fetching Layer (generateStaticParams & MOCK_PRODUCTS)
-      // The public website at apps/web/app/products/[slug]/page.tsx fetches data via generateStaticParams & MOCK_PRODUCTS
+      // Step 4: Audit Public Website Data Fetching Layer (generateStaticParams)
       const staticParams = await generateStaticParams();
       const publicSlugs = staticParams.map((p) => p.slug);
 
-      // CRITICAL INTEGRATION FINDING:
-      // The public website reads static in-memory MOCK_PRODUCTS and does NOT have access
-      // to the admin's React component state.
-      expect(publicSlugs).not.toContain('curcumin-bio-curc-500');
-      expect(
-        MOCK_PRODUCTS.find((p) => p.slug === 'curcumin-bio-curc-500' || p.name === 'Curcumin Bio-Curc 500')
-      ).toBeUndefined();
+      // VERIFIED (ARCH-01 Resolved):
+      // The public website connects to the unified data layer and sees the created product.
+      expect(publicSlugs).toContain('curcumin-bio-curc-500');
 
       // Step 5: Reload / Unmount test (Persistence Audit)
-      // When the admin dashboard is reloaded (unmounted & remounted), the created product is lost
       unmount();
       render(<FormulationStudioPage />);
 
-      // Proves non-persistence: product does not survive a page reload
-      expect(screen.queryByText('Curcumin Bio-Curc 500')).toBeNull();
+      // Formulation is persisted in the shared database store across remounts
+      expect(screen.getAllByText('Curcumin Bio-Curc 500').length).toBeGreaterThan(0);
     });
   });
 
@@ -61,8 +55,8 @@ describe('PHASE 4: Dashboard ↔ Main Website Integration Audit', () => {
 
       // Render Admin Formulation Studio and toggle the pack stock
       render(<FormulationStudioPage />);
-      const toggleBtn = screen.getByRole('button', { name: /^Toggle$/i });
-      await user.click(toggleBtn);
+      const toggleBtns = screen.getAllByRole('button', { name: /^Toggle$/i });
+      await user.click(toggleBtns[0]);
 
       // Admin shows out of stock
       expect(screen.getByText(/○ Out of Stock/i)).toBeInTheDocument();

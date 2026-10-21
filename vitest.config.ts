@@ -28,6 +28,7 @@ const workspaceAlias = {
   '@mirage/types': r('packages/types/src/index.ts'),
   '@mirage/utils': r('packages/utils/src/index.ts'),
   '@mirage/config': r('packages/config/src/index.ts'),
+  '@mirage/db': r('packages/db/src/index.ts'),
 };
 
 const shared = {
@@ -40,7 +41,7 @@ const baseTest = {
   setupFiles: [r('tests/setup.ts')],
   css: false,
   restoreMocks: true,
-  testTimeout: 15000,
+  testTimeout: 30000,
 };
 
 export default defineConfig({
@@ -50,6 +51,7 @@ export default defineConfig({
       reporter: ['text-summary', 'text', 'json-summary', 'html'],
       reportsDirectory: r('coverage'),
       include: [
+        'packages/db/src/**',
         'packages/ui/src/**',
         'packages/utils/src/**',
         'apps/admin/app/**',

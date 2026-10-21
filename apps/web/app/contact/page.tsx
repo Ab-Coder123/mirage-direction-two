@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle2 } from 'lucide-react';
 import { Button, Card, Badge } from '@mirage/ui';
+import { submitB2BLead } from '@mirage/db';
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = React.useState(false);
@@ -16,6 +17,18 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      submitB2BLead({
+        company_name: `${formData.name} (${formData.subject})`,
+        contact_name: formData.name,
+        email: formData.email,
+        phone: formData.phone || undefined,
+        partnership_archetype: 'Hospital Network',
+        message: formData.message,
+      });
+    } catch (err) {
+      console.error('Contact lead submission error:', err);
+    }
     setSubmitted(true);
   };
 

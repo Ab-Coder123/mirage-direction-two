@@ -452,7 +452,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Route Page Content */}
-        <main className="flex-1 p-4 sm:p-8 max-w-[1440px] w-full mx-auto">
+        <main className="flex-1 p-4 sm:p-8 max-w-[1440px] w-full mx-auto min-w-0">
           {children}
         </main>
 

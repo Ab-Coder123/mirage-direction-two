@@ -245,32 +245,32 @@ export default function SecurityRBACSettingsPage() {
               </StatusBadge>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+            <div className="overflow-x-auto -webkit-overflow-scrolling-touch scrollbar-thin rounded-2xl border border-slate-200">
+              <table className="w-full text-left text-xs min-w-[560px]">
                 <thead className="bg-slate-50 text-slate-500 font-mono uppercase text-[10px]">
                   <tr>
-                    <th className="p-3">Operational Module</th>
-                    <th className="p-3 text-center">Read</th>
-                    <th className="p-3 text-center">Write / Mutate</th>
-                    <th className="p-3 text-center">GxP Sign-Off</th>
-                    <th className="p-3 text-center">Export Dossier</th>
+                    <th className="p-3.5 whitespace-nowrap">Operational Module</th>
+                    <th className="p-3.5 text-center whitespace-nowrap">Read</th>
+                    <th className="p-3.5 text-center whitespace-nowrap">Write / Mutate</th>
+                    <th className="p-3.5 text-center whitespace-nowrap">GxP Sign-Off</th>
+                    <th className="p-3.5 text-center whitespace-nowrap">Export Dossier</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 font-mono">
                   {activeRole.permissions.map((perm, idx) => (
                     <tr key={perm.module} className="hover:bg-slate-50/60 transition-colors">
-                      <td className="p-3 font-bold text-brand-navy font-sans">
+                      <td className="p-3.5 font-bold text-brand-navy font-sans whitespace-nowrap">
                         {perm.module}
                       </td>
                       {(['read', 'write', 'approve', 'export'] as const).map(
                         (field) => (
-                          <td key={field} className="p-3 text-center">
+                          <td key={field} className="p-3.5 text-center whitespace-nowrap">
                             <button
                               type="button"
                               onClick={() =>
                                 togglePermission(activeRole.id, idx, field)
                               }
-                              className="inline-flex items-center justify-center p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+                              className="inline-flex items-center justify-center p-2 rounded-lg hover:bg-slate-100 transition-colors min-w-[32px] min-h-[32px]"
                               aria-label={`Toggle ${field} for ${perm.module}`}
                             >
                               {perm[field] ? (

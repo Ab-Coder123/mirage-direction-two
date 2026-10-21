@@ -251,4 +251,31 @@ describe('DataTable', () => {
       expect(csv.split('\n')[0]).toBe('"Name"');
     });
   });
+
+  describe('Responsive view mode (Table vs Cards)', () => {
+    it('switches to card view when the Cards toggle is clicked', async () => {
+      const user = userEvent.setup();
+      renderTable();
+      expect(document.querySelector('table')).toBeInTheDocument();
+
+      const cardsBtn = screen.getByRole('button', { name: /cards view/i });
+      await user.click(cardsBtn);
+
+      // In card view, table is unmounted and card elements are displayed
+      expect(document.querySelector('table')).not.toBeInTheDocument();
+      expect(screen.getByText('Inositol')).toBeInTheDocument();
+      expect(screen.getByText('Folate B12')).toBeInTheDocument();
+
+      // Switch back to table view
+      const tableBtn = screen.getByRole('button', { name: /table view/i });
+      await user.click(tableBtn);
+      expect(document.querySelector('table')).toBeInTheDocument();
+    });
+
+    it('renders with defaultViewMode="cards" directly', () => {
+      renderTable({ defaultViewMode: 'cards' });
+      expect(document.querySelector('table')).not.toBeInTheDocument();
+      expect(screen.getByText('Inositol')).toBeInTheDocument();
+    });
+  });
 });
