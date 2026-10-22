@@ -1,6 +1,5 @@
 import { AuditLogRecord, AuditFramework } from '../schema';
 import { memoryStore } from './memory-store';
-import { getSupabaseClient, isSupabaseConfigured } from '../client';
 
 function sha256(content: string): string {
   try {
@@ -72,32 +71,10 @@ export async function recordAuditLog(params: RecordAuditParams): Promise<AuditLo
     prev_hash: prevHash,
   };
 
-  if (isSupabaseConfigured()) {
-    const supabase = getSupabaseClient();
-    if (supabase) {
-      const { error } = await supabase.from('audit_logs').insert([logRecord]);
-      if (error) {
-        console.error('[AuditLog] Supabase insert error:', error);
-      }
-    }
-  }
-
   memoryStore.addAuditLog(logRecord);
   return logRecord;
 }
 
 export async function getAuditLogs(): Promise<AuditLogRecord[]> {
-  if (isSupabaseConfigured()) {
-    const supabase = getSupabaseClient();
-    if (supabase) {
-      const { data, error } = await supabase
-        .from('audit_logs')
-        .select('*')
-        .order('timestamp', { ascending: false });
-      if (!error && data) {
-        return data as AuditLogRecord[];
-      }
-    }
-  }
   return memoryStore.getAuditLogs();
 }

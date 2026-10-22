@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import {
   Badge,
   Button,
@@ -19,10 +20,37 @@ import {
   Download,
   RefreshCw,
   FileCode,
+  Globe2,
+  Building2,
 } from 'lucide-react';
 import { MOCK_RBAC_ROLES, type RBACRoleDefinition } from '@mirage/types';
+import HomepageHeroEditor from '../../components/cms/HomepageHeroEditor';
+import CompanyStoryEditor from '../../components/cms/CompanyStoryEditor';
+import { resolveSettingsTab, type SettingsTab } from './tab-utils';
 
-export default function SecurityRBACSettingsPage() {
+function SettingsContent() {
+  const searchParams = useSearchParams();
+  const rawTab = searchParams?.get('tab') ?? (typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('tab') : null);
+  const [activeTab, setActiveTab] = useState<SettingsTab>(() => resolveSettingsTab(rawTab));
+
+  useEffect(() => {
+    const currentTab = searchParams?.get('tab') ?? (typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('tab') : null);
+    setActiveTab(resolveSettingsTab(currentTab));
+  }, [searchParams]);
+
+  const handleTabChange = (newTab: SettingsTab) => {
+    setActiveTab(newTab);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      if (newTab === 'security') {
+        url.searchParams.delete('tab');
+      } else {
+        url.searchParams.set('tab', newTab);
+      }
+      window.history.replaceState(null, '', url.pathname + (url.searchParams.toString() ? `?${url.searchParams.toString()}` : ''));
+    }
+  };
+
   const [roles, setRoles] = useState<RBACRoleDefinition[]>(MOCK_RBAC_ROLES);
   const [selectedRoleId, setSelectedRoleId] = useState<string>(
     MOCK_RBAC_ROLES[0]?.id ?? 'role-super-admin'
@@ -93,12 +121,60 @@ export default function SecurityRBACSettingsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Phase 10 Header */}
+      {/* Settings Navigation Tabs */}
+      <div className="flex items-center gap-2 border-b border-slate-200/80 pb-3">
+        <button
+          type="button"
+          onClick={() => handleTabChange('security')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+            activeTab === 'security'
+              ? 'bg-brand-navy text-white shadow-sm'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+          }`}
+        >
+          <ShieldCheck className="w-4 h-4" />
+          <span>Security & RBAC Policies</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => handleTabChange('cms')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+            activeTab === 'cms'
+              ? 'bg-brand-primary text-white shadow-sm'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+          }`}
+        >
+          <Globe2 className="w-4 h-4" />
+          <span>Homepage & Brand CMS</span>
+          <span className="px-1.5 py-0.5 rounded text-[10px] bg-white/20 font-mono">Bilingual</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => handleTabChange('company')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+            activeTab === 'company'
+              ? 'bg-brand-primary text-white shadow-sm'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+          }`}
+        >
+          <Building2 className="w-4 h-4" />
+          <span>Our Story & Facts CMS</span>
+          <span className="px-1.5 py-0.5 rounded text-[10px] bg-white/20 font-mono">Bilingual</span>
+        </button>
+      </div>
+
+      {activeTab === 'cms' ? (
+        <HomepageHeroEditor />
+      ) : activeTab === 'company' ? (
+        <CompanyStoryEditor />
+      ) : (
+        <>
+          {/* Phase 10 Header */}
       <div className="hud-glass p-6 rounded-3xl border border-white/80 shadow-hud-glass flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Badge variant="primary" size="sm">
-              Phase 10 • Security Hardening & Edge RBAC
+              Security Hardening &amp; Edge RBAC
             </Badge>
             <span className="text-xs font-mono text-emerald-600 font-bold flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -412,7 +488,7 @@ export default function SecurityRBACSettingsPage() {
         footer={
           <div className="flex items-center justify-between w-full">
             <span className="text-xs font-mono text-emerald-600 font-bold">
-              ● All 10 Phases Verified & Release Ready
+              ● System Architecture Verified &amp; Release Ready
             </span>
             <Button
               variant="primary"
@@ -441,7 +517,7 @@ export default function SecurityRBACSettingsPage() {
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                 <div>
                   <div className="font-bold text-sm">
-                    Release Candidate Certified: PASS (10/10 Phases)
+                    Release Candidate Certified: PASS (Monorepo Verified)
                   </div>
                   <div className="mt-0.5 text-xs text-emerald-800 leading-relaxed font-mono">
                     Zero TypeScript errors. Zero hydration mismatches. 100% GxP & FDA 21 CFR Part 11 compliance standards satisfied.
@@ -476,6 +552,16 @@ export default function SecurityRBACSettingsPage() {
           )}
         </div>
       </ClinicalModal>
+        </>
+      )}
     </div>
+  );
+}
+
+export default function SecurityRBACSettingsPage() {
+  return (
+    <Suspense fallback={<div className="space-y-6 animate-pulse p-6 bg-white rounded-3xl border border-slate-200" />}>
+      <SettingsContent />
+    </Suspense>
   );
 }

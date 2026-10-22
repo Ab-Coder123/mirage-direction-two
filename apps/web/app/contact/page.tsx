@@ -3,10 +3,11 @@
 import * as React from 'react';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle2 } from 'lucide-react';
 import { Button, Card, Badge } from '@mirage/ui';
-import { submitB2BLead } from '@mirage/db';
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState<string | null>(null);
   const [formData, setFormData] = React.useState({
     name: '',
     email: '',
@@ -15,21 +16,29 @@ export default function ContactPage() {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError(null);
+
     try {
-      submitB2BLead({
-        company_name: `${formData.name} (${formData.subject})`,
-        contact_name: formData.name,
-        email: formData.email,
-        phone: formData.phone || undefined,
-        partnership_archetype: 'Hospital Network',
-        message: formData.message,
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
-    } catch (err) {
-      console.error('Contact lead submission error:', err);
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok && data.ok) {
+        setSubmitted(true);
+      } else {
+        setSubmitError(data.error || 'Failed to submit inquiry. Please verify your entries.');
+      }
+    } catch (err: any) {
+      setSubmitError(err?.message || 'Network error connecting to medical affairs server.');
+    } finally {
+      setIsSubmitting(false);
     }
-    setSubmitted(true);
   };
 
   return (
@@ -242,10 +251,22 @@ export default function ContactPage() {
                     />
                   </div>
 
-                  <Button variant="primary" size="lg" type="submit" className="w-full font-bold shadow-md cursor-pointer">
+                  {submitError && (
+                    <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs">
+                      <strong>Submission Notice:</strong> {submitError}
+                    </div>
+                  )}
+
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full font-bold shadow-md cursor-pointer disabled:opacity-60"
+                  >
                     <span className="flex items-center justify-center gap-2">
                       <Send className="w-4 h-4" />
-                      <span>Submit Inquiry to Medical Affairs</span>
+                      <span>{isSubmitting ? 'Submitting to Medical Affairs...' : 'Submit Inquiry to Medical Affairs'}</span>
                     </span>
                   </Button>
                 </form>

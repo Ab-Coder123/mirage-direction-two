@@ -21,9 +21,16 @@ import {
   ArrowRight,
   Check,
   Copy,
+  Trash2,
 } from 'lucide-react';
 import { MOCK_B2B_INQUIRIES, type B2BAllianceInquiry } from '@mirage/types';
 import { memoryStore, type B2BLeadRecord } from '@mirage/db';
+import {
+  getB2BLeadsAction,
+  createB2BLeadAction,
+  updateB2BLeadStatusAction,
+  deleteB2BLeadAction,
+} from './actions';
 
 function mapDbLeadToInquiry(l: B2BLeadRecord): B2BAllianceInquiry {
   return {
@@ -69,6 +76,48 @@ export default function B2BAlliancesHubPage() {
     MOCK_B2B_INQUIRIES[0]?.id ?? 'b2b-001'
   );
   const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [dataSource, setDataSource] = useState<'mongodb' | 'static'>('static');
+
+  // Load B2B leads from MongoDB when the page opens (protected by leads:read)
+  React.useEffect(() => {
+    let cancelled = false;
+    async function loadInitialLeads() {
+      setIsLoading(true);
+      try {
+        const res = await getB2BLeadsAction();
+        if (cancelled) return;
+        if (res.ok) {
+          if (Array.isArray(res.leads) && res.leads.length > 0) {
+            const mapped = res.leads.map(mapDbLeadToInquiry);
+            const combined = [...mapped];
+            for (const mock of MOCK_B2B_INQUIRIES) {
+              if (!combined.some((c) => c.id === mock.id)) {
+                combined.push(mock);
+              }
+            }
+            setLeads(combined);
+          }
+          setDataSource(res.source === 'mongodb' ? 'mongodb' : 'static');
+          setLoadError(null);
+        } else {
+          setLoadError(res.error || 'Failed to load leads from database.');
+          setDataSource('static');
+        }
+      } catch (err: any) {
+        if (cancelled) return;
+        setLoadError(err?.message || 'Error communicating with server action.');
+        setDataSource('static');
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    }
+    loadInitialLeads();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Modals state
   const [isDossierModalOpen, setIsDossierModalOpen] = useState(false);
@@ -105,54 +154,104 @@ export default function B2BAlliancesHubPage() {
     return { totalDownloads, contractsSigned, ndaSigned };
   }, [leads]);
 
-  const advanceStage = (id: string) => {
+  const advanceStage = async (id: string) => {
     const order: B2BAllianceInquiry['stage'][] = [
       'Discovery',
       'Dossier Shared',
       'Term Sheet Negotiation',
       'Contract Executed',
     ];
-    setLeads((prev) =>
-      prev.map((lead) => {
-        if (lead.id !== id) return lead;
-        const currIdx = order.indexOf(lead.stage);
-        const nextStage = order[Math.min(currIdx + 1, order.length - 1)] ?? lead.stage;
-        return { ...lead, stage: nextStage, ndaStatus: 'Signed' };
-      })
-    );
-    setToastMsg(
-      `Advanced alliance ${activeLead?.referenceCode} to "${order[Math.min(order.indexOf(activeLead?.stage ?? 'Discovery') + 1, order.length - 1)]}". Dossier telemetry logged.`
-    );
-    setTimeout(() => setToastMsg(null), 3500);
+    const targetLead = leads.find((l) => l.id === id);
+    if (!targetLead) return;
+
+    const currIdx = order.indexOf(targetLead.stage);
+    const nextStage = order[Math.min(currIdx + 1, order.length - 1)] ?? targetLead.stage;
+
+    const statusMap: Record<B2BAllianceInquiry['stage'], any> = {
+      Discovery: 'TRIAGED',
+      'Dossier Shared': 'UNDER_REVIEW',
+      'Term Sheet Negotiation': 'UNDER_REVIEW',
+      'Contract Executed': 'CONTRACT_SIGNED',
+    };
+
+    try {
+      const res = await updateB2BLeadStatusAction(id, statusMap[nextStage] || 'UNDER_REVIEW');
+      if (!res.ok) {
+        setToastMsg(`Failed to advance alliance stage: ${res.error}`);
+        setTimeout(() => setToastMsg(null), 3500);
+        return;
+      }
+      setLeads((prev) =>
+        prev.map((lead) => {
+          if (lead.id !== id) return lead;
+          return { ...lead, stage: nextStage, ndaStatus: 'Signed' };
+        })
+      );
+      setToastMsg(
+        `Advanced alliance ${targetLead.referenceCode} to "${nextStage}". Telemetry logged in MongoDB.`
+      );
+      setTimeout(() => setToastMsg(null), 3500);
+    } catch (err: any) {
+      setToastMsg(`Database error: ${err?.message || 'Failed to update stage'}`);
+      setTimeout(() => setToastMsg(null), 3500);
+    }
   };
 
-  const handleCreateNewLead = (e: React.FormEvent) => {
+  const handleCreateNewLead = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newCompanyName.trim()) return;
 
-    const newLead: B2BAllianceInquiry = {
-      id: `b2b-${Date.now()}`,
-      referenceCode: `ALN-2026-INT-${leads.length + 1}`,
-      companyName: newCompanyName.trim(),
-      country: newCountry,
-      archetype: newArchetype,
-      contactName: newContactName || 'Authorized Signatory',
-      contactRole: 'Procurement Director',
-      contactEmail: newContactEmail || 'partnerships@company.com',
-      targetProducts: ['Naturals 4be Portfolio'],
-      estimatedAnnualValueUSD: newValueUSD || '$500,000',
-      ndaStatus: 'Pending Signature',
-      stage: 'Discovery',
-      submittedDate: '2026-10-20',
-      dossiersDownloaded: 0,
+    const leadInput = {
+      company_name: newCompanyName.trim(),
+      contact_name: newContactName.trim() || 'Authorized Signatory',
+      email: (newContactEmail.trim() || 'partner@hospital.com').toLowerCase(),
+      phone: '+20 100 000 0000',
+      partnership_archetype: newArchetype,
+      message: `Strategic Alliance Inquiry for ${newCountry} (Target value: ${newValueUSD})`,
     };
 
-    setLeads([newLead, ...leads]);
-    setSelectedLeadId(newLead.id);
-    setIsNewLeadModalOpen(false);
-    setNewCompanyName('');
-    setToastMsg(`Registered new partner inquiry for ${newLead.companyName}.`);
-    setTimeout(() => setToastMsg(null), 4000);
+    try {
+      const res = await createB2BLeadAction(leadInput);
+      if (!res.ok) {
+        setToastMsg(`Failed to register partner: ${res.error}`);
+        setTimeout(() => setToastMsg(null), 4000);
+        return;
+      }
+      const createdInquiry = mapDbLeadToInquiry(res.lead);
+      setLeads((prev) => [createdInquiry, ...prev]);
+      setSelectedLeadId(createdInquiry.id);
+      setIsNewLeadModalOpen(false);
+      setNewCompanyName('');
+      setToastMsg(`Registered new partner inquiry for ${createdInquiry.companyName} in MongoDB.`);
+      setTimeout(() => setToastMsg(null), 4000);
+    } catch (err: any) {
+      setToastMsg(`Database write error: ${err?.message || 'Failed to save partner lead'}`);
+      setTimeout(() => setToastMsg(null), 4000);
+    }
+  };
+
+  const handleDeleteLead = async (id: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+
+    try {
+      const res = await deleteB2BLeadAction(id);
+      if (!res.ok) {
+        setToastMsg(`Failed to delete partner lead: ${res.error}`);
+        setTimeout(() => setToastMsg(null), 3500);
+        return;
+      }
+      setLeads((prev) => prev.filter((l) => l.id !== id));
+      if (selectedLeadId === id) {
+        const remaining = leads.filter((l) => l.id !== id);
+        if (remaining.length > 0 && remaining[0]) setSelectedLeadId(remaining[0].id);
+      }
+      setIsDossierModalOpen(false);
+      setToastMsg('Deleted inquiry from strategic alliances pipeline in MongoDB.');
+      setTimeout(() => setToastMsg(null), 3500);
+    } catch (err: any) {
+      setToastMsg(`Database error: ${err?.message || 'Failed to delete lead'}`);
+      setTimeout(() => setToastMsg(null), 3500);
+    }
   };
 
   const handleExportCsv = () => {
@@ -247,21 +346,30 @@ export default function B2BAlliancesHubPage() {
     },
     {
       key: 'actions',
-      header: 'Dossier',
+      header: 'Actions',
       align: 'right',
       render: (row) => (
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            setSelectedLeadId(row.id);
-            setIsDossierModalOpen(true);
-          }}
-          className="px-2.5 py-1 rounded-lg bg-brand-navy text-white hover:bg-brand-primary font-mono text-[11px] font-bold transition-all shadow-sm flex items-center gap-1 ml-auto"
-        >
-          <span>Dossier</span>
-          <ExternalLink className="w-3 h-3" />
-        </button>
+        <div className="flex items-center justify-end gap-1.5" onClick={(e) => e.stopPropagation()}>
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedLeadId(row.id);
+              setIsDossierModalOpen(true);
+            }}
+            className="px-2.5 py-1 rounded-lg bg-brand-navy text-white hover:bg-brand-primary font-mono text-[11px] font-bold transition-all shadow-sm flex items-center gap-1"
+          >
+            <span>Dossier</span>
+            <ExternalLink className="w-3 h-3" />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => handleDeleteLead(row.id, e)}
+            className="p-1 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+            title="Delete inquiry"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
+        </div>
       ),
     },
   ];
@@ -273,8 +381,15 @@ export default function B2BAlliancesHubPage() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Badge variant="primary" size="sm">
-              Phase 8 • B2B Strategic Alliances Hub
+              Inquiries &amp; Strategic Alliances Hub
             </Badge>
+            <StatusBadge
+              variant={dataSource === 'mongodb' ? 'in-spec' : 'caution'}
+              size="xs"
+              code={dataSource === 'mongodb' ? 'MONGODB' : 'OFFLINE'}
+            >
+              {dataSource === 'mongodb' ? 'MongoDB Synced' : 'Static Fallback (Local)'}
+            </StatusBadge>
             <span className="text-xs font-mono text-emerald-600 font-bold flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               $7.32M Active MENA & European Pipeline
@@ -304,6 +419,39 @@ export default function B2BAlliancesHubPage() {
           </Button>
         </div>
       </div>
+
+      {/* MongoDB Connection / Fallback Error Banner */}
+      {loadError && (
+        <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <span>
+              <strong>Database Notice:</strong> {loadError} — Displaying offline fallback records.
+            </span>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setIsLoading(true);
+              getB2BLeadsAction()
+                .then((res) => {
+                  if (res.ok && res.leads) {
+                    setLeads(res.leads.map(mapDbLeadToInquiry));
+                    setDataSource(res.source === 'mongodb' ? 'mongodb' : 'static');
+                    setLoadError(null);
+                  } else {
+                    setLoadError(res.error || 'Retry failed');
+                    setDataSource('static');
+                  }
+                })
+                .catch((err) => setLoadError(err?.message || 'Network error'))
+                .finally(() => setIsLoading(false));
+            }}
+          >
+            {isLoading ? 'Reconnecting...' : 'Retry Connection'}
+          </Button>
+        </div>
+      )}
 
       {toastMsg ? (
         <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
@@ -545,6 +693,15 @@ export default function B2BAlliancesHubPage() {
                   className="border-slate-300 text-slate-700"
                 >
                   Full Sheet
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDeleteLead(activeLead.id)}
+                  className="border-rose-200 text-rose-600 hover:bg-rose-50"
+                  title="Delete lead"
+                >
+                  <Trash2 className="w-4 h-4" />
                 </Button>
               </div>
             </div>

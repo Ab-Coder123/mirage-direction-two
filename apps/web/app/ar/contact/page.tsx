@@ -6,6 +6,8 @@ import { Button, Card, Badge } from '@mirage/ui';
 
 export default function ArabicContactPage() {
   const [submitted, setSubmitted] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState<string | null>(null);
   const [formData, setFormData] = React.useState({
     name: '',
     email: '',
@@ -14,9 +16,29 @@ export default function ArabicContactPage() {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok && data.ok) {
+        setSubmitted(true);
+      } else {
+        setSubmitError(data.error || 'تعذر إرسال الاستفسار، يرجى مراجعة البيانات المدخلة.');
+      }
+    } catch (err: any) {
+      setSubmitError(err?.message || 'خطأ في الاتصال بالخادم الطبي.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -241,13 +263,20 @@ export default function ArabicContactPage() {
                     />
                   </div>
 
+                  {submitError && (
+                    <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs text-right">
+                      <strong>تنبيه الإرسال:</strong> {submitError}
+                    </div>
+                  )}
+
                   <Button
                     type="submit"
                     variant="primary"
                     size="lg"
-                    className="w-full font-bold flex items-center justify-center gap-2 shadow-hud-glow"
+                    disabled={isSubmitting}
+                    className="w-full font-bold flex items-center justify-center gap-2 shadow-hud-glow disabled:opacity-60"
                   >
-                    <span>إرسال الرسالة الآن</span>
+                    <span>{isSubmitting ? 'جارٍ الإرسال إلى الشؤون الطبية...' : 'إرسال الرسالة الآن'}</span>
                     <Send className="w-4 h-4 rotate-180" />
                   </Button>
                 </form>

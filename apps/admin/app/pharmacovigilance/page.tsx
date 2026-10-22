@@ -255,8 +255,11 @@ export default function PharmacovigilancePage() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Badge variant="primary" size="sm">
-              Phase 7 • Pharmacovigilance 24/7 Triage
+              Pharmacovigilance 24/7 Triage
             </Badge>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-50 text-amber-700 border border-amber-200">
+              Operational Demo
+            </span>
             <span className="text-xs font-mono text-rose-600 font-bold flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
               WHO CIOMS-I & MedDRA v27.0 Engine Active

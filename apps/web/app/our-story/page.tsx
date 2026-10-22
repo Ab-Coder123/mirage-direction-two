@@ -13,8 +13,11 @@ import {
   MapPin,
 } from 'lucide-react';
 import { Button, Badge, Card } from '@mirage/ui';
+import { getCompanyStoryContent } from '@mirage/db/server';
 
-export default function OurStoryPage() {
+export default async function OurStoryPage() {
+  const story = await getCompanyStoryContent();
+
   return (
     <main className="min-h-screen bg-slate-50/50 dark:bg-[#020F24] pb-20 transition-colors duration-200">
       {/* Top Banner */}
@@ -24,10 +27,10 @@ export default function OurStoryPage() {
             Est. 2019 • Healthy Life
           </Badge>
           <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white uppercase">
-            MIRAGE PHARMA
+            {story.heroTitleEn}
           </h1>
           <p className="text-base sm:text-lg text-slate-200 leading-relaxed font-medium max-w-3xl mx-auto">
-            One of the leading industrial manufacturing & trading enterprises in the food supplements and medicine industry in Egypt and the Middle East.
+            {story.heroSubtitleEn}
           </p>
         </div>
       </section>
@@ -40,17 +43,17 @@ export default function OurStoryPage() {
               Corporate Overview
             </div>
             <h2 className="font-heading text-3xl sm:text-4xl font-extrabold text-brand-navy dark:text-white leading-tight">
-              New Vision, New Era in Healthcare Excellence
+              {story.visionTitleEn}
             </h2>
             <p className="text-sm sm:text-base text-brand-text-muted dark:text-slate-300 leading-relaxed">
-              Launched in <strong>2019</strong>, <strong>Mirage Pharma Company</strong> has developed to be one of the biggest trading and manufacturing organizations in the food supplements and medicine industry, owning a capital worth of <strong>50 Million EGP</strong> and an annual business volume reaching <strong>80 Million EGP</strong>.
+              Launched in <strong>2019</strong>, <strong>Mirage Pharma Company</strong> has developed to be one of the biggest trading and manufacturing organizations in the food supplements and medicine industry, owning a capital worth of <strong>{story.capitalEn}</strong> and an annual business volume reaching <strong>{story.annualVolumeEn}</strong>.
             </p>
             <div className="p-6 rounded-2xl bg-white dark:bg-[#041B3B] border-l-4 border-brand-primary dark:border-brand-cyan-light shadow-sm space-y-2">
               <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-primary dark:text-brand-cyan-light block">
                 New Vision • New Era
               </span>
               <p className="text-sm sm:text-base text-brand-navy dark:text-slate-200 font-medium leading-relaxed">
-                &ldquo;To be at the forefront of the healthcare industry in bringing complex brand and generic products to patients in the markets we serve. Our target products are carefully selected to fulfil and satisfy life&rsquo;s well-being.&rdquo;
+                &ldquo;{story.visionQuoteEn}&rdquo;
               </p>
             </div>
             <p className="text-sm sm:text-base text-brand-text-muted dark:text-slate-300 leading-relaxed">
@@ -97,7 +100,7 @@ export default function OurStoryPage() {
                     Paid-In Capital
                   </span>
                   <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white">
-                    50 Million EGP
+                    {story.capitalEn}
                   </span>
                 </div>
 
@@ -107,7 +110,7 @@ export default function OurStoryPage() {
                     Volume of Business
                   </span>
                   <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white">
-                    80 Million EGP
+                    {story.annualVolumeEn}
                   </span>
                 </div>
 
@@ -117,7 +120,7 @@ export default function OurStoryPage() {
                     Number of Employees
                   </span>
                   <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white">
-                    75 + 500
+                    {story.workforceEn}
                   </span>
                 </div>
 
@@ -126,8 +129,8 @@ export default function OurStoryPage() {
                   <span className="text-[11px] font-mono uppercase text-brand-text-muted dark:text-slate-400 block">
                     HQ &amp; Branches
                   </span>
-                  <span className="font-heading font-extrabold text-base text-brand-navy dark:text-white">
-                    Cairo, Egypt
+                  <span className="font-heading font-extrabold text-sm text-brand-navy dark:text-white">
+                    {story.headquartersEn}
                   </span>
                 </div>
               </div>

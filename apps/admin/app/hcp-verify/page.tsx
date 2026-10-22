@@ -229,8 +229,11 @@ export default function HCPCredentialingPage() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Badge variant="primary" size="sm">
-              Phase 6 • HCP Credentialing & Verification
+              HCP Credentialing &amp; Verification
             </Badge>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-50 text-amber-700 border border-amber-200">
+              Operational Demo
+            </span>
             <span className="text-xs font-mono text-brand-primary font-bold flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               EMS & EPS Syndicate Gateway Active

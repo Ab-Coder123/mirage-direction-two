@@ -37,7 +37,10 @@
       "@mirage/ui": ["packages/ui/src/index.ts"],
       "@mirage/ui/*": ["packages/ui/src/*"],
       "@mirage/config": ["packages/config/src/index.ts"],
-      "@mirage/config/*": ["packages/config/src/*"]
+      "@mirage/config/*": ["packages/config/src/*"],
+      "@mirage/db": ["packages/db/src/index.ts"],
+      "@mirage/db/server": ["packages/db/src/server/index.ts"],
+      "@mirage/db/*": ["packages/db/src/*"]
     }
   },
   "exclude": ["node_modules", "dist", ".next", "out"]

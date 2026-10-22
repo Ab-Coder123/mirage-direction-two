@@ -2,9 +2,14 @@ import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import SecurityRBACSettingsPage from '../app/settings/page';
+import { resolveSettingsTab } from '../app/settings/tab-utils';
 import { middleware } from '../middleware';
 import { NextRequest } from 'next/server';
 import { MOCK_RBAC_ROLES } from '@mirage/types';
+import {
+  ADMIN_SESSION_COOKIE_NAME,
+  issueSessionToken,
+} from '@mirage/db/auth-token';
 
 describe('SecurityRBACSettingsPage (Settings & Permissions Hub)', () => {
   it('renders the RBAC role permission matrix and security policy switches', () => {
@@ -95,13 +100,110 @@ describe('Next.js Edge Middleware Security & Auth Audit', () => {
     );
   });
 
-  it('exposes critical security defect SEC-01: middleware enforces no authentication guard', () => {
-    // Unauthenticated request without session cookie or bearer token
-    const unauthReq = new NextRequest('http://localhost:3001/settings');
-    const res = middleware(unauthReq);
+  it('resolves security defect SEC-01: middleware enforces verified session guard and redirects unauthenticated traffic, unsigned cookies, and arbitrary Bearer tokens to /login', () => {
+    const secret = 'mirage-middleware-test-session-secret-key-2026';
+    process.env.MIRAGE_SESSION_SECRET = secret;
+    try {
+      // 1. Unauthenticated request without session cookie
+      const unauthReq = new NextRequest('http://localhost:3001/settings');
+      const unauthRes = middleware(unauthReq);
+      expect(unauthRes.status).toBe(307);
+      expect(unauthRes.headers.get('location')).toContain('/login?from=%2Fsettings&reason=UNAUTHENTICATED');
 
-    // Architectural defect: middleware lets unauthorized traffic straight through without 401 or redirect to login
-    expect(res.status).toBe(200);
-    expect(res.headers.get('Location')).toBeNull();
+      // 2. Arbitrary Bearer token (must NOT be accepted as super_admin)
+      const bearerReq = new NextRequest('http://localhost:3001/products', {
+        headers: {
+          Authorization: 'Bearer arbitrary-unverified-token',
+          'X-User-Role': 'super_admin',
+        },
+      });
+      const bearerRes = middleware(bearerReq);
+      expect(bearerRes.status).toBe(307);
+      expect(bearerRes.headers.get('location')).toContain('/login?from=%2Fproducts&reason=UNAUTHENTICATED');
+
+      // 3. Unsigned JSON cookie
+      const unsignedCookie = encodeURIComponent(
+        JSON.stringify({ email: 'hacker@example.com', role: 'super_admin' })
+      );
+      const unsignedReq = new NextRequest('http://localhost:3001/settings', {
+        headers: {
+          cookie: `${ADMIN_SESSION_COOKIE_NAME}=${unsignedCookie}`,
+        },
+      });
+      const unsignedRes = middleware(unsignedReq);
+      expect(unsignedRes.status).toBe(307);
+      expect(unsignedRes.headers.get('location')).toContain('reason=INVALID_TOKEN_FORMAT');
+
+      // 4. Valid HMAC-SHA256 signed session cookie passes and strips spoofed client role header
+      const validToken = issueSessionToken(
+        {
+          sub: 'USR-MD-01',
+          email: 'medical@miragepharma.com',
+          name: 'Medical Director',
+          role: 'medical_director',
+        },
+        secret
+      );
+      const validReq = new NextRequest('http://localhost:3001/settings', {
+        headers: {
+          cookie: `${ADMIN_SESSION_COOKIE_NAME}=${validToken}`,
+          'X-User-Role': 'super_admin',
+        },
+      });
+      const validRes = middleware(validReq);
+      expect(validRes.status).toBe(200);
+      expect(validRes.headers.get('X-Authenticated')).toBe('true');
+      expect(validRes.headers.get('X-User-Role')).toBe('medical_director');
+    } finally {
+      delete process.env.MIRAGE_SESSION_SECRET;
+    }
+  });
+
+  describe('Settings Tab Deep-Linking & Parameter Resolution', () => {
+    it('correctly resolves valid and invalid tab parameters', () => {
+      expect(resolveSettingsTab('cms')).toBe('cms');
+      expect(resolveSettingsTab('company')).toBe('company');
+      expect(resolveSettingsTab('security')).toBe('security');
+      expect(resolveSettingsTab(null)).toBe('security');
+      expect(resolveSettingsTab(undefined)).toBe('security');
+      expect(resolveSettingsTab('')).toBe('security');
+      expect(resolveSettingsTab('invalid-tab-value')).toBe('security');
+      expect(resolveSettingsTab('unknown')).toBe('security');
+    });
+
+    it('renders the CMS tab when ?tab=cms is provided', async () => {
+      delete (window as any).location;
+      window.location = new URL('http://localhost:3001/settings?tab=cms') as any;
+
+      render(<SecurityRBACSettingsPage />);
+
+      expect(
+        await screen.findByRole('heading', { name: /Homepage Hero Content CMS/i })
+      ).toBeInTheDocument();
+    });
+
+    it('renders the Company Story tab when ?tab=company is provided', async () => {
+      delete (window as any).location;
+      window.location = new URL('http://localhost:3001/settings?tab=company') as any;
+
+      render(<SecurityRBACSettingsPage />);
+
+      expect(
+        await screen.findByRole('heading', { name: /Company Story & Corporate Facts CMS/i })
+      ).toBeInTheDocument();
+    });
+
+    it('renders the default Security tab when ?tab=invalid is provided', async () => {
+      delete (window as any).location;
+      window.location = new URL('http://localhost:3001/settings?tab=invalid') as any;
+
+      render(<SecurityRBACSettingsPage />);
+
+      expect(
+        screen.getByRole('heading', {
+          name: /Role-Based Access Control \(RBAC\) & GxP Security Policies/i,
+        })
+      ).toBeInTheDocument();
+    });
   });
 });

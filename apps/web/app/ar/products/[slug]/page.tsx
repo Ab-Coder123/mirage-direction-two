@@ -14,7 +14,8 @@ import {
   Zap,
   Stethoscope,
 } from 'lucide-react';
-import { MOCK_PRODUCTS_AR, MOCK_REVIEWS_AR, Product } from '@mirage/types';
+import { MOCK_REVIEWS_AR } from '@mirage/types';
+import { loadProductBySlugFromDb, loadProductsFromDb } from '@mirage/db/server';
 import { Button, Badge, Card, ReviewCard } from '@mirage/ui';
 
 interface Props {
@@ -22,14 +23,15 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return MOCK_PRODUCTS_AR.map((p) => ({
+  const { products } = await loadProductsFromDb({ locale: 'ar' });
+  return products.map((p) => ({
     slug: p.slug,
   }));
 }
 
 export default async function ArabicProductDetailPage({ params }: Props) {
   const { slug } = await params;
-  const product: Product | undefined = MOCK_PRODUCTS_AR.find((p) => p.slug === slug);
+  const { product } = await loadProductBySlugFromDb(slug, 'ar');
 
   if (!product) {
     notFound();

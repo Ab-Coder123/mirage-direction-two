@@ -1,10 +1,27 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import B2BAlliancesHubPage from '../app/b2b-leads/page';
 import { MOCK_B2B_INQUIRIES } from '@mirage/types';
+import { issueSessionToken, setTestSessionCookieForTesting } from '@mirage/db/server';
+
+const TEST_SECRET = 'mirage-admin-test-session-secret-key-at-least-32-chars-long';
 
 describe('B2BAlliancesHubPage (B2B Partnerships & Tenders)', () => {
+  beforeEach(() => {
+    process.env.MIRAGE_SESSION_SECRET = TEST_SECRET;
+    setTestSessionCookieForTesting(
+      issueSessionToken(
+        {
+          sub: 'USR-TEST-OPERATOR',
+          email: 'qa.lead@miragepharma.com',
+          name: 'QA Lead',
+          role: 'super_admin',
+        },
+        TEST_SECRET
+      )
+    );
+  });
   it('renders the B2B pipeline hub with metrics, archetype filters, and lead table', () => {
     render(<B2BAlliancesHubPage />);
 

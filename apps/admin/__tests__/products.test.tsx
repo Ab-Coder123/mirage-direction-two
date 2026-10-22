@@ -1,10 +1,27 @@
-import { describe, expect, it } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, expect, it, beforeEach } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FormulationStudioPage from '../app/products/page';
 import { MOCK_PRODUCTS } from '@mirage/types';
+import { issueSessionToken, setTestSessionCookieForTesting } from '@mirage/db/server';
+
+const TEST_SECRET = 'mirage-admin-test-session-secret-key-at-least-32-chars-long';
 
 describe('FormulationStudioPage (Admin Products Management)', () => {
+  beforeEach(() => {
+    process.env.MIRAGE_SESSION_SECRET = TEST_SECRET;
+    setTestSessionCookieForTesting(
+      issueSessionToken(
+        {
+          sub: 'USR-TEST-OPERATOR',
+          email: 'qa.lead@miragepharma.com',
+          name: 'QA Lead',
+          role: 'super_admin',
+        },
+        TEST_SECRET
+      )
+    );
+  });
   it('renders the formulation studio with initial products and active monograph', () => {
     render(<FormulationStudioPage />);
 
@@ -83,16 +100,16 @@ describe('FormulationStudioPage (Admin Products Management)', () => {
     await user.click(toggleBtn);
 
     // Verify stock switched to Out of Stock
-    expect(screen.getByText(/○ Out of Stock/i)).toBeInTheDocument();
+    expect(await screen.findByText(/○ Out of Stock/i, {}, { timeout: 5000 })).toBeInTheDocument();
 
     // Verify toast notification appears
     expect(
-      screen.getByText(/Updated pack size inventory state & logged to GxP Ledger/i)
+      await screen.findByText(/Updated pack size inventory state/i, {}, { timeout: 5000 })
     ).toBeInTheDocument();
 
     // Click toggle again to restore
     await user.click(toggleBtn);
-    expect(screen.getByText(/● In Stock \(Cryo-Cleared\)/i)).toBeInTheDocument();
+    expect(await screen.findByText(/● In Stock \(Cryo-Cleared\)/i, {}, { timeout: 5000 })).toBeInTheDocument();
   });
 
   it('adds an active compound in the Supplement Facts tab', async () => {
@@ -154,12 +171,14 @@ describe('FormulationStudioPage (Admin Products Management)', () => {
     await user.click(registerBtn);
 
     // Modal should close
-    expect(
-      screen.queryByText(/Register New Commercial Formulation SKU/i)
-    ).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.queryByText(/Register New Commercial Formulation SKU/i)
+      ).not.toBeInTheDocument();
+    });
 
     // New SKU should be active and displayed in monograph
-    expect(screen.getAllByText('Curcumin Bio-Curc 500').length).toBeGreaterThan(0);
+    expect((await screen.findAllByText('Curcumin Bio-Curc 500')).length).toBeGreaterThan(0);
     expect(
       screen.getByText('Standardized 95% Curcuminoids with Piperine')
     ).toBeInTheDocument();

@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { Sparkles, Filter, Search } from 'lucide-react';
-import { MOCK_PRODUCTS_AR } from '@mirage/types';
 import { memoryStore } from '@mirage/db';
 import { ProductCard } from '@mirage/ui';
 import { ProductHeroSlider } from '@/components/products/ProductHeroSlider';
@@ -18,7 +17,22 @@ export default function ArabicProductsPage() {
   const [searchFilter, setSearchFilter] = React.useState<string>('');
   const deferredSearch = React.useDeferredValue(searchFilter);
 
-  const [products] = React.useState(() => memoryStore.getProducts('ar'));
+  const [products, setProducts] = React.useState(() => memoryStore.getProducts('ar'));
+
+  React.useEffect(() => {
+    let active = true;
+    fetch('/api/products?locale=ar')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (active && data && Array.isArray(data.products) && data.products.length > 0) {
+          setProducts(data.products);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const filteredProducts = React.useMemo(() => {
     return products.filter((product) => {
@@ -33,7 +47,7 @@ export default function ArabicProductsPage() {
         (product.tagline && product.tagline.toLowerCase().includes(query));
       return matchesCategory && matchesSearch;
     });
-  }, [selectedCategory, deferredSearch]);
+  }, [products, selectedCategory, deferredSearch]);
 
   return (
     <main className="min-h-screen bg-slate-50/50 dark:bg-[#020F24] pb-20 transition-colors duration-200">
@@ -54,14 +68,14 @@ export default function ArabicProductsPage() {
           </div>
 
           <div className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-2xl border border-white/20 text-xs font-mono text-slate-200">
-            <span className="text-emerald-400 font-bold">{MOCK_PRODUCTS_AR.length} مستحضرات معتمدة</span> • معايير GxP الدوائية
+            <span className="text-emerald-400 font-bold">{products.length} مستحضرات معتمدة</span> • معايير GxP الدوائية
           </div>
         </div>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
         {/* Featured Hero Slider */}
-        <ProductHeroSlider products={MOCK_PRODUCTS_AR} isArabic={true} />
+        <ProductHeroSlider products={products} isArabic={true} />
 
         {/* Filter and Search Bar Strip */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 rounded-2xl bg-white dark:bg-[#041B3B] border border-brand-border-subtle dark:border-white/10 shadow-sm transition-colors">

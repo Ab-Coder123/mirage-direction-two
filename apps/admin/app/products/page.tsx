@@ -26,16 +26,13 @@ import {
   AlertTriangle,
 } from 'lucide-react';
 import { type Product } from '@mirage/types';
+import { memoryStore } from '@mirage/db';
 import {
-  createProduct,
-  updateProduct as dbUpdateProduct,
-  deleteProduct as dbDeleteProduct,
-  togglePackStock as dbTogglePackStock,
-  memoryStore,
-} from '@mirage/db';
-import {
+  getProductsAction,
+  createProductAction,
   updateProductAction,
   deleteProductAction,
+  togglePackStockAction,
 } from './actions';
 
 const CATEGORIES = [
@@ -62,6 +59,43 @@ export default function FormulationStudioPage() {
     () => memoryStore.getProducts()[0]?.id ?? 'prod-sympdca'
   );
   const [activeTab, setActiveTab] = useState<StudioTab>('general');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [dataSource, setDataSource] = useState<'mongodb' | 'static'>('static');
+
+  // Load products from MongoDB when the page opens (protected by products:read)
+  useEffect(() => {
+    let cancelled = false;
+    async function loadInitialProducts() {
+      setIsLoading(true);
+      try {
+        const res = await getProductsAction({ locale: 'en' });
+        if (cancelled) return;
+        if (res.ok) {
+          if (Array.isArray(res.products) && res.products.length > 0) {
+            setProducts(res.products);
+          }
+          setDataSource(res.source === 'mongodb' ? 'mongodb' : 'static');
+          setLoadError(null);
+        } else {
+          setLoadError(res.error || 'Failed to load products from MongoDB.');
+          setDataSource('static');
+        }
+      } catch (err: any) {
+        if (cancelled) return;
+        setLoadError(err?.message || 'Error communicating with server action.');
+        setDataSource('static');
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    }
+    loadInitialProducts();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // New Formulation Modal State
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -131,22 +165,29 @@ export default function FormulationStudioPage() {
     }, 4000);
   };
 
-  const togglePackStock = (productId: string, packIndex: number) => {
+  const togglePackStock = async (productId: string, packIndex: number) => {
+    const prod = products.find((p) => p.id === productId);
+    const targetInStock = prod ? !prod.packSizes[packIndex]?.inStock : true;
+
     try {
-      dbTogglePackStock(productId, packIndex);
-    } catch {
-      // Fallback if not found in db store
+      const res = await togglePackStockAction(productId, packIndex, targetInStock);
+      if (!res.ok) {
+        triggerToast(`Failed to toggle pack stock: ${res.error}`);
+        return;
+      }
+      setProducts((prev) =>
+        prev.map((p) => {
+          if (p.id !== productId) return p;
+          const nextPacks = p.packSizes.map((pack, idx) =>
+            idx === packIndex ? { ...pack, inStock: targetInStock } : pack
+          );
+          return { ...p, packSizes: nextPacks };
+        })
+      );
+      triggerToast('Updated pack size inventory state in MongoDB & logged to GxP Ledger.');
+    } catch (err: any) {
+      triggerToast(`Database write error: ${err?.message || 'Failed to update pack stock'}`);
     }
-    setProducts((prev) =>
-      prev.map((prod) => {
-        if (prod.id !== productId) return prod;
-        const nextPacks = prod.packSizes.map((pack, idx) =>
-          idx === packIndex ? { ...pack, inStock: !pack.inStock } : pack
-        );
-        return { ...prod, packSizes: nextPacks };
-      })
-    );
-    triggerToast('Updated pack size inventory state & logged to GxP Ledger.');
   };
 
   const handleAddIngredient = (e: React.FormEvent) => {
@@ -183,7 +224,7 @@ export default function FormulationStudioPage() {
     triggerToast(`Added compound "${newIngName}" to ${activeProduct.name} monograph.`);
   };
 
-  const handleCreateFormulation = (e: React.FormEvent) => {
+  const handleCreateFormulation = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newSkuName.trim()) return;
 
@@ -246,17 +287,21 @@ export default function FormulationStudioPage() {
     };
 
     try {
-      createProduct(created);
-    } catch {
-      // In case of duplicate or validation error in store
+      const res = await createProductAction(created);
+      if (!res.ok) {
+        triggerToast(`Failed to register formulation: ${res.error}`);
+        return;
+      }
+      const confirmed = res.product || created;
+      setProducts((prev) => [confirmed, ...prev]);
+      setSelectedProductId(confirmed.id);
+      setCreateModalOpen(false);
+      setNewSkuName('');
+      setNewSkuSubtitle('');
+      triggerToast(`Registered new formulation "${confirmed.name}" in MongoDB.`);
+    } catch (err: any) {
+      triggerToast(`Database write error: ${err?.message || 'Failed to register formulation'}`);
     }
-
-    setProducts((prev) => [created, ...prev]);
-    setSelectedProductId(created.id);
-    setCreateModalOpen(false);
-    setNewSkuName('');
-    setNewSkuSubtitle('');
-    triggerToast(`Registered new formulation "${created.name}" & generated GS1 GTIN record.`);
   };
 
   const handleOpenEdit = (prod: Product, e?: React.MouseEvent) => {
@@ -283,18 +328,19 @@ export default function FormulationStudioPage() {
     };
 
     try {
-      await updateProductAction(editingProduct.id, updates);
-    } catch {
-      try {
-        dbUpdateProduct(editingProduct.id, updates);
-      } catch {}
+      const res = await updateProductAction(editingProduct.id, updates);
+      if (!res.ok) {
+        triggerToast(`Failed to update formulation: ${res.error}`);
+        return;
+      }
+      setProducts((prev) =>
+        prev.map((p) => (p.id === editingProduct.id ? { ...p, ...updates } : p))
+      );
+      setEditModalOpen(false);
+      triggerToast(`Updated "${editName.trim()}" in MongoDB.`);
+    } catch (err: any) {
+      triggerToast(`Database write error: ${err?.message || 'Failed to update formulation'}`);
     }
-
-    setProducts((prev) =>
-      prev.map((p) => (p.id === editingProduct.id ? { ...p, ...updates } : p))
-    );
-    setEditModalOpen(false);
-    triggerToast(`Updated "${editName.trim()}" formulation monograph.`);
   };
 
   const handleOpenDelete = (prod: Product, e?: React.MouseEvent) => {
@@ -309,23 +355,24 @@ export default function FormulationStudioPage() {
     const targetName = productToDelete.name;
 
     try {
-      await deleteProductAction(targetId);
-    } catch {
-      try {
-        dbDeleteProduct(targetId);
-      } catch {}
-    }
-
-    setProducts((prev) => prev.filter((p) => p.id !== targetId));
-    if (selectedProductId === targetId) {
-      const remaining = products.filter((p) => p.id !== targetId);
-      if (remaining.length > 0 && remaining[0]) {
-        setSelectedProductId(remaining[0].id);
+      const res = await deleteProductAction(targetId);
+      if (!res.ok) {
+        triggerToast(`Failed to delete formulation: ${res.error}`);
+        return;
       }
+      setProducts((prev) => prev.filter((p) => p.id !== targetId));
+      if (selectedProductId === targetId) {
+        const remaining = products.filter((p) => p.id !== targetId);
+        if (remaining.length > 0 && remaining[0]) {
+          setSelectedProductId(remaining[0].id);
+        }
+      }
+      setDeleteModalOpen(false);
+      setProductToDelete(null);
+      triggerToast(`Deleted formulation "${targetName}" from MongoDB.`);
+    } catch (err: any) {
+      triggerToast(`Database write error: ${err?.message || 'Failed to delete formulation'}`);
     }
-    setDeleteModalOpen(false);
-    setProductToDelete(null);
-    triggerToast(`Deleted formulation "${targetName}" from commercial catalog.`);
   };
 
   // Deterministic 14x14 DataMatrix pattern generator
@@ -491,8 +538,12 @@ export default function FormulationStudioPage() {
             <StatusBadge variant="in-spec" size="sm" pulse code="CATALOG">
               Formulation Lifecycle Studio
             </StatusBadge>
-            <StatusBadge variant="in-spec" size="xs" code="EDA">
-              Catalog Synced
+            <StatusBadge
+              variant={dataSource === 'mongodb' ? 'in-spec' : 'caution'}
+              size="xs"
+              code={dataSource === 'mongodb' ? 'MONGODB' : 'OFFLINE'}
+            >
+              {dataSource === 'mongodb' ? 'MongoDB Synced' : 'Static Fallback (Local)'}
             </StatusBadge>
           </div>
           <h1 className="font-heading font-black text-2xl text-brand-navy">
@@ -530,6 +581,45 @@ export default function FormulationStudioPage() {
           </Button>
         </div>
       </div>
+
+      {/* MongoDB Connection / Fallback Error Banner */}
+      {loadError && (
+        <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+            <span>
+              <strong>Database Notice:</strong> {loadError} — Displaying offline static fallback catalog. Changes will not be saved to MongoDB until connectivity is restored.
+            </span>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setIsLoading(true);
+              getProductsAction({ locale: 'en' })
+                .then((res) => {
+                  if (res.ok) {
+                    if (Array.isArray(res.products) && res.products.length > 0) {
+                      setProducts(res.products);
+                    }
+                    setDataSource(res.source === 'mongodb' ? 'mongodb' : 'static');
+                    setLoadError(null);
+                  } else {
+                    setLoadError(res.error || 'Failed to load products from database.');
+                    setDataSource('static');
+                  }
+                })
+                .catch((err) => {
+                  setLoadError(err?.message || 'Network error');
+                  setDataSource('static');
+                })
+                .finally(() => setIsLoading(false));
+            }}
+          >
+            {isLoading ? 'Reconnecting...' : 'Retry Connection'}
+          </Button>
+        </div>
+      )}
 
       {/* Phase 3 Telemetry KPI Strip */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

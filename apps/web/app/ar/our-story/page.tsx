@@ -13,8 +13,11 @@ import {
   MapPin,
 } from 'lucide-react';
 import { Button, Badge, Card } from '@mirage/ui';
+import { getCompanyStoryContent } from '@mirage/db/server';
 
-export default function ArabicOurStoryPage() {
+export default async function ArabicOurStoryPage() {
+  const story = await getCompanyStoryContent();
+
   return (
     <main className="min-h-screen bg-slate-50/50 dark:bg-[#020F24] pb-20 transition-colors duration-200">
       {/* Top Banner */}
@@ -24,10 +27,10 @@ export default function ArabicOurStoryPage() {
             تأسست عام 2019 • Healthy Life
           </Badge>
           <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white">
-            ميراج فارما — MIRAGE PHARMA
+            {story.heroTitleAr}
           </h1>
           <p className="text-base sm:text-lg text-slate-200 leading-relaxed font-medium max-w-3xl mx-auto">
-            إحدى كبرى الشركات الرائدة في مجال التصنيع والتجارة للمكملات الغذائية والأدوية في مصر والشرق الأوسط.
+            {story.heroSubtitleAr}
           </p>
         </div>
       </section>
@@ -40,17 +43,17 @@ export default function ArabicOurStoryPage() {
               النبذة التعريفية للشركة
             </div>
             <h2 className="font-heading text-3xl sm:text-4xl font-extrabold text-brand-navy dark:text-white leading-tight">
-              رؤية جديدة.. عصر جديد في صناعة الرعاية الصحية
+              {story.visionTitleAr}
             </h2>
             <p className="text-sm sm:text-base text-brand-text-muted dark:text-slate-300 leading-relaxed">
-              انطلقت شركة <strong>ميراج فارما (Mirage Pharma)</strong> في عام <strong>2019</strong>، وتطورت لتصبح واحدة من أكبر الكيانات الصناعية والتجارية في قطاع المكملات الغذائية وصناعة الدواء، برأس مال يبلغ <strong>50 مليون جنيه مصري</strong> وحجم أعمال سنوي يتجاوز <strong>80 مليون جنيه مصري</strong>.
+              انطلقت شركة <strong>ميراج فارما (Mirage Pharma)</strong> في عام <strong>2019</strong>، وتطورت لتصبح واحدة من أكبر الكيانات الصناعية والتجارية في قطاع المكملات الغذائية وصناعة الدواء، برأس مال يبلغ <strong>{story.capitalAr}</strong> وحجم أعمال سنوي يتجاوز <strong>{story.annualVolumeAr}</strong>.
             </p>
             <div className="p-6 rounded-2xl bg-white dark:bg-[#041B3B] border-r-4 border-brand-primary dark:border-brand-cyan-light shadow-sm space-y-2">
               <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-primary dark:text-brand-cyan-light block">
                 New Vision • New Era — رؤية جديدة لعصر جديد
               </span>
               <p className="text-sm sm:text-base text-brand-navy dark:text-slate-200 font-medium leading-relaxed">
-                &laquo;أن نكون في طليعة صناعة الرعاية الصحية في تقديم مستحضرات دوائية متطورة وعلامات تجارية رائدة للمرضى في الأسواق التي نخدمها. يتم اختيار مستحضراتنا المستهدفة بعناية فائقة لتلبية وتحقيق الرفاه الصحي المتكامل.&raquo;
+                &laquo;{story.visionQuoteAr}&raquo;
               </p>
             </div>
             <p className="text-sm sm:text-base text-brand-text-muted dark:text-slate-300 leading-relaxed">
@@ -97,7 +100,7 @@ export default function ArabicOurStoryPage() {
                     رأس المال
                   </span>
                   <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white">
-                    50 مليون ج.م
+                    {story.capitalAr}
                   </span>
                 </div>
 
@@ -107,7 +110,7 @@ export default function ArabicOurStoryPage() {
                     حجم الأعمال
                   </span>
                   <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white">
-                    80 مليون ج.م
+                    {story.annualVolumeAr}
                   </span>
                 </div>
 
@@ -117,7 +120,7 @@ export default function ArabicOurStoryPage() {
                     عدد الموظفين
                   </span>
                   <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white">
-                    75 + 500
+                    {story.workforceAr}
                   </span>
                 </div>
 
@@ -126,8 +129,8 @@ export default function ArabicOurStoryPage() {
                   <span className="text-[11px] font-mono text-brand-text-muted dark:text-slate-400 block">
                     المقر والفروع
                   </span>
-                  <span className="font-heading font-extrabold text-base text-brand-navy dark:text-white">
-                    القاهرة، مصر
+                  <span className="font-heading font-extrabold text-sm text-brand-navy dark:text-white">
+                    {story.headquartersAr}
                   </span>
                 </div>
               </div>

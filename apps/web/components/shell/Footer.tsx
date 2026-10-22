@@ -298,7 +298,6 @@ export const Footer: React.FC = () => {
             </Link>
           </div>
           <p className="text-[11px] font-mono text-slate-400">
-            Powered By <span className="text-white font-medium">Active4Web</span> &{' '}
             <span className="text-brand-cyan-light font-medium">Mirage Clinical Engine</span>
           </p>
         </div>

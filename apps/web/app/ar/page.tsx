@@ -10,11 +10,14 @@ import {
   Microscope,
   ShieldCheck,
 } from 'lucide-react';
-import { MOCK_PRODUCTS_AR, MOCK_REVIEWS_AR } from '@mirage/types';
+import { MOCK_REVIEWS_AR } from '@mirage/types';
 import { Button, Badge, ProductCard, ReviewCard } from '@mirage/ui';
+import { getHomepageHeroContent, loadProductsFromDb } from '@mirage/db/server';
 
-export default function ArabicHomePage() {
-  const featuredProducts = MOCK_PRODUCTS_AR;
+export default async function ArabicHomePage() {
+  const hero = await getHomepageHeroContent();
+  const { products } = await loadProductsFromDb({ locale: 'ar' });
+  const featuredProducts = products.filter((p) => p.isFeatured);
 
   return (
     <main className="min-h-screen">
@@ -23,28 +26,28 @@ export default function ArabicHomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary dark:text-brand-cyan-light text-xs font-semibold">
             <Sparkles className="w-4 h-4" />
-            <span>ميراج فارما (Mirage Pharma) • Healthy Life • تأسست عام 2019</span>
+            <span>{hero.badgeAr}</span>
           </div>
 
           <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-brand-navy dark:text-white tracking-tight leading-tight max-w-4xl mx-auto">
-            رؤية جديدة.. عصر جديد في <br />
-            <span className="text-brand-primary dark:text-brand-cyan-light">المكملات الغذائية وصناعة الدواء</span>
+            {hero.headlinePrefixAr} <br />
+            <span className="text-brand-primary dark:text-brand-cyan-light">{hero.headlineHighlightAr}</span>
           </h1>
 
           <p className="text-brand-text-muted dark:text-slate-300 text-base md:text-lg max-w-3xl mx-auto leading-relaxed font-medium">
-            انطلقت شركة <strong>ميراج فارما (Mirage Pharma)</strong> في عام 2019 لتصبح واحدة من أكبر الشركات الرائدة في مجال التصنيع والتجارة للمكملات الغذائية والأدوية في مصر والشرق الأوسط، وتقديم خيارات علاجية متطورة تلبي الاحتياجات الصحية للمجتمع.
+            {hero.supportingTextAr}
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
             <Button variant="primary" size="lg" asChild className="shadow-hud-glow">
               <Link href="/ar/products" className="flex items-center gap-2">
-                <span>استكشف المستحضرات الدوائية</span>
+                <span>{hero.primaryCtaTextAr}</span>
                 <ArrowLeft className="w-4 h-4" />
               </Link>
             </Button>
             <Button variant="outline" size="lg" asChild className="hover:border-brand-primary">
               <Link href="/ar/our-story">
-                عن الشركة ورؤيتنا
+                {hero.secondaryCtaTextAr}
               </Link>
             </Button>
           </div>

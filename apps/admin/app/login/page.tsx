@@ -2,41 +2,46 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ShieldCheck, Lock, UserCheck, AlertCircle, Sparkles } from 'lucide-react';
+import { ShieldCheck, Lock, AlertCircle, Sparkles, KeyRound } from 'lucide-react';
 import { Button, Card } from '@mirage/ui';
+import { loginAdminAction } from './actions';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('admin@miragepharma.com');
-  const [role, setRole] = useState<'super_admin' | 'qa_officer' | 'medical_director' | 'read_only'>('super_admin');
-  const [password, setPassword] = useState('••••••••••••');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      // Set secure session cookie with role clearance
-      const sessionPayload = {
-        userId: `usr-${role.replace('_', '-')}`,
-        email,
-        role,
-        issuedAt: new Date().toISOString(),
-      };
+      const result = await loginAdminAction({ email, password });
+      if (!result.ok) {
+        setError(result.error);
+        setLoading(false);
+        return;
+      }
 
-      document.cookie = `mirage_session=${encodeURIComponent(
-        JSON.stringify(sessionPayload)
-      )}; path=/; max-age=86400; SameSite=Lax`;
+      const params =
+        typeof window !== 'undefined'
+          ? new URLSearchParams(window.location.search)
+          : null;
+      const fromPath = params?.get('from');
+      const safeTarget =
+        fromPath && fromPath.startsWith('/') && !fromPath.startsWith('//')
+          ? fromPath
+          : '/';
 
-      setTimeout(() => {
-        router.push('/');
-        router.refresh();
-      }, 500);
-    } catch (err: any) {
-      setError(err?.message || 'Authentication failed');
+      router.push(safeTarget);
+      router.refresh();
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error ? err.message : 'Server authentication failed'
+      );
       setLoading(false);
     }
   };
@@ -45,7 +50,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-slate-950 flex flex-col justify-center items-center px-4 relative overflow-hidden text-slate-100">
       {/* Background glow effects */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-brand-primary/20 blur-[140px] pointer-events-none rounded-full" />
-      
+
       <div className="w-full max-w-md relative z-10">
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 border border-brand-primary/30 text-brand-cyan-light text-xs font-semibold tracking-wider uppercase mb-3">
@@ -56,27 +61,35 @@ export default function LoginPage() {
             Mirage Operations Hub
           </h1>
           <p className="text-sm text-slate-400 mt-2">
-            Secure clinical & regulatory authentication gateway
+            Server-verified clinical &amp; regulatory authentication gateway
           </p>
         </div>
 
         <Card className="bg-slate-900/90 border border-slate-800 p-6 sm:p-8 backdrop-blur-md shadow-2xl">
           {error && (
-            <div className="mb-4 p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 flex items-center gap-2 text-rose-400 text-xs">
-              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            <div
+              role="alert"
+              className="mb-4 p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 flex items-start gap-2 text-rose-400 text-xs"
+            >
+              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1.5">
+              <label
+                htmlFor="admin-email-input"
+                className="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1.5"
+              >
                 Operator Email
               </label>
               <div className="relative">
                 <input
+                  id="admin-email-input"
                   type="email"
                   required
+                  autoComplete="username"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-slate-800/80 border border-slate-700 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-primary"
@@ -86,49 +99,34 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1.5">
+              <label
+                htmlFor="admin-password-input"
+                className="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1.5"
+              >
                 Passphrase / Credential Token
               </label>
               <div className="relative">
                 <input
+                  id="admin-password-input"
                   type="password"
                   required
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-slate-800/80 border border-slate-700 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                  placeholder="Enter server-configured passphrase"
                 />
                 <Lock className="w-4 h-4 text-slate-500 absolute right-3.5 top-3" />
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1.5">
-                GxP Operator Role Clearance
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { id: 'super_admin', label: 'Super Admin', desc: 'Full Clearances' },
-                  { id: 'qa_officer', label: 'QA Officer', desc: 'GxP Sign-off' },
-                  { id: 'medical_director', label: 'Medical Dir.', desc: 'Formulations & ADR' },
-                  { id: 'read_only', label: 'Auditor', desc: 'Read-Only Ledger' },
-                ].map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => setRole(item.id as any)}
-                    className={`p-2.5 rounded-lg border text-left transition-all ${
-                      role === item.id
-                        ? 'border-brand-primary bg-brand-primary/10 text-white ring-1 ring-brand-primary'
-                        : 'border-slate-800 bg-slate-800/40 text-slate-400 hover:border-slate-700'
-                    }`}
-                  >
-                    <div className="font-semibold text-xs flex items-center gap-1.5">
-                      <UserCheck className="w-3.5 h-3.5 text-brand-cyan-light" />
-                      {item.label}
-                    </div>
-                    <div className="text-[10px] text-slate-500 mt-0.5">{item.desc}</div>
-                  </button>
-                ))}
+            <div className="p-3 rounded-lg bg-slate-800/50 border border-slate-700/70 text-[11px] text-slate-400 flex items-start gap-2">
+              <KeyRound className="w-4 h-4 text-brand-cyan-light shrink-0 mt-0.5" />
+              <div>
+                <span className="font-semibold text-slate-200 block">
+                  Server-Enforced Role &amp; Session Signing
+                </span>
+                Operator role clearance is assigned strictly from server-side configuration and verified via HMAC-SHA256 HttpOnly cookies.
               </div>
             </div>
 

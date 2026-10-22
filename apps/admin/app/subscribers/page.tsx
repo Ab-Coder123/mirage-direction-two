@@ -222,8 +222,11 @@ export default function NewsletterDispatchPage() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Badge variant="primary" size="sm">
-              Phase 9 • Audience & Newsletter Dispatch
+              Audience &amp; Newsletter Dispatch
             </Badge>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-50 text-amber-700 border border-amber-200">
+              Broadcast Demo
+            </span>
             <span className="text-xs font-mono text-emerald-600 font-bold flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               14,280 Double Opt-In Subscribers Active

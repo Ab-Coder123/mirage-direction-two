@@ -140,6 +140,16 @@ export const memoryStore = {
     return updated;
   },
 
+  deleteLead(id: string): boolean {
+    const store = getStore();
+    const index = store.leads.findIndex((l) => l.id === id);
+    if (index >= 0) {
+      store.leads.splice(index, 1);
+      return true;
+    }
+    return false;
+  },
+
   getAuditLogs(): AuditLogRecord[] {
     return [...getStore().auditLogs];
   },

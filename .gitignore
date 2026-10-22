@@ -29,6 +29,7 @@ pnpm-debug.log*
 # Temporary & Deployment
 .vercel/
 *.tsbuildinfo
+.data/
 
 # Test Coverage
 coverage/

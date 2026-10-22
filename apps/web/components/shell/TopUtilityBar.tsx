@@ -18,8 +18,8 @@ export const TopUtilityBar: React.FC = () => {
     : `/ar${pathname}`;
 
   return (
-    <div className="w-full bg-brand-navy dark:bg-[#01142B] text-white text-xs py-2 px-4 border-b border-brand-navy-light/40 dark:border-white/10 transition-colors duration-200">
-      <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+    <div className="w-full bg-brand-navy dark:bg-[#01142B] text-white text-xs py-2 px-3 sm:px-4 border-b border-brand-navy-light/40 dark:border-white/10 transition-colors duration-200 overflow-x-hidden">
+      <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 sm:gap-3">
         {/* Left Telemetry / Welcome Tagline */}
         <div className="hidden md:flex items-center gap-3 text-slate-300 font-mono text-[11px]">
           <span className="inline-block w-2 h-2 rounded-full bg-brand-green animate-pulse" />
@@ -35,7 +35,7 @@ export const TopUtilityBar: React.FC = () => {
         </div>
 
         {/* Right Search, Social Icons & Language Switcher */}
-        <div className="flex items-center justify-between w-full md:w-auto gap-4">
+        <div className="flex items-center justify-between w-full md:w-auto gap-2 sm:gap-4 max-w-full">
           {/* Quick Search Input Pill */}
           <form
             onSubmit={(e) => {
@@ -47,20 +47,20 @@ export const TopUtilityBar: React.FC = () => {
                 router.push(searchTarget);
               }
             }}
-            className="relative flex items-center"
+            className="relative flex items-center flex-1 min-w-0 sm:flex-initial max-w-[170px] xs:max-w-[210px] sm:max-w-none"
           >
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={isAr ? 'ابحث عن مستحضر، مركب فعال...' : 'Search products, ingredients...'}
-              className="w-48 sm:w-64 pl-8 pr-3 py-1 rounded-full text-xs bg-white/10 text-white placeholder:text-slate-400 border border-white/20 outline-none focus:border-brand-primary focus:bg-white/20 transition-all"
+              className="w-full sm:w-64 pl-8 pr-3 py-1 rounded-full text-xs bg-white/10 text-white placeholder:text-slate-400 border border-white/20 outline-none focus:border-brand-primary focus:bg-white/20 transition-all truncate"
             />
             <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 pointer-events-none" />
           </form>
 
-          {/* Social Icons (LinkedIn, Facebook, Instagram) */}
-          <div className="flex items-center gap-2.5 text-slate-300">
+          {/* Social Icons (LinkedIn, Facebook, Instagram) - visible from sm: screen up to preserve mobile viewport */}
+          <div className="hidden sm:flex items-center gap-2.5 text-slate-300">
             {/* LinkedIn */}
             <a
               href="https://linkedin.com"
@@ -105,7 +105,7 @@ export const TopUtilityBar: React.FC = () => {
           <Link
             href={targetPath}
             aria-label={isAr ? 'Switch to English' : 'التبديل إلى العربية'}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-primary hover:bg-brand-primary-light text-white font-medium text-xs transition-colors shadow-sm"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-brand-primary hover:bg-brand-primary-light text-white font-medium text-xs transition-colors shadow-sm shrink-0 whitespace-nowrap"
           >
             <Globe className="w-3.5 h-3.5" />
             <span>{isAr ? 'English' : 'العربية'}</span>

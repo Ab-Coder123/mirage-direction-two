@@ -1,18 +1,73 @@
-import { describe, expect, it, beforeEach } from 'vitest';
-import { render, screen, cleanup, fireEvent } from '@testing-library/react';
+/**
+ * IN-MEMORY INTEGRATION TEST SUITE (MOCK-BASED)
+ *
+ * IMPORTANT NOTE ON TEST SCOPE:
+ * This test suite executes in a local jsdom environment using `@mirage/db` memoryStore
+ * and a mocked `global.fetch` route handler. It tests client-side component integration,
+ * UI reactivity, and cross-application data flow synchronization between Admin and Web components.
+ * It is NOT a live MongoDB or real browser end-to-end test.
+ */
+
+import { describe, expect, it, beforeEach, vi, afterEach } from 'vitest';
+import { render, screen, cleanup, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FormulationStudioPage from '../../apps/admin/app/products/page';
 import PublicProductsPage from '../../apps/web/app/products/page';
 import ArabicProductsPage from '../../apps/web/app/ar/products/page';
 import B2BAlliancesHubPage from '../../apps/admin/app/b2b-leads/page';
 import ContactPage from '../../apps/web/app/contact/page';
+import { POST as contactRoute } from '../../apps/web/app/api/contact/route';
 import { generateStaticParams } from '../../apps/web/app/products/[slug]/page';
 import { memoryStore, getAuditLogs } from '@mirage/db';
+import { issueSessionToken, setTestSessionCookieForTesting } from '@mirage/db/server';
 
-describe('BACKEND INTEGRATION: Dashboard ↔ Public Website Live Synchronization', () => {
+const TEST_SECRET = 'mirage-integration-test-session-secret-key-at-least-32-chars-long';
+
+describe('INTEGRATION TEST (In-Memory / Mock API): Dashboard ↔ Public Website Cross-App Synchronization', () => {
+  let originalFetch: typeof global.fetch;
+
   beforeEach(() => {
     cleanup();
     memoryStore.reset();
+    process.env.MIRAGE_SESSION_SECRET = TEST_SECRET;
+    setTestSessionCookieForTesting(
+      issueSessionToken(
+        {
+          sub: 'USR-INTEGRATION-ADMIN',
+          email: 'admin@miragepharma.com',
+          name: 'Integration Admin',
+          role: 'super_admin',
+        },
+        TEST_SECRET
+      )
+    );
+
+    originalFetch = global.fetch;
+    global.fetch = vi.fn(async (input: any, init?: any) => {
+      const url = typeof input === 'string' ? input : (input?.url || '');
+      if (url.includes('/api/contact')) {
+        const body = init?.body
+          ? (typeof init.body === 'string' ? init.body : JSON.stringify(init.body))
+          : '{}';
+        const req = new Request('http://localhost:3000/api/contact', {
+          method: init?.method || 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(init?.headers || {}),
+          },
+          body,
+        });
+        return await contactRoute(req);
+      }
+      if (originalFetch) {
+        return originalFetch(input, init);
+      }
+      return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    }) as any;
+  });
+
+  afterEach(() => {
+    global.fetch = originalFetch;
   });
 
   describe('Formulation Creation & Multi-App Persistence (ARCH-01 Resolved)', () => {
@@ -35,7 +90,7 @@ describe('BACKEND INTEGRATION: Dashboard ↔ Public Website Live Synchronization
       await user.click(screen.getByRole('button', { name: /Sign & Register SKU/i }));
 
       // Admin UI shows the formulation
-      expect(screen.getAllByText('Curcumin Bio-Curc 500').length).toBeGreaterThan(0);
+      expect((await screen.findAllByText('Curcumin Bio-Curc 500')).length).toBeGreaterThan(0);
       unmountAdmin();
 
       // Step 2: Query Public Website data layer (generateStaticParams)
@@ -45,10 +100,10 @@ describe('BACKEND INTEGRATION: Dashboard ↔ Public Website Live Synchronization
 
       // Step 3: Render Public Products Catalog (apps/web)
       render(<PublicProductsPage />);
-      expect(screen.getByText('Curcumin Bio-Curc 500')).toBeInTheDocument();
+      expect(screen.getAllByText('Curcumin Bio-Curc 500').length).toBeGreaterThan(0);
       expect(
-        screen.getByText(/Targeted Anti-Inflammatory Curcuminoid Complex/i)
-      ).toBeInTheDocument();
+        screen.getAllByText(/Targeted Anti-Inflammatory Curcuminoid Complex/i).length
+      ).toBeGreaterThan(0);
 
       // Step 4: Verify FDA 21 CFR Part 11 Audit Trail was recorded
       const logs = await getAuditLogs();
@@ -68,7 +123,7 @@ describe('BACKEND INTEGRATION: Dashboard ↔ Public Website Live Synchronization
       await user.click(toggleBtn);
 
       // Admin shows Out of Stock
-      expect(screen.getByText(/○ Out of Stock/i)).toBeInTheDocument();
+      expect(await screen.findByText(/○ Out of Stock/i)).toBeInTheDocument();
 
       // Step 2: Verify in @mirage/db store
       const product = memoryStore.getProductBySlug('sympdca', 'en');
@@ -96,11 +151,12 @@ describe('BACKEND INTEGRATION: Dashboard ↔ Public Website Live Synchronization
         { target: { value: 'Cardiovascular Marine Lipids' } }
       );
       await user.click(screen.getByRole('button', { name: /Sign & Register SKU/i }));
+      expect((await screen.findAllByText('Omega-3 Pure Bio')).length).toBeGreaterThan(0);
       unmount();
 
       // Render Arabic website products page
       render(<ArabicProductsPage />);
-      expect(screen.getByText('Omega-3 Pure Bio')).toBeInTheDocument();
+      expect((await screen.findAllByText('Omega-3 Pure Bio')).length).toBeGreaterThan(0);
     });
   });
 
@@ -132,14 +188,14 @@ describe('BACKEND INTEGRATION: Dashboard ↔ Public Website Live Synchronization
       );
 
       // Public form displays success confirmation
-      expect(screen.getByText(/Inquiry Received Successfully!/i)).toBeInTheDocument();
+      expect(await screen.findByText(/Inquiry Received Successfully!/i)).toBeInTheDocument();
       unmountContact();
 
       // Step 2: Render Admin B2B Alliances Hub
       render(<B2BAlliancesHubPage />);
 
       // The submitted inquiry must be visible in the Admin Leads table
-      expect(screen.getByText(/Dr\. Sherif El-Wakil/i)).toBeInTheDocument();
+      expect(await screen.findByText(/Dr\. Sherif El-Wakil/i)).toBeInTheDocument();
     });
   });
 });

@@ -6,11 +6,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   Pill,
-  Thermometer,
-  ShieldCheck,
-  UserCheck,
-  HeartPulse,
-  Mail,
   Settings,
   Search,
   Menu,
@@ -19,7 +14,6 @@ import {
   ChevronRight,
   Command,
   Sparkles,
-  Lock,
   Globe2,
   FileText,
 } from 'lucide-react';

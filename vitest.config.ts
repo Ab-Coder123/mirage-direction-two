@@ -28,6 +28,8 @@ const workspaceAlias = {
   '@mirage/types': r('packages/types/src/index.ts'),
   '@mirage/utils': r('packages/utils/src/index.ts'),
   '@mirage/config': r('packages/config/src/index.ts'),
+  '@mirage/db/auth-token': r('packages/db/src/server/auth-token.ts'),
+  '@mirage/db/server': r('packages/db/src/server/index.ts'),
   '@mirage/db': r('packages/db/src/index.ts'),
 };
 

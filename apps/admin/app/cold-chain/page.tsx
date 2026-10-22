@@ -229,9 +229,12 @@ export default function ColdChainTelemetryPage() {
       <div className="hud-glass p-6 rounded-3xl border border-white/80 shadow-hud-glass flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <StatusBadge variant="regulatory" size="sm" pulse code="PHASE 04">
+            <StatusBadge variant="regulatory" size="sm" pulse code="TELEMETRY">
               Cold-Chain Cryo-Depot IoT Telemetry
             </StatusBadge>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-50 text-amber-700 border border-amber-200">
+              Simulation Stream
+            </span>
             <StatusPip
               status={
                 depots.some((d) => d.status === 'critical')

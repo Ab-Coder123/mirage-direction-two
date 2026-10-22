@@ -10,11 +10,14 @@ import {
   Microscope,
   ShieldCheck,
 } from 'lucide-react';
-import { MOCK_PRODUCTS, MOCK_REVIEWS } from '@mirage/types';
+import { MOCK_REVIEWS } from '@mirage/types';
 import { Button, Badge, ProductCard, ReviewCard } from '@mirage/ui';
+import { getHomepageHeroContent, loadProductsFromDb } from '@mirage/db/server';
 
-export default function HomePage() {
-  const featuredProducts = MOCK_PRODUCTS;
+export default async function HomePage() {
+  const hero = await getHomepageHeroContent();
+  const { products } = await loadProductsFromDb({ locale: 'en' });
+  const featuredProducts = products.filter((p) => p.isFeatured);
 
   return (
     <main className="min-h-screen">
@@ -23,28 +26,28 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary dark:text-brand-cyan-light text-xs font-semibold">
             <Sparkles className="w-4 h-4" />
-            <span>Mirage Pharma • Healthy Life • Est. 2019</span>
+            <span>{hero.badgeEn}</span>
           </div>
 
           <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-brand-navy dark:text-white tracking-tight leading-tight max-w-4xl mx-auto">
-            New Vision, New Era in <br />
-            <span className="text-brand-primary dark:text-brand-cyan-light">Food Supplements &amp; Medicine</span>
+            {hero.headlinePrefixEn} <br />
+            <span className="text-brand-primary dark:text-brand-cyan-light">{hero.headlineHighlightEn}</span>
           </h1>
 
           <p className="text-brand-text-muted dark:text-slate-300 text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
-            Launched in 2019, <strong>Mirage Pharma Company</strong> has developed to be one of the biggest industrial &amp; trading leaders in the food supplements and medicine industry in Egypt and the Middle East, bringing complex brand and generic products to fulfill and satisfy life&rsquo;s well-being.
+            {hero.supportingTextEn}
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
             <Button variant="primary" size="lg" asChild>
               <Link href="/products" className="flex items-center gap-2">
-                <span>Explore Products</span>
+                <span>{hero.primaryCtaTextEn}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
             <Button variant="outline" size="lg" asChild>
               <Link href="/our-story">
-                Corporate Profile &amp; Vision
+                {hero.secondaryCtaTextEn}
               </Link>
             </Button>
           </div>

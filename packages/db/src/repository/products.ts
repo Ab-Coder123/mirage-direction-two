@@ -3,7 +3,6 @@ import type { Product } from '@mirage/types';
 import { Category, CreateProductInput, CreateProductMutationSchema } from '../schema';
 import { memoryStore } from './memory-store';
 import { recordAuditLog } from './audit';
-import { getSupabaseClient, isSupabaseConfigured } from '../client';
 
 export interface GetProductsFilter {
   category?: string;
@@ -17,13 +16,6 @@ export interface ActorContext {
 }
 
 export async function getCategories(): Promise<Category[]> {
-  if (isSupabaseConfigured()) {
-    const supabase = getSupabaseClient();
-    if (supabase) {
-      const { data, error } = await supabase.from('categories').select('*');
-      if (!error && data) return data as Category[];
-    }
-  }
   return memoryStore.getCategories();
 }
 
@@ -99,24 +91,6 @@ export async function createProduct(
   // Persist to memory store
   const created = memoryStore.addProduct(productToSave);
 
-  // If Supabase is configured, also persist to Supabase Postgres
-  if (isSupabaseConfigured()) {
-    const supabase = getSupabaseClient();
-    if (supabase) {
-      await supabase.from('products').insert([
-        {
-          id: created.id,
-          slug: created.slug,
-          name: created.name,
-          category_id: created.category,
-          indication: created.description,
-          status: 'published',
-          in_stock: created.packSizes.some((p) => p.inStock),
-        },
-      ]);
-    }
-  }
-
   // Record 21 CFR Part 11 Audit Trail
   await recordAuditLog({
     action: 'CREATE_FORMULATION',
@@ -151,6 +125,32 @@ export async function togglePackStock(
     actorRole: actor.role,
     entityType: 'PRODUCT',
     entityId: productId,
+    beforePayload,
+    afterPayload: updated as unknown as Record<string, any>,
+  });
+
+  return updated;
+}
+
+export async function updateProduct(
+  id: string,
+  updates: Partial<Product>,
+  actor: ActorContext = { userId: 'USR-ADMIN', role: 'SUPER_ADMIN' }
+): Promise<Product> {
+  const current = memoryStore.getProductById(id);
+  if (!current) {
+    throw new Error(`Product '${id}' not found`);
+  }
+
+  const beforePayload = JSON.parse(JSON.stringify(current));
+  const updated = memoryStore.updateProduct(id, updates);
+
+  await recordAuditLog({
+    action: 'UPDATE_FORMULATION',
+    actorId: actor.userId,
+    actorRole: actor.role,
+    entityType: 'PRODUCT',
+    entityId: id,
     beforePayload,
     afterPayload: updated as unknown as Record<string, any>,
   });
