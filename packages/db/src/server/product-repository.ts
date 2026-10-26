@@ -88,7 +88,7 @@ export function resolveProductWithFallback(
   doc: Partial<Product> = {},
   locale: 'en' | 'ar' = 'en'
 ): Product {
-  const safeDoc = doc || {};
+  const { _id, ...safeDoc } = (doc || {}) as any;
   const baselineList = locale === 'ar' ? INITIAL_PRODUCTS_AR : INITIAL_PRODUCTS;
   const baseline = baselineList.find(
     (p) => (safeDoc.id && p.id === safeDoc.id) || (safeDoc.slug && p.slug === safeDoc.slug)
@@ -178,6 +178,8 @@ export function resolveProductWithFallback(
   } else {
     delete merged.synergyBanner;
   }
+
+  delete (merged as any)._id;
 
   return merged;
 }

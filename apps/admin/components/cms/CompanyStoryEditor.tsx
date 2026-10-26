@@ -205,7 +205,7 @@ export default function CompanyStoryEditor() {
         {metadata.updatedAt ? (
           <div className="flex items-center gap-2 text-[11px] font-mono text-slate-500 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 shrink-0">
             <Clock className="w-3.5 h-3.5 text-slate-400" />
-            <span>Last published: {new Date(metadata.updatedAt).toLocaleTimeString()}</span>
+            <span suppressHydrationWarning>Last published: {new Date(metadata.updatedAt).toLocaleTimeString()}</span>
           </div>
         ) : null}
       </div>

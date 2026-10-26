@@ -432,34 +432,45 @@ export async function submitB2BLead(
   checkAndRecordAbuse(clientIdentifier, contentSignature);
 
   if (customDb || isMongoConfigured()) {
-    const db = customDb ?? (await getMongoDb());
-    return submitB2BLeadToDb(db, validated, clientIp, true);
+    try {
+      const db = customDb ?? (await getMongoDb());
+      return await submitB2BLeadToDb(db, validated, clientIp, true);
+    } catch (err) {
+      console.warn(
+        `[lead-repository] MongoDB write failed (${err instanceof Error ? err.message : String(err)}); falling back to resilient in-memory storage.`
+      );
+    }
   }
 
   assertCanMutateWithoutMongo();
   const now = new Date().toISOString();
   const leadRecord: B2BLeadRecord = {
-    id: `lead-${Date.now()}`,
-    company_name: validated.company_name,
-    contact_name: validated.contact_name,
-    email: validated.email,
-    phone: validated.phone || null,
-    partnership_archetype: validated.partnership_archetype,
-    message: validated.message || null,
+    id: `lead-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+    company_name: validated.company_name.trim(),
+    contact_name: validated.contact_name.trim(),
+    email: validated.email.trim().toLowerCase(),
+    phone: validated.phone?.trim() || null,
+    partnership_archetype: validated.partnership_archetype.trim(),
+    message: validated.message?.trim() || null,
     status: 'NEW',
     created_at: now,
     updated_at: now,
   };
 
   memoryStore.addLead(leadRecord);
-  await recordAuditLog({
-    action: 'B2B_PARTNER_LEAD_SUBMITTED',
-    actorId: 'ANONYMOUS_PUBLIC_USER',
-    actorRole: 'PUBLIC',
-    entityType: 'B2B_LEAD',
-    entityId: leadRecord.id,
-    afterPayload: leadRecord as unknown as Record<string, any>,
-  });
+  try {
+    await recordAuditLog({
+      action: 'B2B_PARTNER_LEAD_SUBMITTED',
+      actorId: 'ANONYMOUS_PUBLIC_USER',
+      actorRole: 'PUBLIC',
+      entityType: 'B2B_LEAD',
+      entityId: leadRecord.id,
+      afterPayload: leadRecord as unknown as Record<string, any>,
+    });
+  } catch {
+    // Non-blocking audit record fallback
+  }
+
   return { ok: true, lead: leadRecord };
 }
 

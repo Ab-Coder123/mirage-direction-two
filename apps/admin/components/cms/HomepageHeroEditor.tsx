@@ -195,7 +195,7 @@ export default function HomepageHeroEditor() {
           {metadata.updatedAt && (
             <div className="hidden md:flex items-center gap-1 text-[11px] text-slate-500 font-mono">
               <Clock className="w-3 h-3" />
-              <span>{new Date(metadata.updatedAt).toLocaleTimeString()}</span>
+              <span suppressHydrationWarning>{new Date(metadata.updatedAt).toLocaleTimeString()}</span>
             </div>
           )}
         </div>

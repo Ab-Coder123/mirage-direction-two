@@ -82,11 +82,23 @@ export async function POST(request: Request) {
           { status: 400 }
         );
       }
+      if (err.code === 'DB_UNAVAILABLE' || err.code === 'WRITE_FAILED') {
+        return NextResponse.json(
+          { ok: false, code: err.code, error: err.message },
+          { status: 503 }
+        );
+      }
     }
 
-    console.error('[contact-api] Submission failure:', err instanceof Error ? err.message : String(err));
+    const errorDetails = err instanceof Error ? err.message : String(err);
+    console.error('[contact-api] Submission failure:', errorDetails);
     return NextResponse.json(
-      { ok: false, error: 'Internal service error while processing inquiry. Please try again later.' },
+      {
+        ok: false,
+        error: errorDetails.includes('MongoDB')
+          ? errorDetails
+          : 'Internal service error while processing inquiry. Please try again later.',
+      },
       { status: 500 }
     );
   }

@@ -17,6 +17,7 @@ export default function AdminLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`h-full antialiased scroll-smooth ${fontJakarta.variable} ${fontInter.variable} ${fontSpace.variable}`}
     >
       <body className="min-h-full bg-brand-surface text-brand-navy font-sans selection:bg-brand-primary/20">
