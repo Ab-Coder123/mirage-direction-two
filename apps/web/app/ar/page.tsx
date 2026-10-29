@@ -2,10 +2,6 @@ import Link from 'next/link';
 import {
   Sparkles,
   ArrowLeft,
-  Building2,
-  TrendingUp,
-  Users,
-  Calendar,
   Globe2,
   Microscope,
   ShieldCheck,
@@ -50,30 +46,6 @@ export default async function ArabicHomePage() {
                 {hero.secondaryCtaTextAr}
               </Link>
             </Button>
-          </div>
-
-          {/* Official Corporate Telemetry Bar */}
-          <div className="pt-8 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#041B3B] border border-brand-border-subtle dark:border-white/10 shadow-sm hover:shadow-md transition-shadow">
-              <Calendar className="w-5 h-5 text-brand-primary dark:text-brand-cyan-light mx-auto mb-1.5" />
-              <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white block">2019</span>
-              <span className="text-xs text-brand-text-muted dark:text-slate-400">تاريخ التأسيس بالقاهرة</span>
-            </div>
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#041B3B] border border-brand-border-subtle dark:border-white/10 shadow-sm hover:shadow-md transition-shadow">
-              <Building2 className="w-5 h-5 text-brand-green mx-auto mb-1.5" />
-              <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white block">50 مليون ج.م</span>
-              <span className="text-xs text-brand-text-muted dark:text-slate-400">رأس مال الشركة</span>
-            </div>
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#041B3B] border border-brand-border-subtle dark:border-white/10 shadow-sm hover:shadow-md transition-shadow">
-              <TrendingUp className="w-5 h-5 text-brand-cyan dark:text-brand-cyan-light mx-auto mb-1.5" />
-              <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white block">80 مليون ج.م</span>
-              <span className="text-xs text-brand-text-muted dark:text-slate-400">حجم الأعمال السنوي</span>
-            </div>
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#041B3B] border border-brand-border-subtle dark:border-white/10 shadow-sm hover:shadow-md transition-shadow">
-              <Users className="w-5 h-5 text-brand-primary dark:text-brand-cyan-light mx-auto mb-1.5" />
-              <span className="font-heading font-extrabold text-lg text-brand-navy dark:text-white block">75 + 500</span>
-              <span className="text-xs text-brand-text-muted dark:text-slate-400">حجم الكوادر البشرية</span>
-            </div>
           </div>
         </div>
       </section>

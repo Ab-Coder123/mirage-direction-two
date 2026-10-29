@@ -19,23 +19,9 @@ export const TopUtilityBar: React.FC = () => {
 
   return (
     <div className="w-full bg-brand-navy dark:bg-[#01142B] text-white text-xs py-2 px-3 sm:px-4 border-b border-brand-navy-light/40 dark:border-white/10 transition-colors duration-200 overflow-x-hidden">
-      <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 sm:gap-3">
-        {/* Left Telemetry / Welcome Tagline */}
-        <div className="hidden md:flex items-center gap-3 text-slate-300 font-mono text-[11px]">
-          <span className="inline-block w-2 h-2 rounded-full bg-brand-green animate-pulse" />
-          <span>
-            {isAr
-              ? 'ميراج فارما • تأسست 2019 • تصنيع وتجارة المكملات الغذائية والأدوية'
-              : 'Mirage Pharma • Est. 2019 • Food Supplements & Medicine Industry'}
-          </span>
-          <span className="text-slate-600">|</span>
-          <span className="text-slate-400">
-            {isAr ? 'القاهرة، مصر • رأس المال 50 مليون ج.م' : 'Cairo HQ • 50M EGP Capital'}
-          </span>
-        </div>
-
+      <div className="max-w-7xl mx-auto flex items-center justify-end gap-2 sm:gap-4">
         {/* Right Search, Social Icons & Language Switcher */}
-        <div className="flex items-center justify-between w-full md:w-auto gap-2 sm:gap-4 max-w-full">
+        <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-2 sm:gap-4 max-w-full">
           {/* Quick Search Input Pill */}
           <form
             onSubmit={(e) => {

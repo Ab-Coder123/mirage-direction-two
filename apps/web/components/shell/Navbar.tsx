@@ -8,7 +8,6 @@ import {
   Menu,
   X,
   User,
-  ShoppingBag,
 } from 'lucide-react';
 import { cn } from '@mirage/utils';
 import { ThemeToggle } from '@/components/theme';
@@ -98,18 +97,6 @@ export const Navbar: React.FC = () => {
             className="w-9 h-9 rounded-full bg-slate-100 hover:bg-brand-primary/10 hover:text-brand-primary text-slate-700 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/15 dark:hover:text-white flex items-center justify-center transition-colors"
           >
             <User className="w-4 h-4" />
-          </Link>
-
-          {/* Cart / Inquiry Drawer trigger */}
-          <Link
-            href={isAr ? '/ar/products' : '/products'}
-            aria-label="Product Inquiries"
-            className="relative w-9 h-9 rounded-full bg-slate-100 hover:bg-brand-primary/10 hover:text-brand-primary text-slate-700 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/15 dark:hover:text-white flex items-center justify-center transition-colors"
-          >
-            <ShoppingBag className="w-4 h-4" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-brand-primary text-[10px] font-bold text-white flex items-center justify-center font-mono">
-              2
-            </span>
           </Link>
 
           {/* Mobile Menu Hamburger */}
