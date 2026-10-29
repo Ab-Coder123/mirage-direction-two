@@ -52,30 +52,7 @@ export default async function HomePage() {
             </Button>
           </div>
 
-          {/* Official Corporate Telemetry Pill Strip */}
-          <div className="pt-10 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            <div className="hud-glass p-4 rounded-xl text-center border border-white/80 dark:border-white/10">
-              <Calendar className="w-5 h-5 text-brand-primary dark:text-brand-cyan-light mx-auto mb-1" />
-              <span className="font-heading font-bold text-lg text-brand-navy dark:text-white block">2019</span>
-              <span className="text-xs text-brand-text-muted dark:text-slate-400">Established in Cairo</span>
-            </div>
-            <div className="hud-glass p-4 rounded-xl text-center border border-white/80 dark:border-white/10">
-              <Building2 className="w-5 h-5 text-brand-green mx-auto mb-1" />
-              <span className="font-heading font-bold text-lg text-brand-navy dark:text-white block">50M EGP</span>
-              <span className="text-xs text-brand-text-muted dark:text-slate-400">Company Capital</span>
-            </div>
-            <div className="hud-glass p-4 rounded-xl text-center border border-white/80 dark:border-white/10">
-              <TrendingUp className="w-5 h-5 text-brand-cyan dark:text-brand-cyan-light mx-auto mb-1" />
-              <span className="font-heading font-bold text-lg text-brand-navy dark:text-white block">80M EGP</span>
-              <span className="text-xs text-brand-text-muted dark:text-slate-400">Volume of Business</span>
-            </div>
-            <div className="hud-glass p-4 rounded-xl text-center border border-white/80 dark:border-white/10">
-              <Users className="w-5 h-5 text-brand-primary dark:text-brand-cyan-light mx-auto mb-1" />
-              <span className="font-heading font-bold text-lg text-brand-navy dark:text-white block">75 + 500</span>
-              <span className="text-xs text-brand-text-muted dark:text-slate-400">Dedicated Workforce</span>
-            </div>
-          </div>
-        </div>
+          
       </section>
 
       {/* ABOUT MIRAGE PHARMA — Corporate Overview Section */}
